@@ -1,0 +1,158 @@
+import plotly.graph_objects as go
+import pandas as pd
+
+from sqlalchemy import and_, func
+
+from constants import GUILD_ID
+from models.categories import CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass
+from models.entities import Character, PlayerCharacterClass
+
+
+def get_race_data(session):
+
+    races = session.query(CharacterRace).all()
+    race_count = session.query(CharacterRace.value, func.count(Character.race).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
+        .join(CharacterRace, Character.race == CharacterRace.id) \
+        .group_by(CharacterRace.value).all()
+
+    total_count = session.query(Character).filter(and_(Character.active == True, Character.guild_id == GUILD_ID)).count()
+
+    name = ['Races']
+    parent = ['']
+    values = ['']
+
+    for r in races:
+        name.append(r.value)
+        parent.append("Total Players")
+        count = 0
+        for c in race_count:
+            if c.value == r.value:
+                count = c.count
+        values.append(count)
+
+    subraces = session.query(CharacterSubrace) \
+        .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
+        .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.value.label("race")).all()
+
+    subrace_count = session.query(CharacterSubrace.value, func.count(Character.subrace).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
+        .join(CharacterSubrace, Character.subrace == CharacterSubrace.id) \
+        .group_by(CharacterSubrace.value).all()
+
+    for s in subraces:
+        name.append(s.value)
+        parent.append(s.race)
+        count = 0
+        for c in subrace_count:
+            if c.value == s.value:
+                count = c.count
+        values.append(count)
+
+    df = pd.DataFrame()
+    df['parent'] = parent
+    df['name'] = name
+    df['value'] = values
+    df['level'] = 3
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Sunburst(
+        ids=df.name,
+        labels=df.name,
+        values=df.value,
+        parents=df.parent,
+        textinfo="label+text+value",
+        maxdepth=2
+    ))
+
+    fig.update_layout(margin=dict(t=50, l=25, r=25, b=25), title="Races and Subraces",
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      uniformtext=dict(minsize=20),
+                      font_color='#FFFFFF',
+                      width=800,
+                      height=800)
+
+    return fig.to_json()
+
+
+def get_class_data(session):
+    name = ['Classes']
+    parent = ['']
+    values = ['']
+    classes = session.query(CharacterClass).all()
+    class_count = session.query(CharacterClass.value, func.count(PlayerCharacterClass.primary_class).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
+        .join(CharacterClass, PlayerCharacterClass.primary_class == CharacterClass.id) \
+        .join(Character, PlayerCharacterClass.character_id == Character.id) \
+        .group_by(CharacterClass.value).all()
+
+    for c in classes:
+        name.append(c.value)
+        parent.append("All Classes")
+        count = 0
+        for i in class_count:
+            if c.value == i.value:
+                count = i.count
+        values.append(count)
+
+    subclasses = session.query(CharacterSubclass) \
+        .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
+        .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.value.label("char_class")).all()
+
+    subclass_count = session.query(CharacterSubclass.value, func.count(PlayerCharacterClass.subclass).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
+        .join(CharacterSubclass, PlayerCharacterClass.subclass == CharacterSubclass.id) \
+        .join(Character, PlayerCharacterClass.character_id == Character.id) \
+        .group_by(CharacterSubclass.value).all()
+
+    for s in subclasses:
+        name.append(s.value)
+        parent.append(s.char_class)
+        count = 0
+        for c in subclass_count:
+            if c.value == s.value:
+                count = c.count
+        values.append(count)
+
+    player_count = session.query(PlayerCharacterClass.character_id, func.count(PlayerCharacterClass.character_id).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID,
+                     PlayerCharacterClass.active == True)) \
+        .join(Character, PlayerCharacterClass.character_id == Character.id) \
+        .group_by(PlayerCharacterClass.character_id).all()
+
+    m_count = 0
+    for p in player_count:
+        if p.count > 1:
+            m_count += 1
+
+    name.append("Multiclass")
+    parent.append("All Classes")
+    values.append(m_count)
+
+    df = pd.DataFrame()
+    df['parent'] = parent
+    df['name'] = name
+    df['value'] = values
+    df['level'] = 3
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Sunburst(
+        ids=df.name,
+        labels=df.name,
+        values=df.value,
+        parents=df.parent,
+        maxdepth=2,
+        textinfo="label+text+value"
+    ))
+
+    fig.update_layout(margin=dict(t=50, l=25, r=25, b=25), title="Classes and Subclasses",
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      font_color='#FFFFFF',
+                      width=800,
+                      height=800,
+                      uniformtext=dict(minsize=20))
+
+
+    return fig.to_json()

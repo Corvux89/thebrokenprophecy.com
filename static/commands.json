@@ -1,0 +1,140 @@
+{
+  "category": [
+    {
+      "name": "General",
+      "description": "",
+      "commands": [
+        {
+          "name": "get",
+          "description": "Displays information on a given player's character.",
+          "required": [],
+          "optional": [
+            {
+              "name": "player",
+              "description": ["Player to get the character for if not looking for the character of the author"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Adventures",
+      "description": "Adventure Commands",
+      "commands": [
+        {
+          "name": "create",
+          "description": "Creates a channel category, two channels, and role for the adventure",
+          "required": [
+            {
+              "name": "adventure_name"
+            },
+            {
+              "name": "role_name"
+            },
+            {
+              "name": "dm"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "dm_add",
+          "description": "Adds a DM to an adventure",
+          "required": [
+            {
+              "name": "dm"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "dm_remove",
+          "description": "Removes a DM from an adventure. This command will fail if there is only 1 DM for the adventure",
+          "required": [
+            {
+              "name": "dm"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "add",
+          "description": "Adds a player or players to an adventure",
+          "required": [
+            {
+              "name": "player_1"
+            }
+          ],
+          "optional": [
+            {
+              "name": "player_2",
+              "description": []
+            },
+            {
+              "name": "player_3",
+              "description": []
+            },
+            {
+              "name": "player_4",
+              "description": []
+            },
+            {
+              "name": "player_5",
+              "description": []
+            },
+            {
+              "name": "player_6",
+              "description": []
+            },
+            {
+              "name": "player_7",
+              "description": []
+            },
+            {
+              "name": "player_8",
+              "description": []
+            },
+            {
+              "name": "calc_tier",
+              "description": ["Whether to recalculate the adventure tier on player add.",
+              "Default is True. This is here in case we are re-adding a player's playing at a lower level, but we don't",
+              "want to use their current character level in the adventure tier calculations"]
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "description": "Removes a player from an adventure",
+          "required": [
+            {
+              "name": "player"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "close",
+          "description": "Closes and adventure and removes roles from players",
+          "required": [],
+          "optional": []
+        }
+      ]
+    },
+    {
+      "name": "Room",
+      "description": "Tools for DM's to manage channels within their adventure without having manage server permissions",
+      "commands": [
+        {
+          "name": "add_room",
+          "description": "Adds a channel with the given name to the Adventure category",
+          "required": [
+            {
+              "name": "room_name"
+            }
+          ],
+          "optional": ""
+        }
+      ]
+    }
+  ]
+}

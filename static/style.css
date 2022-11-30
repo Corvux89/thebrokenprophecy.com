@@ -1,0 +1,128 @@
+h1{
+    font-family: verdana;
+    margin-left: 15px;
+    color: white;
+    text-align: center;
+}
+
+h2,
+h3,
+h4,
+p {
+    font-family: verdana;
+    margin-left: 15px;
+    color: white;
+}
+
+body {
+    display: inline;
+    font-family: verdana;
+    background-color: #2C2F33;
+}
+
+.bg-image{
+    background: url('/static/images/BP_Banner.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 30%;
+    height: 100vw;
+    width: auto;
+    box-shadow: 0 0  8px 8px #2C2F33 inset
+}
+
+.stretched-link::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: auto;
+    content: "";
+    background-color: rgba(0,0,0,0);
+}
+
+:root {
+    color: #d5e0e7;
+}
+
+.bot-command-container{
+    color: white;
+    margin-left: 15px
+}
+
+.category-toggle{
+    margin-bottom: 10px;
+}
+
+.category-container{
+    border-style: outset;
+    margin-top: 10px;
+}
+
+.category-name{
+    padding: 2px;
+    padding-left: 5px;
+    font-weight: bold;
+    color: steelblue;
+}
+
+.category-description{
+    padding-left: 2em !important;
+    font-style: italic;
+    font-weight: lighter;
+
+}
+
+.command-container{
+    border-style: ridge;
+    margin: 3px;
+}
+
+.command-group{
+    padding-left: 2px
+}
+
+.command-name{
+    font-weight: bold;
+    padding-right: 2px !important;
+}
+
+.command-description{
+    padding-left: 30px;
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.required-name{
+    font-weight: bold;
+    padding-left: 3px !important;
+    padding-right: 2px !important;
+    padding-bottom: 0 !important;
+}
+
+.optional-name{
+    font-weight: lighter;
+    color: lightgrey;
+    padding-left: 3px !important;
+    padding-right: 2px !important;
+    padding-bottom: 0 !important;
+}
+
+.description-row{
+    margin-bottom: 0px !important;
+}
+
+.param-list-name{
+    flex: 1 0 auto;
+    align-items: stretch;
+}
+
+.optional-description{
+    flex: 0 1 auto;
+    padding-left: 2px !important;
+    font-style: italic;
+    font-weight: lighter;
+}
+
+

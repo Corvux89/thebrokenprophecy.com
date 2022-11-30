@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='/images/Guild_Star.png') }}"
+             width="70"
+             height="auto"
+             alt="Broken Prophecy">
+    </a>
+
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+
+        <!-- Home -->
+        <li class="nav-item active">
+            <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" href="/server_stats">Census<span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" href="/commands">ProphetBot<span class="sr-only">(current)</span></a>
+        </li>
+
+
+        <li class="nav-item active">
+            <a class="nav-link" href="http://chromatic-chronicle.com/">Chromatic Chronicle<span class="sr-only">(current)</span></a>
+        </li>
+
+    </ul>
+  </div> <!-- navbarNavDropdown -->
+</nav>
