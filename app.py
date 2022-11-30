@@ -90,7 +90,7 @@ talisman = Talisman(
     content_security_policy_nonce_in=['script-src', 'script-src-elem']
 )
 
-db.init_app(app)
+# db.init_app(app)
 
 if __name__ == "__main__":
     app.run()
