@@ -1,5 +1,6 @@
 import json
 
+import flask
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
@@ -28,9 +29,10 @@ def homepage():
 
 @app.route('/server_stats')
 def census():
-    race_fig = get_race_data(db.session)
-    class_fig = get_class_data(db.session)
-    return render_template('census.html', race_graph=race_fig, class_graph=class_fig)
+    # race_fig = get_race_data(db.session)
+    # class_fig = get_class_data(db.session)
+    # return render_template('census.html', race_graph=race_fig, class_graph=class_fig)
+    return flask.redirect('/')
 
 @app.route('/commands')
 def bot():
