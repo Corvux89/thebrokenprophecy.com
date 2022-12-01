@@ -1,4 +1,4 @@
-import json
+import json, requests
 
 import flask
 from flask import Flask, render_template
@@ -6,8 +6,8 @@ from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_sqlalchemy import SQLAlchemy
 
-from constants import WEB_DEBUG, DB_URI, SECRET_KEY
-from helpers.helpers import get_race_data, get_class_data
+from constants import WEB_DEBUG, DB_URI, SECRET_KEY, COMMANDS_JSON
+from helpers.helpers import get_race_data, get_class_data, get_race_table
 
 app = Flask(__name__)
 
@@ -29,16 +29,20 @@ def homepage():
 
 @app.route('/server_stats')
 def census():
-    # race_fig = get_race_data(db.session)
-    # class_fig = get_class_data(db.session)
-    # return render_template('census.html', race_graph=race_fig, class_graph=class_fig)
-    return flask.redirect('/')
+    # race_data = get_race_table(db.session)
+    #
+    #
+    # with open("static/races.json", "w") as outfile:
+    #     json.dump(race_data, outfile)
+
+    f = open('static/races.json')
+    race_data = json.load(f)
+    return render_template('server_stats.html', race_data=race_data)
 
 @app.route('/commands')
 def bot():
     f = open('static/commands.json')
     commands = json.load(f)
-
     return render_template('commands.html', commands=commands['category'])
 
 
@@ -55,7 +59,6 @@ csp = {
     ],
     'script-src': [
         '\'self\'',
-        '\'unsafe-eval\'',
         'https://cdn.jsdelivr.net/',
         'https://www.googletagmanager.com/',
         'https://ajax.googleapis.com',
@@ -69,7 +72,6 @@ csp = {
     ],
     'style-src': [
         '\'self\'',
-        '\'unsafe-inline\'',
         'https://cdn.jsdelivr.net/',
         'https://cdn.plot.ly/'
         'plotly.js'
@@ -90,7 +92,7 @@ talisman = Talisman(
     content_security_policy_nonce_in=['script-src', 'script-src-elem']
 )
 
-# db.init_app(app)
+db.init_app(app)
 
 if __name__ == "__main__":
     app.run()

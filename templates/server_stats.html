@@ -1,0 +1,52 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="stats_header">Broken Prophecy 2.0 Server Statistics</h1>
+<p>Don't judge me...working on it....</p>
+
+<div class="stats-container">
+    <a class="btn btn-primary stats_button" data-toggle="collapse" href="#raceCollapse" role="button">Races</a>
+    <a class="btn btn-primary stats_button" data-toggle="collapse" href="#classCollapse" role="button">Classes</a>
+
+    <div class="collapse" id="raceCollapse">
+         <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle category-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="raceDropdown">Goto Race</button>
+            <div class="dropdown-menu" aria-labelledby="raceDropdown">
+                {% for race in race_data['races'] %}
+                <a class="dropdown-item" href="#{{race.name}}">{{race.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <h2>Total Players: {{race_data['total']}}</h2>
+        <div class="card-deck">
+            {% for race in race_data['races'] %}
+            <div class="card rounded-4" id="{{race.name}}">
+                <a class="btn btn-link card-title mb-0" data-toggle="collapse" href="#{{race.name}}collapse" role="button" aria-expanded="false" aria-controls="#{{race.name}}collapse">{{race.name}}</a>
+                <div class="collapse show list-group list-group-flush" id="{{race.name}}collapse">
+                    <lic class="list-group-item bg-info">Total: {{race.count}}</lic>
+                    {% for subrace in race['subraces'] %}
+                    <li class="list-group-item">{{subrace.name}}: {{subrace.count}}</li>
+                    {% endfor %}
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="collapse" id="classCollapse">
+        <p>here</p>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+    $('#raceCollapse').on('show.bs.collapse', function(){
+        $('#classCollapse').collapse('hide');
+    })
+
+    $('#classCollapse').on('show.bs.collapse', function(){
+        $('#raceCollapse').collapse('hide');
+    })
+</script>
+
+{% endblock %}
