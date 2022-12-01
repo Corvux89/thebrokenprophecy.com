@@ -156,3 +156,54 @@ def get_class_data(session):
 
 
     return fig.to_json()
+
+def get_race_table(session):
+    races = session.query(CharacterRace).all()
+    race_count = session.query(CharacterRace.value, func.count(Character.race).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
+        .join(CharacterRace, Character.race == CharacterRace.id) \
+        .group_by(CharacterRace.value).all()
+
+    total_count = session.query(Character).filter(
+        and_(Character.active == True, Character.guild_id == GUILD_ID)).count()
+
+    stat = dict()
+    stat['total'] = total_count
+    stat['races'] = []
+
+
+    for r in races:
+        race_dict = {}
+        race_dict["name"] = r.value
+        race_dict["count"] = 0
+        race_dict["subraces"] = []
+        for c in race_count:
+            if c.value == r.value:
+                race_dict["count"] = c.count
+                stat['races'].append(race_dict)
+                break
+
+    subraces = session.query(CharacterSubrace) \
+        .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
+        .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.value.label("race")).all()
+
+    subrace_count = session.query(CharacterSubrace.value, func.count(Character.subrace).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
+        .join(CharacterSubrace, Character.subrace == CharacterSubrace.id) \
+        .group_by(CharacterSubrace.value).all()
+
+    for s in subraces:
+        sub_dict = {}
+        sub_dict["name"] = s.value
+        sub_dict["count"] = 0
+        for c in subrace_count:
+            if c.value == s.value:
+                sub_dict["count"] = c.count
+                break
+
+        for r in stat['races']:
+            if r['name'] == s.race:
+                r["subraces"].append(sub_dict)
+                break
+    return stat
+

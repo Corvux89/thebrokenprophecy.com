@@ -116,7 +116,23 @@
           "name": "close",
           "description": "Closes and adventure and removes roles from players",
           "required": [],
-          "optional": []
+          "optional": [
+            {
+              "name": "role",
+              "description": ["Role for the adventure, if not ran in one of the Adventure channels"]
+            }
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Displays the current status of an Adventure",
+          "required": [],
+          "optional": [
+            {
+              "name": "role",
+              "description": ["Role for the adventure, if not ran in one fo the adventure channels."]
+            }
+          ]
         }
       ]
     },
@@ -130,6 +146,218 @@
           "required": [
             {
               "name": "room_name"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "rename",
+          "description": "Renames the channel the command was run in",
+          "required": [
+            {
+              "name": "room_name"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "view",
+          "description": "Hides or reveals the room to the @Quester role",
+          "required": [
+            {
+              "name": "view"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "move",
+          "description": "Shuffles the current channel around in the Adventure category",
+          "required": [
+            {
+              "name": "position"
+            }
+          ],
+          "optional": []
+        }
+      ]
+    },
+    {
+      "name": "Arena",
+      "description": "Arena commands. FIGHT!!!",
+      "commands": [
+        {
+          "name": "claim",
+          "description": "Opens an arena in the current channel and sets the user as the host",
+          "required": [],
+          "optional": []
+        },
+        {
+          "name": "status",
+          "description": "Re-posts the arena status embed if scrolling or checking pins is too hard",
+          "required": [],
+          "optional": []
+        },
+        {
+          "name": "add",
+          "description": "Manually adds a player to the arena if they forgot to click the button...which they do....a lot",
+          "required": [
+            {
+              "name": "player"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name":"remove",
+          "description": "Removes a player from the arena",
+          "required": [
+            {
+              "name": "player"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "phase",
+          "description": "Logs the outcome of an arena phase",
+          "required": [
+            {
+              "name": "result"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "close",
+          "description": "Manually closes an arena",
+          "required": [],
+          "optional": []
+        }
+      ]
+    },
+    {
+      "name": "Character Admin",
+      "description": "Commands for player Character administration",
+      "commands": [
+        {
+          "name": "create",
+          "description": "Creates a new character for a given player",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "character_class"
+            },
+            {
+              "name": "character_race"
+            },
+            {
+              "name": "gold"
+            }
+          ],
+          "optional": [
+            {
+              "name": "character_subrace",
+              "description": ["Subrace for a character if applicable"]
+            },
+            {
+              "name": "character_subclass",
+              "description": ["Subclass for a character if applicable"]
+            },
+            {
+              "name": "level",
+              "description": ["Starting level if starting above level 1"]
+            }
+          ]
+        },
+        {
+          "name": "level",
+          "description": "Manually levels a character once they have completed their level 1 or 2 questions and their sheet has been approved.",
+          "required": [
+            {
+              "name": "player"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "race",
+          "description": "Sets or updates a characters race/subrace",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "character_race"
+            }
+          ],
+          "optional": [
+            {
+              "name": "character_subrace",
+              "description": ["Subclass for character if applicable"]
+            }
+          ]
+        },
+        {
+          "name": "subclass",
+          "description": "Sets the subclass for a given player and class",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "character_class"
+            }
+          ],
+          "optional": [
+            {
+              "name": "character_subclass",
+              "description": ["Subclass for a character if applicable"]
+            }
+          ]
+        },
+        {
+          "name": "add_multiclass",
+          "description": "Adds a new class/multiclass to a Character",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "character_class"
+            }
+          ],
+          "optional": [
+            {
+              "name": "character_subclass",
+              "description": ["Subclass for a character if applicable"]
+            }
+          ]
+        },
+        {
+          "name": "remove_multiclass",
+          "description": "Removes a class/multiclass from a player",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "character_class"
+            }
+          ],
+          "optional": []
+        },
+        {
+          "name": "inactivate",
+          "description": "Flags a player's Character as inactive",
+          "required": [
+            {
+              "name": "player"
             }
           ],
           "optional": []
