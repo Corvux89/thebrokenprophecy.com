@@ -6,7 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_sqlalchemy import SQLAlchemy
 
-from constants import WEB_DEBUG, DB_URI, SECRET_KEY, COMMANDS_JSON
+from constants import WEB_DEBUG, DB_URI, SECRET_KEY
 from helpers.helpers import get_race_data, get_class_data, get_race_table
 
 app = Flask(__name__)
@@ -92,7 +92,7 @@ talisman = Talisman(
     content_security_policy_nonce_in=['script-src', 'script-src-elem']
 )
 
-db.init_app(app)
+# db.init_app(app)
 
 if __name__ == "__main__":
     app.run()
