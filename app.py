@@ -6,7 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_sqlalchemy import SQLAlchemy
 
-from constants import WEB_DEBUG, DB_URI, SECRET_KEY, COMMANDS_JSON
+from constants import WEB_DEBUG, DB_URI, SECRET_KEY
 from helpers.helpers import get_race_data, get_class_data, get_race_table
 
 app = Flask(__name__)
