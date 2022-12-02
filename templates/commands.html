@@ -46,7 +46,7 @@
                     <div class="pt-2 pl-1 pr-0 pb-0 optional-name">&lt;{{param.name}}&gt;</div>
                     {% endfor %}
                 </ul>
-            <ul class="d-flex flex-row command-description">{{command.description}}</ul>
+            <ul class="d-flex flex-row pl-4 command-description">{{command.description}}</ul>
 
             {% for param in command.optional %}
             {% if param.description[0] != "" and param.description[0] != null %}

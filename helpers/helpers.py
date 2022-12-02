@@ -207,3 +207,70 @@ def get_race_table(session):
                 break
     return stat
 
+def get_class_table(session):
+    classes = session.query(CharacterClass).all()
+    class_count = session.query(CharacterClass.value, func.count(PlayerCharacterClass.primary_class).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
+        .join(CharacterClass, PlayerCharacterClass.primary_class == CharacterClass.id) \
+        .join(Character, PlayerCharacterClass.character_id == Character.id) \
+        .group_by(CharacterClass.value).all()
+
+    stat = dict()
+    stat['classes'] = []
+
+
+    for c in classes:
+        class_dict = {}
+        class_dict["name"] = c.value
+        class_dict["count"] = 0
+        class_dict["subclasses"] = []
+        for i in class_count:
+            if i.value == c.value:
+                class_dict["count"] = i.count
+                stat["classes"].append(class_dict)
+                break
+
+    subclasses = session.query(CharacterSubclass) \
+        .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
+        .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.value.label("char_class")).all()
+
+    subclass_count = session.query(CharacterSubclass.value, func.count(PlayerCharacterClass.subclass).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
+        .join(CharacterSubclass, PlayerCharacterClass.subclass == CharacterSubclass.id) \
+        .join(Character, PlayerCharacterClass.character_id == Character.id) \
+        .group_by(CharacterSubclass.value).all()
+
+    for s in subclasses:
+        sub_dict = {}
+        sub_dict["name"] = s.value
+        sub_dict["count"] = 0
+        for c in subclass_count:
+            if c.value == s.value:
+                sub_dict["count"] = c.count
+                break
+
+        for r in stat["classes"]:
+            if r["name"] == s.char_class:
+                r["subclasses"].append(sub_dict)
+                break
+
+    player_count = session.query(PlayerCharacterClass.character_id,
+                                 func.count(PlayerCharacterClass.character_id).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID,
+                     PlayerCharacterClass.active == True)) \
+        .join(Character, PlayerCharacterClass.character_id == Character.id) \
+        .group_by(PlayerCharacterClass.character_id).all()
+
+    m_dict = {}
+    m_dict["name"] = "Multiclass"
+    m_dict["subclasses"] = []
+    m_count = 0
+    for p in player_count:
+        if p.count > 1:
+            m_count += 1
+    m_dict["count"] = m_count
+
+    stat["classes"].append(m_dict)
+
+    return stat
+

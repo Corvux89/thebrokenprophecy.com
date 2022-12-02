@@ -7,7 +7,7 @@ from flask_talisman import Talisman
 from flask_sqlalchemy import SQLAlchemy
 
 from constants import WEB_DEBUG, DB_URI, SECRET_KEY
-from helpers.helpers import get_race_data, get_class_data, get_race_table
+from helpers.helpers import get_race_data, get_class_data, get_race_table, get_class_table
 
 app = Flask(__name__)
 
@@ -34,10 +34,17 @@ def census():
     #
     # with open("static/races.json", "w") as outfile:
     #     json.dump(race_data, outfile)
+    #
+    # class_data = get_class_table(db.session)
+    #
+    # with open("static/classes.json", "w") as outfile:
+    #     json.dump(class_data, outfile)
 
     f = open('static/races.json')
     race_data = json.load(f)
-    return render_template('server_stats.html', race_data=race_data)
+    f = open('static/classes.json')
+    class_data = json.load(f)
+    return render_template('server_stats.html', race_data=race_data, class_data=class_data)
 
 @app.route('/commands')
 def bot():
