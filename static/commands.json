@@ -7,11 +7,10 @@
         {
           "name": "get",
           "description": "Displays information on a given player's character.",
-          "required": [],
           "optional": [
             {
               "name": "player",
-              "description": ["Player to get the character for if not looking for the character of the author"]
+              "description": "Player to get the character for if not looking for the character of the author"
             }
           ]
         }
@@ -34,8 +33,7 @@
             {
               "name": "dm"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "dm_add",
@@ -44,8 +42,7 @@
             {
               "name": "dm"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "dm_remove",
@@ -54,8 +51,7 @@
             {
               "name": "dm"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "add",
@@ -67,38 +63,29 @@
           ],
           "optional": [
             {
-              "name": "player_2",
-              "description": []
+              "name": "player_2"
             },
             {
-              "name": "player_3",
-              "description": []
+              "name": "player_3"
             },
             {
-              "name": "player_4",
-              "description": []
+              "name": "player_4"
             },
             {
-              "name": "player_5",
-              "description": []
+              "name": "player_5"
             },
             {
-              "name": "player_6",
-              "description": []
+              "name": "player_6"
             },
             {
-              "name": "player_7",
-              "description": []
+              "name": "player_7"
             },
             {
-              "name": "player_8",
-              "description": []
+              "name": "player_8"
             },
             {
               "name": "calc_tier",
-              "description": ["Whether to recalculate the adventure tier on player add.",
-              "Default is True. This is here in case we are re-adding a player's playing at a lower level, but we don't",
-              "want to use their current character level in the adventure tier calculations"]
+              "description": "Whether to recalculate the adventure tier on player add. Default is True. This is here in case we are re-adding a player's playing at a lower level, but we don't want to use their current character level in the adventure tier calculations"
             }
           ]
         },
@@ -109,28 +96,25 @@
             {
               "name": "player"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "close",
           "description": "Closes and adventure and removes roles from players",
-          "required": [],
           "optional": [
             {
               "name": "role",
-              "description": ["Role for the adventure, if not ran in one of the Adventure channels"]
+              "description": "Role for the adventure, if not ran in one of the Adventure channels"
             }
           ]
         },
         {
           "name": "status",
           "description": "Displays the current status of an Adventure",
-          "required": [],
           "optional": [
             {
               "name": "role",
-              "description": ["Role for the adventure, if not ran in one fo the adventure channels."]
+              "description": "Role for the adventure, if not ran in one fo the adventure channels."
             }
           ]
         }
@@ -147,8 +131,7 @@
             {
               "name": "room_name"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "rename",
@@ -157,8 +140,7 @@
             {
               "name": "room_name"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "view",
@@ -167,8 +149,7 @@
             {
               "name": "view"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "move",
@@ -188,15 +169,11 @@
       "commands": [
         {
           "name": "claim",
-          "description": "Opens an arena in the current channel and sets the user as the host",
-          "required": [],
-          "optional": []
+          "description": "Opens an arena in the current channel and sets the user as the host"
         },
         {
           "name": "status",
-          "description": "Re-posts the arena status embed if scrolling or checking pins is too hard",
-          "required": [],
-          "optional": []
+          "description": "Re-posts the arena status embed if scrolling or checking pins is too hard"
         },
         {
           "name": "add",
@@ -205,8 +182,7 @@
             {
               "name": "player"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name":"remove",
@@ -215,8 +191,7 @@
             {
               "name": "player"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "phase",
@@ -225,14 +200,11 @@
             {
               "name": "result"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "close",
-          "description": "Manually closes an arena",
-          "required": [],
-          "optional": []
+          "description": "Manually closes an arena"
         }
       ]
     },
@@ -263,15 +235,15 @@
           "optional": [
             {
               "name": "character_subrace",
-              "description": ["Subrace for a character if applicable"]
+              "description": "Subrace for a character if applicable"
             },
             {
               "name": "character_subclass",
-              "description": ["Subclass for a character if applicable"]
+              "description": "Subclass for a character if applicable"
             },
             {
               "name": "level",
-              "description": ["Starting level if starting above level 1"]
+              "description": "Starting level if starting above level 1"
             }
           ]
         },
@@ -282,8 +254,7 @@
             {
               "name": "player"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "race",
@@ -299,7 +270,7 @@
           "optional": [
             {
               "name": "character_subrace",
-              "description": ["Subclass for character if applicable"]
+              "description": "Subclass for character if applicable"
             }
           ]
         },
@@ -317,7 +288,7 @@
           "optional": [
             {
               "name": "character_subclass",
-              "description": ["Subclass for a character if applicable"]
+              "description": "Subclass for a character if applicable"
             }
           ]
         },
@@ -335,7 +306,7 @@
           "optional": [
             {
               "name": "character_subclass",
-              "description": ["Subclass for a character if applicable"]
+              "description": "Subclass for a character if applicable"
             }
           ]
         },
@@ -349,8 +320,7 @@
             {
               "name": "character_class"
             }
-          ],
-          "optional": []
+          ]
         },
         {
           "name": "inactivate",
@@ -359,8 +329,239 @@
             {
               "name": "player"
             }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Faction",
+      "description": "Faction specific commands",
+      "commands": [
+        {
+          "name": "set",
+          "description": "Updates a player's faction",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "faction"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dashboards",
+      "description": "Administrative dashboard commands",
+      "commands": [
+        {
+          "name": "rp_create",
+          "description": "Creates a RP dashboard for the ChannelCategory",
+          "optional": [
+            {
+              "name": "excluded_channel_1",
+              "description": "Channel to exclude from the dashboard"
+            },
+            {
+              "name": "excluded_channel_2",
+              "description": "Channel to exclude from the dashboard"
+            },
+            {
+              "name": "excluded_channel_3",
+              "description": "Channel to exclude from the dashboard"
+            },
+            {
+              "name": "excluded_channel_4",
+              "description": "Channel to exclude from the dashboard"
+            },
+            {
+              "name": "excluded_channel_5",
+              "description": "Channel to exclude from the dashboard"
+            }
+          ]
+        },
+        {
+          "name": "rp_exclude",
+          "description": "Adds a channel to the exclusion list for the current CategoryChannel's dashboard",
+          "required": [
+            {
+              "name": "excluded_channel"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Global Event",
+      "description": "Commands to help stage a mass-player global event for logging",
+      "commands": [
+        {
+          "name": "create",
+          "description": "Creates a new global event",
+          "required": [
+            {
+              "name": "name"
+            },
+            {
+              "name": "gold"
+            },
+            {
+              "name": "exp"
+            }
           ],
-          "optional": []
+          "optional": [
+            {
+              "name": "combat",
+              "description": "Indicates whether this is a combat global or RP global. Default is RP/false"
+            },
+            {
+              "name": "mod",
+              "description": "Base RP modifier for the event. Default is 'medium'"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "description": "Update base information on the global event",
+          "optional": [
+            {
+              "name": "name",
+              "description": "Global event name"
+            },
+            {
+              "name": "gold",
+              "description": "Base gold reward for the event"
+            },
+            {
+              "name": "experience",
+              "description":"Base experience reward for the event"
+            },
+            {
+              "name": "mod",
+              "description": "Base effort modifier for the event"
+            },
+            {
+              "name": "combat",
+              "description": "Indicates whether this is a combat global or RP global"
+            }
+          ]
+        },
+        {
+          "name": "purge",
+          "description": "Purges all the currently stages global information without logging it"
+        },
+        {
+          "name": "scrape",
+          "description": "Scrapes a channel and adds all the non-bot users to the currently stages global event",
+          "required": [
+            {
+              "name": "channel"
+            }
+          ]
+        },
+        {
+          "name": "player_update",
+          "description": "Updates player information for the currently staged event, or if they are not in the event, will add/reactivate them.",
+          "required": [
+            {
+              "name": "player"
+            }
+          ],
+          "optional": [
+            {
+              "name": "mod",
+              "description": "Players current effort modifier for the event"
+            },
+            {
+              "name": "host",
+              "description": "Players host status for the event"
+            },
+            {
+              "name": "gold",
+              "description": "Player's reward gold amount. If set, then will turn off auto-reward calculations for the player. To turn back on, re-run the command with the player's effort modifier specified"
+            },
+            {
+              "name": "exp",
+              "description": "Player's reward experience amount. If set, then will turn off auto-reward calculations for the player. To turn back on, re-run the command with the player's effort modifier specified"
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "description": "Removes a player from the global event staging",
+          "required": [
+            {
+              "name": "player"
+            }
+          ]
+        },
+        {
+          "name": "review",
+          "description": "Review the details of the currently staged global event",
+          "optional": [
+            {
+              "name": "player_list",
+              "description": "List out all the players and their information. Default is False"
+            }
+          ]
+        },
+        {
+          "name": "mass_adjust",
+          "description": "Given a threshold and operator, adjust all players meeting the criteria to the designated effort modifier.",
+          "required": [
+            {
+              "name": "threshold"
+            },
+            {
+              "name": "operator"
+            },
+            {
+              "name": "mod"
+            }
+          ]
+        },
+        {
+          "name": "commit",
+          "description": "Create and log the Global Event as it is currently staged. Will generate appropriate logs for each player"
+        },
+        {
+          "name": "help",
+          "description": "Summary and help information for the command group"
+        }
+      ]
+    },
+    {
+      "name": "Guild",
+      "description": "Commands specific to Guild/server settings and configurations.",
+      "commands": [
+        {
+          "name": "max_level",
+          "description": "Set the max level for the server. Default is 3",
+          "required": [
+            {
+              "name": "level"
+            }
+          ]
+        },
+        {
+          "name": "set_xp",
+          "description": "Override the XP for the server",
+          "required": [
+            {
+              "name": "amount"
+            }
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Gets the current server's settings/status",
+          "optional": [
+            {
+              "name": "display_inactive",
+              "description": "List out the inactive players (defined as not having a log in the past 30 days"
+            }
+          ]
         }
       ]
     }

@@ -4,8 +4,8 @@
 <p>Don't judge me...working on it....</p>
 
 <div class="stats-container m-2">
-    <a class="btn btn-primary stats_button" data-toggle="collapse" href="#raceCollapse" role="button">Races</a>
-    <a class="btn btn-primary stats_button" data-toggle="collapse" href="#classCollapse" role="button">Classes</a>
+    <a class="btn btn-primary stats_button mb-2" data-toggle="collapse" href="#raceCollapse" role="button">Races</a>
+    <a class="btn btn-primary stats_button mb-2" data-toggle="collapse" href="#classCollapse" role="button">Classes</a>
 
     <div class="collapse" id="raceCollapse">
          <div class="dropdown">
@@ -20,39 +20,37 @@
         </div>
         <table class="table table-dark table-condensed mb-0">
             <thead>
-                <tr>
+                <tr class="table-active">
                     <th class="total-row" scope="col">Total Players</th>
                     <th class="total-amount" scope="col">{{race_data['total']}}</th>
                 </tr>
                 <tr>
-                    <th scope="col">Race</th>
-                    <th scope="col">#</th>
+                    <th scope="col" class="columnLabel">Race</th>
+                    <th scope="col" class="columnCount">#</th>
                 </tr>
             </thead>
             <tbody>
                 {% for race in race_data['races'] %}
                     <tr data-toggle="collapse" data-target="#{{race.name}}collapse" class="accordion-toggle" id="{{race.name}}">
-                        <td><button class="btn btn-link btn-xs"><span class="race-name text-white">{{race.name}}</span></button></td>
-                        <td>{{race.count}}</td>
+                        <td class="label"><button class="btn btn-link btn-xs"><span class="race-name text-white">{{race.name}}</span></button></td>
+                        <td class="count">{{race.count}}</td>
                     </tr>
                     {% if race['subraces'][0] != null %}
                         <tr>
-                            <td colspan="3" class="hiddenRow p-0">
+                            <td colspan="1" class="hiddenRow p-0">
                                 <div class="accordion-body collapse show subrace-collapse" id="{{race.name}}collapse">
-                                    <table class="table table-info mb-0">
+                                    <table class="table table-secondary table-sm mb-0">
                                         <thead>
                                         <tr>
-                                            <th></th>
-                                            <th scope="col">Subrace</th>
-                                            <th scope="col">#</th>
+                                            <th scope="col" class="columnLabel">Subrace</th>
+                                            <th scope="col" class="columnCount">#</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for subrace in race['subraces'] %}
                                         <tr>
-                                            <td></td>
-                                            <td>{{subrace.name}}</td>
-                                            <td>{{subrace.count}}</td>
+                                            <td class="label">{{subrace.name}}</td>
+                                            <td class="count">{{subrace.count}}</td>
                                         </tr>
                                         {% endfor %}
                                         </tbody>
@@ -80,8 +78,8 @@
         <table class="table table-dark table-condensed mb-0">
             <thead>
                 <tr>
-                    <th scope="col">Class</th>
-                    <th scope="col">#</th>
+                    <th scope="col" class="columnLabel">Class</th>
+                    <th scope="col" class="columnCount">#</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,20 +90,18 @@
                     </tr>
                     {% if class['subclasses'][0] != null %}
                         <tr>
-                            <td colspan="3" class="hiddenRow p-0">
+                            <td colspan="1" class="hiddenRow p-0">
                                 <div class="accordion-body collapse show subclass-collapse" id="{{class.name}}collapse">
-                                    <table class="table table-info mb-0">
+                                    <table class="table table-secondary table-sm mb-0">
                                         <thead>
                                         <tr>
-                                            <th></th>
-                                            <th scope="col">Subclass</th>
-                                            <th scope="col">#</th>
+                                            <th scope="col" class="columnLabel">Subclass</th>
+                                            <th scope="col" class="columnCount">#</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for subclass in class['subclasses'] %}
                                         <tr>
-                                            <td></td>
                                             <td>{{subclass.name}}</td>
                                             <td>{{subclass.count}}</td>
                                         </tr>

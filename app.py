@@ -29,17 +29,8 @@ def homepage():
 
 @app.route('/server_stats')
 def census():
-    # race_data = get_race_table(db.session)
-    #
-    #
-    # with open("static/races.json", "w") as outfile:
-    #     json.dump(race_data, outfile)
-    #
+    # race_data = get_race_table(db.session))
     # class_data = get_class_table(db.session)
-    #
-    # with open("static/classes.json", "w") as outfile:
-    #     json.dump(class_data, outfile)
-
     f = open('static/races.json')
     race_data = json.load(f)
     f = open('static/classes.json')

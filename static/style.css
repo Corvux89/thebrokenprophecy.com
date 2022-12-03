@@ -99,7 +99,10 @@ body {
     font-weight: lighter;
 }
 
-.stats_button{
-    margin-bottom: 15px;
+.columnLabel{
+    width: 90% !important;
 }
 
+.columnCount{
+    width: 10% !important;
+}
