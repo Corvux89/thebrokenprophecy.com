@@ -7,7 +7,7 @@ from flask_talisman import Talisman
 from flask_sqlalchemy import SQLAlchemy
 
 from constants import WEB_DEBUG, DB_URI, SECRET_KEY
-from helpers.helpers import get_race_data, get_class_data, get_race_table, get_class_table
+from helpers.helpers import get_race_data, get_class_data, get_race_table, get_class_table, get_faction_table
 
 app = Flask(__name__)
 
@@ -27,15 +27,23 @@ app.config.update(
 def homepage():
     return render_template("main.html")
 
+@app.route('/credits')
+def credits():
+    return render_template('credits.html')
+
 @app.route('/server_stats')
 def census():
     # race_data = get_race_table(db.session))
     # class_data = get_class_table(db.session)
+    # faction_data = get_faction_table(db.session)
+
     f = open('static/races.json')
     race_data = json.load(f)
     f = open('static/classes.json')
     class_data = json.load(f)
-    return render_template('server_stats.html', race_data=race_data, class_data=class_data)
+    f = open('static/factions.json')
+    faction_data = json.load(f)
+    return render_template('server_stats.html', race_data=race_data, class_data=class_data, faction_data=faction_data)
 
 @app.route('/commands')
 def bot():
@@ -53,7 +61,8 @@ csp = {
         'https://cdn.jsdelivr.net/npm/',
         'https://www.googletagmanager.com/',
         'https://analytics.google.com/',
-        'https://www.google-analytics.com/'
+        'https://www.google-analytics.com/',
+        'https://use.fontawesome.com'
     ],
     'script-src': [
         '\'self\'',
@@ -72,7 +81,8 @@ csp = {
         '\'self\'',
         'https://cdn.jsdelivr.net/',
         'https://cdn.plot.ly/'
-        'plotly.js'
+        'plotly.js',
+        'https://use.fontawesome.com'
     ],
     'script-src-elem': [
         '\'self\'',

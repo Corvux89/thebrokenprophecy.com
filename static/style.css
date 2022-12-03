@@ -106,3 +106,24 @@ body {
 .columnCount{
     width: 10% !important;
 }
+
+.card {
+    background-color: rgba(166,166,166,1);
+    color: black;
+    min-width: 20%
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px
+    rgba(0,0,0,0.16), 0 3px 6px
+    rgba(0,0,0,0.23);
+}
+
+.card:hover{
+    box-shadow: 0 12px 24px rgba(0,0,0,0.16), 0 12px 24px rgba(0,0,0,0.23);
+}
+
+.card-title{
+    font-size: 110%;
+    text-align: left;
+    word-wrap: break-word;
+}

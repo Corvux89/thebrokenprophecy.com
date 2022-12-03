@@ -1,6 +1,6 @@
 {% extends "template.html" %} {% block body %}
 <h1 class="command-header">ProphetBot Commands - In Progress</h1>
-<div class="command-overview border border-info rounded m-2">
+<div class="command-overview border border-primary rounded m-2">
     <div class="d-flex flex-column">
         <div class="p-2 text-white">Format:
             <div class="d-inline command-name">/command_name</div>
@@ -30,7 +30,7 @@
         <ul class="h3 mb-1 pl-2 category-name">{{category.name}}</ul>
 
         {% if category.description != "" %}
-        <ul class="category-description pl-3">{{category.description}}</ul>
+        <ul class="category-description pl-3">{{category.description | safe}}</ul>
         {% endif %}
 
         {% for command in category.commands %}

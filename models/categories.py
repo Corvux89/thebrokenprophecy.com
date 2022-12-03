@@ -32,3 +32,8 @@ class CharacterSubclass(db.Model):
     parent = db.Column(db.Integer)
     pass
 
+class Factions(db.Model):
+        __tablename__ = 'c_faction'
+
+        id = db.Column(db.Integer, primary_key=True)
+        value = db.Column(db.String)

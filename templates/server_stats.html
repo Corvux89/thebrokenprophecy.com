@@ -1,13 +1,17 @@
 {% extends "template.html" %} {% block body %}
 
-<h1 class="stats_header">Broken Prophecy 2.0 Server Statistics</h1>
-<p>Don't judge me...working on it....</p>
+<h1 class="stats_header">Broken Prophecy 2.0 Server Statistics </h1>
+<p>Test data not live data</p>
 
 <div class="stats-container m-2">
-    <a class="btn btn-primary stats_button mb-2" data-toggle="collapse" href="#raceCollapse" role="button">Races</a>
-    <a class="btn btn-primary stats_button mb-2" data-toggle="collapse" href="#classCollapse" role="button">Classes</a>
+    <div class="d-grid gap-2 d-md-block mb-2">
+        <a class="btn btn-primary stats_button" data-toggle="collapse" href="#raceCollapse" role="button">Races</a>
+        <a class="btn btn-primary stats_button" data-toggle="collapse" href="#classCollapse" role="button">Classes</a>
+        <a class="btn btn-primary stats_button" data-toggle="collapse" href="#factionCollapse" role="button">Factions</a>
+    </div>
 
-    <div class="collapse" id="raceCollapse">
+    <div class="collapse show" id="raceCollapse">
+        <p class="text-white">* - Denotes an expandable/collapsible subrace table</p>
          <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle category-toggle mb-2" type="button" data-toggle="dropdown" aria-expanded="false" id="raceDropdown">Goto Race</button>
             <div class="dropdown-menu" aria-labelledby="raceDropdown">
@@ -16,7 +20,7 @@
                 {% endfor %}
             </div>
 
-             <button class="btn btn-light mb-2" href="#subCollapse"  id="subraceCollapse" button">Expand/Collapse all</button>
+             <button class="btn btn-light mb-2" id="subraceCollapse">Expand/Collapse all</button>
         </div>
         <table class="table table-dark table-condensed mb-0">
             <thead>
@@ -31,10 +35,17 @@
             </thead>
             <tbody>
                 {% for race in race_data['races'] %}
+                    {% if race['subraces'][0] != blank %}
                     <tr data-toggle="collapse" data-target="#{{race.name}}collapse" class="accordion-toggle" id="{{race.name}}">
-                        <td class="label"><button class="btn btn-link btn-xs"><span class="race-name text-white">{{race.name}}</span></button></td>
+                        <td class="label"><button class="btn btn-link btn-xs"><span class="race-name text-white">{{race.name}}*</span></button></td>
                         <td class="count">{{race.count}}</td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td class="label pl-4">{{race.name}}</td>
+                        <td class="count">{{race.count}}</td>
+                    </tr>
+                    {% endif %}
                     {% if race['subraces'][0] != null %}
                         <tr>
                             <td colspan="1" class="hiddenRow p-0">
@@ -65,6 +76,7 @@
     </div>
 
     <div class="collapse" id="classCollapse">
+        <p class="text-white">* - Denotes an expandable/collapsible subclass table</p>
          <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle category-toggle mb-2" type="button" data-toggle="dropdown" aria-expanded="false" id="classDropdown">Goto Class</button>
             <div class="dropdown-menu" aria-labelledby="classDropdown">
@@ -73,7 +85,7 @@
                 {% endfor %}
             </div>
 
-             <button class="btn btn-light mb-2" href="#subclassCollapse"  id="subclassCollapse" button">Expand/Collapse all</button>
+             <button class="btn btn-light mb-2" id="subclassCollapse">Expand/Collapse all</button>
         </div>
         <table class="table table-dark table-condensed mb-0">
             <thead>
@@ -84,10 +96,17 @@
             </thead>
             <tbody>
                 {% for class in class_data['classes'] %}
+                    {% if class['subclasses'][0] != blank %}
                     <tr data-toggle="collapse" data-target="#{{class.name}}collapse" class="accordion-toggle" id="{{class.name}}">
-                        <td><button class="btn btn-link btn-xs"><span class="class-name text-white">{{class.name}}</span></button></td>
+                        <td><button class="btn btn-link btn-xs"><span class="class-name text-white">{{class.name}}*</span></button></td>
                         <td>{{class.count}}</td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td class="label pl-4">{{class.name}}</td>
+                        <td clas="count">{{class.count}}</td>
+                    </tr>
+                    {% endif %}
                     {% if class['subclasses'][0] != null %}
                         <tr>
                             <td colspan="1" class="hiddenRow p-0">
@@ -116,18 +135,55 @@
             </tbody>
         </table>
     </div>
+
+    <div class="collapse" id="factionCollapse">
+         <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle category-toggle mb-2" type="button" data-toggle="dropdown" aria-expanded="false" id="factionDropdown">Goto Faction</button>
+            <div class="dropdown-menu" aria-labelledby="factionDropdown">
+                {% for faction in faction_data['factions'] %}
+                <a class="dropdown-item" href="#{{faction.name}}">{{faction.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <table class="table table-dark table-condensed mb-0">
+            <thead>
+                <tr>
+                    <th scope="col" class="columnLabel">Faction</th>
+                    <th scope="col" class="columnCount">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for faction in faction_data['factions'] %}
+                <tr>
+                    <td class="label pl-4">{{faction.name}}</td>
+                    <td clas="count">{{faction.count}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <script nonce="{{ csp_nonce() }}">
     //Race collapse
     $('#raceCollapse').on('show.bs.collapse', function(){
         $('#classCollapse').collapse('hide');
+        $('#factionCollapse').collapse('hide');
     })
 
     //Class collapse
     $('#classCollapse').on('show.bs.collapse', function(){
         $('#raceCollapse').collapse('hide');
+        $('#factionCollapse').collapse('hide');
     })
+
+    //Faction collapse
+    $('#factionCollapse').on('show.bs.collapse', function(){
+        $('#raceCollapse').collapse('hide');
+        $('#classCollapse').collapse('hide');
+    })
+
 
     //Expand or collapse
     $('#subraceCollapse').click(function(){
