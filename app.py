@@ -43,6 +43,7 @@ def census():
     class_data = json.load(f)
     f = open('static/factions.json')
     faction_data = json.load(f)
+    faction_data['factions'] = sorted(faction_data['factions'], key=lambda f: f['name'])
     return render_template('server_stats.html', race_data=race_data, class_data=class_data, faction_data=faction_data)
 
 @app.route('/commands')

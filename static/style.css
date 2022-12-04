@@ -110,7 +110,7 @@ body {
 .card {
     background-color: rgba(166,166,166,1);
     color: black;
-    min-width: 20%
+    max-width: 18rem;
     position: relative;
     border-radius: 10px;
     box-shadow: 0 3px 6px
@@ -124,6 +124,7 @@ body {
 
 .card-title{
     font-size: 110%;
-    text-align: left;
+    text-align: center;
     word-wrap: break-word;
+    color: black;
 }

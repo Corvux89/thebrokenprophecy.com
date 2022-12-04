@@ -281,6 +281,8 @@ def get_faction_table(session):
         .join(Character, Character.faction == Factions.id)\
         .group_by(Factions.value).all()
 
+    factions = sorted(factions, key=lambda f: f.name)
+
     stat = dict()
     stat['factions'] = []
 
@@ -293,5 +295,6 @@ def get_faction_table(session):
                 f_dict['count'] = c.count
                 stat['factions'].append(f_dict)
                 break
+
     return stat
 
