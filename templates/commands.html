@@ -4,8 +4,8 @@
     <div class="d-flex flex-column">
         <div class="p-2 text-white">Format:
             <div class="d-inline command-name">/command_name</div>
-            <div class="d-inline pt-2 pl-0 pr-0 pb-0 required-name">&lt;required_parameter&gt;</div>
-            <div class="d-inline pt-2 pl-0 pr-0 pb-0 optional-name">&lt;optional_parameter&gt;</div>
+            <div class="d-inline pt-2 ps-0 pe-0 pb-0 required-name">&lt;required_parameter&gt;</div>
+            <div class="d-inline pt-2 ps-0 pe-0 pb-0 optional-name">&lt;optional_parameter&gt;</div>
         </div>
         <div class="p-2 description">
             <div class=" d-inline param-list-name text-white">-optional_parameter:</div>
@@ -16,46 +16,46 @@
 
 <div class="bot-command-container m-1">
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle category-toggle m-2" type="button" data-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton">Categories</button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <button class="btn btn-secondary dropdown-toggle m-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"">Categories</button>
+        <ul class="dropdown-menu">
             {% for category in commands %}
             <a class="dropdown-item" href="#{{category.name}}">{{category.name}}</a>
             {% endfor %}
-        </div>
+        </ul>
     </div>
 
 
     {% for category in commands %}
     <div class="category-container border border-primary rounded m-2 p-0" id="{{category.name}}">
-        <ul class="h3 mb-1 pl-2 category-name">{{category.name}}</ul>
+        <ul class="h3 mb-1 ps-2 category-name">{{category.name}}</ul>
 
         {% if category.description != "" %}
-        <ul class="category-description pl-3">{{category.description | safe}}</ul>
+        <ul class="category-description ps-3">{{category.description | safe}}</ul>
         {% endif %}
 
         {% for command in category.commands %}
         <div class="command-container m-1 border border-info rounded">
-                <ul class="d-inline-flex flex-row flex-wrap command-group pl-1">
-                    <div class="pt-2 pl-2 pb-0 pr-1  command-name">/{{command.name}}</div>
+                <ul class="d-inline-flex flex-row flex-wrap command-group ps-1">
+                    <div class="pt-2 ps-2 pb-0 pe-1  command-name">/{{command.name}}</div>
                     {% if command.required != blank %}
                     {% for param in command.required %}
-                    <div class="pt-2 pl-1 pr-0 pb-0 required-name">&lt;{{param.name}}&gt;</div>
+                    <div class="pt-2 ps-1 pe-0 pb-0 required-name">&lt;{{param.name}}&gt;</div>
                     {% endfor %}
                     {% endif %}
 
                     {% if command.optional != blank %}
                     {% for param in command.optional %}
-                    <div class="pt-2 pl-1 pr-0 pb-0 optional-name">&lt;{{param.name}}&gt;</div>
+                    <div class="pt-2 ps-1 pe-0 pb-0 optional-name">&lt;{{param.name}}&gt;</div>
                     {% endfor %}
                     {% endif %}
                 </ul>
-            <ul class="d-flex flex-row pl-4 command-description">{{command.description}}</ul>
+            <ul class="d-flex flex-row ps-4 command-description">{{command.description}}</ul>
 
             {% for param in command.optional %}
             {% if param.description != blank %}
             <ul class="d-inline-flex w-100 mb-0 pb-0 align-items-start flex-nowrap flex-row description-row">
-                <div class="justify-content-start mr-auto pl-2 pr-2 pb-0 pt-0 param-list-name">-{{param.name}}:</div>
-                <div class="align-self-center pl-1 pt-0 pb-0 pr-2 optional-description w-100">
+                <div class="justify-content-start me-auto ps-2 pe-2 pb-0 pt-0 param-list-name">-{{param.name}}:</div>
+                <div class="align-self-center ps-1 pt-0 pb-0 pe-2 optional-description w-100">
                     {{ param.description }}
                 </div>
             </ul>

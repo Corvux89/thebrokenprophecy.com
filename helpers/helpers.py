@@ -9,14 +9,14 @@ from models.entities import Character, PlayerCharacterClass
 
 
 def get_race_data(session):
-
     races = session.query(CharacterRace).all()
     race_count = session.query(CharacterRace.value, func.count(Character.race).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterRace, Character.race == CharacterRace.id) \
         .group_by(CharacterRace.value).all()
 
-    total_count = session.query(Character).filter(and_(Character.active == True, Character.guild_id == GUILD_ID)).count()
+    total_count = session.query(Character).filter(
+        and_(Character.active == True, Character.guild_id == GUILD_ID)).count()
 
     name = ['Races']
     parent = ['']
@@ -115,7 +115,8 @@ def get_class_data(session):
                 count = c.count
         values.append(count)
 
-    player_count = session.query(PlayerCharacterClass.character_id, func.count(PlayerCharacterClass.character_id).label("count")) \
+    player_count = session.query(PlayerCharacterClass.character_id,
+                                 func.count(PlayerCharacterClass.character_id).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID,
                      PlayerCharacterClass.active == True)) \
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
@@ -154,8 +155,8 @@ def get_class_data(session):
                       height=800,
                       uniformtext=dict(minsize=20))
 
-
     return fig.to_json()
+
 
 def get_race_table(session):
     races = session.query(CharacterRace).all()
@@ -171,7 +172,6 @@ def get_race_table(session):
     stat['total'] = total_count
     stat['races'] = []
 
-
     for r in races:
         race_dict = {}
         race_dict["name"] = r.value
@@ -180,8 +180,8 @@ def get_race_table(session):
         for c in race_count:
             if c.value == r.value:
                 race_dict["count"] = c.count
-                stat['races'].append(race_dict)
                 break
+        stat['races'].append(race_dict)
 
     subraces = session.query(CharacterSubrace) \
         .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
@@ -205,7 +205,11 @@ def get_race_table(session):
             if r['name'] == s.race:
                 r["subraces"].append(sub_dict)
                 break
+
+    stat["races"] = sorted(stat["races"], key=lambda r: r["name"])
+
     return stat
+
 
 def get_class_table(session):
     classes = session.query(CharacterClass).all()
@@ -218,7 +222,6 @@ def get_class_table(session):
     stat = dict()
     stat['classes'] = []
 
-
     for c in classes:
         class_dict = {}
         class_dict["name"] = c.value
@@ -227,8 +230,8 @@ def get_class_table(session):
         for i in class_count:
             if i.value == c.value:
                 class_dict["count"] = i.count
-                stat["classes"].append(class_dict)
                 break
+        stat["classes"].append(class_dict)
 
     subclasses = session.query(CharacterSubclass) \
         .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
@@ -272,16 +275,19 @@ def get_class_table(session):
 
     stat["classes"].append(m_dict)
 
+    stat["classes"] = sorted(stat["classes"], key=lambda c: c["name"])
+
     return stat
+
 
 def get_faction_table(session):
     factions = session.query(Factions).all()
-    faction_count = session.query(Factions.value, func.count(Character.faction).label("count"))\
-        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID))\
-        .join(Character, Character.faction == Factions.id)\
+    faction_count = session.query(Factions.value, func.count(Character.faction).label("count")) \
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
+        .join(Character, Character.faction == Factions.id) \
         .group_by(Factions.value).all()
 
-    factions = sorted(factions, key=lambda f: f.name)
+    factions = sorted(factions, key=lambda f: f.value)
 
     stat = dict()
     stat['factions'] = []
@@ -293,8 +299,8 @@ def get_faction_table(session):
         for c in faction_count:
             if c.value == f.value:
                 f_dict['count'] = c.count
-                stat['factions'].append(f_dict)
                 break
 
-    return stat
+        stat['factions'].append(f_dict)
 
+    return stat

@@ -24,14 +24,17 @@ body {
     background-color: #2C2F33;
 }
 
+
 .bg-image{
-    background: url('/static/images/BP_Banner.png');
+    background-image: url('/static/images/BP_Banner.png');
+    height: 100vh;
+    width: auto;
     background-size: contain;
     background-repeat: no-repeat;
-    opacity: 30%;
-    height: 100vw;
-    width: auto;
-    box-shadow: 0 0  8px 8px #2C2F33 inset
+}
+
+.mask{
+    background-color: rgba(0,0,0,0.6);
 }
 
 .stretched-link::after {

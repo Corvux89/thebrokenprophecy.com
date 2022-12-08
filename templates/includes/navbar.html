@@ -1,40 +1,48 @@
-<nav class="navbar navbar-dark bg-dark navbar-absolute">
+<nav class="navbar navbar-dark bg-dark position-absoulte p-2">
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+      <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="/">
-        <img src="{{ url_for('static', filename='/images/Guild_Star.png') }}"
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='images/Guild_Star.png') }}"
              width="70"
              height="auto"
              alt="Broken Prophecy">
     </a>
 
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav">
 
-        <!-- Home -->
-        <li class="nav-item active">
-            <a class="nav-link" href="/">Home</a>
-        </li>
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <a class="navbar-brand" href="/">
+          <img src="{{ url_for('static', filename='/images/Guild_Star.png') }}"
+               width="70"
+               height="auto"
+               alt="Broken Prophecy">
+        </a>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
 
-        <li class="nav-item active">
-            <a class="nav-link" href="/server_stats">Census</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/server_stats">Server Statistics</a>
+          </li>
 
-        <li class="nav-item active">
-            <a class="nav-link" href="/commands">ProphetBot</a>
-        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              ProphetBot
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="/">New Player Guide</a></li>
+              <li><a class="dropdown-item" href="/commands">Command List</a></li>
+            </ul>
+          </li>
 
-
-        <li class="nav-item active">
-            <a class="nav-link" href="http://chromatic-chronicle.com/">Chromatic Chronicle</a>
-        </li>
-
-        <li class="nav-item active">
-           <a class="nav-link" href="/credits">Credits</a>
-        </li>
-    </ul>
-  </div> <!-- navbarNavDropdown -->
+        </ul>
+      </div>
+    </div>
+  </div>
 </nav>
