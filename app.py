@@ -87,7 +87,7 @@ def census():
     race_data = get_race_table(db.session)
     class_data = get_class_table(db.session)
 
-    return render_template('server_stats.html', race_data=race_data, class_data=class_data, faction_data=faction_data)
+    return render_template('server_stats.html', race_data=race_data, class_data=class_data)
 
 
 @app.route('/commands')
