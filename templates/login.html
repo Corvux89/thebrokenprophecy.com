@@ -1,20 +1,21 @@
 {% extends "template.html" %} {% block body %}
 
-<br>
 
-<form action="admin" method="POST">
-    <div class="col-sm-3">
-        <input type="text" class="form-control" name="username" id="username" placeholder="username">
-    </div>
-    <br>
-    <div class="col-sm-3">
-        <input type="password" class="form-control" id="pw" name="pw" placeholder="password">
-    </div>
-    <br>
+<div class="container-fluid m-2 mt-4">
+    <form action="admin" method="POST">
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="username" id="username" placeholder="username">
+        </div>
+        <br>
+        <div class="col-sm-3">
+            <input type="password" class="form-control" id="pw" name="pw" placeholder="password">
+        </div>
+        <br>
 
-    <div class="col-sm-3">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

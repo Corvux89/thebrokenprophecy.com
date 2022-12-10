@@ -1,15 +1,15 @@
 {% extends "template.html" %} {% block body %}
 
 <ul class="nav nav-tabs m-2" id="statTab" role="tablist">
-    <li class="nav-item" role="presentation">
+    <li class="nav-item stats" role="presentation">
         <button class="nav-link active" id="race-tab" data-bs-toggle="tab" data-bs-target="#race" type="button" role="tab" aria-controls="race" aria-selected="true">Races/Subraces</button>
     </li>
 
-    <li class="nav-item" role="presentation">
+    <li class="nav-item stats" role="presentation">
         <button class="nav-link" id="class-tab" data-bs-toggle="tab" data-bs-target="#class" type="button" role="tab" aria-controls="class" aria-selected="false">Classes/Subclasses</button>
     </li>
 
-    <li class="nav-item" role="presentation">
+    <li class="nav-item stats" role="presentation">
         <button class="nav-link" id="faction-tab" data-bs-toggle="tab" data-bs-target="#faction" type="button" role="tab" aria-controls="faction" aria-selected="false">Factions</button>
     </li>
 </ul>
@@ -19,7 +19,7 @@
     <div class="tab-pane fade show active" id="race" role="tabpanel" aria-labelledby="race-tab" tabindex="0">
         <p class="text-white">* - Denotes an expandable/collapsible subrace table</p>
          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Goto Race</button>
+            <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="collapse" aria-expanded="false">Goto Race</button>
             <ul class="dropdown-menu">
                 {% for race in race_data['races'] %}
                 <a class="dropdown-item" href="#{{race.name}}">{{race.name}}</a>
@@ -42,8 +42,8 @@
             <tbody>
                 {% for race in race_data['races'] %}
                     {% if race['subraces'][0] != blank %}
-                    <tr data-toggle="collapse" data-target="#{{race.name}}collapse" class="accordion-toggle" id="{{race.name}}">
-                        <td class="label"><button class="btn btn-link btn-xs"><span class="race-name text-white">{{race.name}}*</span></button></td>
+                    <tr data-bs-toggle="collapse" data-bs-target="#{{race.name}}collapse" class="accordion-toggle" id="{{race.name}}">
+                        <td class="label"><button class="btn btn-xs"><span class="race-name text-white">{{race.name}}*</span></button></td>
                         <td class="count">{{race.count}}</td>
                     </tr>
                     {% else %}
@@ -104,8 +104,8 @@
             <tbody>
                 {% for class in class_data['classes'] %}
                     {% if class['subclasses'][0] != blank %}
-                    <tr data-toggle="collapse" data-target="#{{class.name}}collapse" class="accordion-toggle" id="{{class.name}}">
-                        <td><button class="btn btn-link btn-xs"><span class="class-name text-white">{{class.name}}*</span></button></td>
+                    <tr data-bs-toggle="collapse" data-bs-target="#{{class.name}}collapse" class="accordion-toggle" id="{{class.name}}">
+                        <td><button class="btn btn-xs"><span class="class-name text-white">{{class.name}}*</span></button></td>
                         <td>{{class.count}}</td>
                     </tr>
                     {% else %}

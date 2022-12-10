@@ -97,6 +97,10 @@ def bot():
     commands = json.load(f)
     return render_template('commands.html', commands=commands['category'])
 
+@app.route('/new_player')
+def new_player():
+    return render_template('new_player.html')
+
 
 csp = {
     'default-src': [

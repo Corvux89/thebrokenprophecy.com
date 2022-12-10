@@ -8,6 +8,7 @@ h1{
 h2,
 h3,
 h4,
+ul,
 p {
     font-family: verdana;
     margin-left: 15px;
@@ -74,6 +75,10 @@ body {
 
 .command-description{
     font-weight: lighter;
+}
+
+.nav-item.stats{
+    background-color: silver;
 }
 
 .required-name{
