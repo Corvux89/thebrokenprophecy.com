@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import and_, func, or_
 
 from constants import GUILD_ID
-from models.categories import CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, Factions
+from models.categories import CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass
 from models.entities import Character, PlayerCharacterClass
 
 
@@ -279,28 +279,3 @@ def get_class_table(session):
 
     return stat
 
-
-def get_faction_table(session):
-    factions = session.query(Factions).all()
-    faction_count = session.query(Factions.value, func.count(Character.faction).label("count")) \
-        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
-        .join(Character, Character.faction == Factions.id) \
-        .group_by(Factions.value).all()
-
-    factions = sorted(factions, key=lambda f: f.value)
-
-    stat = dict()
-    stat['factions'] = []
-
-    for f in factions:
-        f_dict = {}
-        f_dict['name'] = f.value
-        f_dict['count'] = 0
-        for c in faction_count:
-            if c.value == f.value:
-                f_dict['count'] = c.count
-                break
-
-        stat['factions'].append(f_dict)
-
-    return stat

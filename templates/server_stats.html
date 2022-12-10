@@ -9,9 +9,6 @@
         <button class="nav-link" id="class-tab" data-bs-toggle="tab" data-bs-target="#class" type="button" role="tab" aria-controls="class" aria-selected="false">Classes/Subclasses</button>
     </li>
 
-    <li class="nav-item stats" role="presentation">
-        <button class="nav-link" id="faction-tab" data-bs-toggle="tab" data-bs-target="#faction" type="button" role="tab" aria-controls="faction" aria-selected="false">Factions</button>
-    </li>
 </ul>
 
 <div class="tab-content m-2" id="statTabContent">
@@ -138,34 +135,6 @@
                             </td>
                         </tr>
                     {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Faction Tab -->
-    <div class="tab-pane fade" id="faction" role="tabpanel" aria-labelledby="faction-tab" tabindex="-0">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Goto Faction</button>
-            <ul class="dropdown-menu">
-                {% for faction in faction_data['factions'] %}
-                <a class="dropdown-item" href="#{{faction.name}}">{{faction.name}}</a>
-                {% endfor %}
-            </ul>
-        </div>
-        <table class="table table-dark table-condensed mb-0">
-            <thead>
-                <tr>
-                    <th scope="col" class="columnLabel">Faction</th>
-                    <th scope="col" class="columnCount">#</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for faction in faction_data['factions'] %}
-                <tr>
-                    <td class="label ps-4">{{faction.name}}</td>
-                    <td clas="count">{{faction.count}}</td>
-                </tr>
                 {% endfor %}
             </tbody>
         </table>

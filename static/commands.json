@@ -651,6 +651,36 @@
             }
           ]
         },
+         {
+          "name": "buy",
+          "description": "Log the purchase of an item for a player, subtracting the gold from their inventory",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "item"
+            },
+            {
+              "name": "cost"
+            }
+          ]
+        },
+        {
+          "name": "sell",
+          "description": "Log the sell of an item for a player, adding the gold to their inventory.",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "item"
+            },
+            {
+              "name": "cost"
+            }
+          ]
+        },
         {
           "name": "bonus",
           "description": "Gives bonus gold and/or experience to a  player",
@@ -721,36 +751,6 @@
       "name": "Shops",
       "description": "Shop commands",
       "commands": [
-        {
-          "name": "buy",
-          "description": "Log the purchase of an item for a player, subtracting the gold from their inventory",
-          "required": [
-            {
-              "name": "player"
-            },
-            {
-              "name": "item"
-            },
-            {
-              "name": "cost"
-            }
-          ]
-        },
-        {
-          "name": "sell",
-          "description": "Log the sell of an item for a player, adding the gold to their inventory.",
-          "required": [
-            {
-              "name": "player"
-            },
-            {
-              "name": "item"
-            },
-            {
-              "name": "cost"
-            }
-          ]
-        },
         {
           "name": "inventory",
           "description": "Used to roll inventory for a shop",

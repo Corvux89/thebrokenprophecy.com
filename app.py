@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 
 from constants import WEB_DEBUG, DB_URI, SECRET_KEY, USERNAME, PASSWORD
-from helpers.helpers import get_race_table, get_class_table, get_faction_table
+from helpers.helpers import get_race_table, get_class_table
 from models.user import User
 
 app = Flask(__name__)
@@ -86,7 +86,6 @@ def credits():
 def census():
     race_data = get_race_table(db.session)
     class_data = get_class_table(db.session)
-    faction_data = get_faction_table(db.session)
 
     return render_template('server_stats.html', race_data=race_data, class_data=class_data, faction_data=faction_data)
 
@@ -97,9 +96,9 @@ def bot():
     commands = json.load(f)
     return render_template('commands.html', commands=commands['category'])
 
-@app.route('/new_player')
+@app.route('/factions')
 def new_player():
-    return render_template('new_player.html')
+    return render_template('factions.html')
 
 
 csp = {
