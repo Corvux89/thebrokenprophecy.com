@@ -1,0 +1,64 @@
+{
+  "title": "The Prismatic Guild",
+  "description": "The Prismatic Guild is a multi-national group of adventurers independent of any country and often works with the Tribunal of Thronehold. The Prismatic Guild’s purpose is to prevent the Last War from breaking out again, to hold the fragile peace that has been established, and to let it grow and flourish.",
+  "recruiter": "Auriel",
+  "faction": [
+    {
+      "name": "The Azure Guardians",
+      "description": "When trouble calls, The Azure Guardians is ready to protect those in need. The weak or the strong, the babe in the woods or the elder in the street, everyone can count on the Azure in a beat.",
+      "captain": "Plackart",
+      "icon": "\uD83D\uDEE1",
+      "key": "Azure_Guardians",
+      "url": ""
+    },
+    {
+      "name": "Order of the Copper Dragon",
+      "description": "In pursuit of that endless quest of knowledge and wisdom, the Copper Dragon sifts and digs through tombs, books, and more. Ever searching, digging and trying to find the answers, but knowing that with one answer, a dozen more questions will unfold.",
+      "captain": "Rozalin",
+      "icon": "\uD83D\uDC09",
+      "key": "Copper_Dragon"
+    },
+    {
+      "name": "Silent Whispers",
+      "description": "Thieves in the night, smugglers on the move. Who do you go to when you need information on someone or goods on the sly. The ones doing jobs silently like a whisper in the night.",
+      "captain": "Higs & Co.",
+      "icon": "\uD83E\uDD77",
+      "key": "Silent_Whispers"
+    },
+    {
+      "name": "Crimson Blades",
+      "description": "A vainglorious, unrefined brotherhood of mercenaries. They live life as they see fit, and take on work others would turn their noses up at. If the coin is right, anything is possible.",
+      "captain": "Hjalrom Droranath",
+      "icon": "\uD83D\uDDE1️",
+      "key": "Crimson_Blades"
+    },
+    {
+      "name": "Silver Wolves",
+      "description": "Taking the front, up in the lead, seeking and searching, ever exploring for what is up ahead. The silent footstep of the wolf, always sniffing out danger in the world up ahead, ready to bring back the warning, or the details of what is found.",
+      "captain": "Dantalion",
+      "icon": "\uD83D\uDC3A",
+      "key": "Silver_Wolves",
+      "url": "https://docs.google.com/document/d/e/2PACX-1vRNWON7soDhNjle2sdx1BpURU0Bi4jlN6frOozXbV2eLb9yQ4URjcIPM5lfEL1mcSkMiVxk13Q5Pd7E/pub"
+    },
+    {
+      "name": "Clover Conclave",
+      "description": "We speak for the trees, for the plants, for the animals and nature itself. For the trees have no tongues, nor do the plants or nature itself. The animals may speak, but their words are unknown, so we speak for them too. We speak for them all. ",
+      "captain": "Eowyn",
+      "icon": "\uD83C\uDF40",
+      "key": "Clover_Conclave"
+    },
+    {
+      "name": "Sunstone Lotus",
+      "description": "We seek to encourage others to freely express themselves through art. Whether it’s singing, dancing, acting, painting, writing, magic, or other types of art and creating, the Lotus aim to make it available for anyone who wishes to unfold themselves in any creative areas.",
+      "captain": "Allira",
+      "icon": "\uD83C\uDF38",
+      "key": "Sunstone_Lotus"
+    },
+    {
+      "name": "The Falcon Eyes",
+      "description": "Cunning and clever, the eyes that see all. Intelligent and detail oriented, ready to solve the cases that baffle those on the watch. Both high and low come to the Falcon Eyes to find the unfindable and to solve the unsolvable. When a case gets too hard, only the Falcon Eyes will do.",
+      "captain": "Ja'Kala",
+      "icon": "\uD83E\uDD85"
+    }
+  ]
+}

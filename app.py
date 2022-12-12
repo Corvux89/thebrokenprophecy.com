@@ -97,8 +97,22 @@ def bot():
     return render_template('commands.html', commands=commands['category'])
 
 @app.route('/factions')
-def new_player():
-    return render_template('factions.html')
+def faction_list():
+    f = open('static/factions.json')
+    guild = json.load(f)
+    return render_template('faction_list.html', guild=guild)
+
+@app.route('/factions/<faction>')
+def faction(faction):
+    f = open('static/factions.json')
+    guild = json.load(f)
+    for f in guild['faction']:
+        if f['key'] == faction:
+            faction_info = f
+            break
+    return render_template('faction.html', faction=faction_info)
+
+
 
 
 csp = {
