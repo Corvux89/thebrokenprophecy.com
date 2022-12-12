@@ -119,6 +119,7 @@ body {
     background-color: rgba(166,166,166,1);
     color: black;
     max-width: 18rem;
+    min-width: 18rem;
     position: relative;
     border-radius: 10px;
     box-shadow: 0 3px 6px

@@ -1,0 +1,23 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="m2">{{guild.title}}</h1>
+<p>{{guild.description}}</p>
+<p class="fw-bold">Guild Recruiter: {{guild.recruiter}}</p>
+
+<div class="row m-2" data-masonry="{'percentPosition': true}">
+    {% for faction in guild.faction %}
+    <div class="col m-2">
+        <div class="card rounded-4 h-100">
+            <h4 class="card-header text-center fs-1">{{faction.icon}}</h4>
+            <div class="card-body">
+                <h5 class="card-title text-center fs-4 m-2 pb-3 w-100">{{faction.name}}</h5>
+                <p class="card-text text-black m-2">{{faction.description}}</p>
+                 <a href="/factions/{{faction.key}}" class="stretched-link"></a>
+            </div>
+            <p class="card-footer fw-bold text-center text-black">Captain: {{faction.captain}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
