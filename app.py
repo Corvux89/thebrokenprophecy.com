@@ -1,8 +1,9 @@
 import json
+from datetime import timedelta
 
 import flask
 import flask_login
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_sqlalchemy import SQLAlchemy
@@ -28,6 +29,10 @@ app.config.update(
 
 admin_user = {USERNAME: {"pw": PASSWORD}}
 
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=30)
 
 @login_manager.user_loader
 def user_loader(username):
