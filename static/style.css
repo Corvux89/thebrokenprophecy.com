@@ -137,3 +137,15 @@ body {
     word-wrap: break-word;
     color: black;
 }
+
+.dataTables_wrapper{
+    color: white !important;
+}
+
+.dataTables_filter{
+    color: white !important;
+}
+
+.item-table{
+    cursor: pointer;
+}

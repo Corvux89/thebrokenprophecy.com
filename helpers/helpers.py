@@ -4,8 +4,7 @@ import pandas as pd
 from sqlalchemy import and_, func, or_
 
 from constants import GUILD_ID
-from models.categories import CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass
-from models.entities import Character, PlayerCharacterClass
+from models import *
 
 
 def get_race_data(session):
@@ -279,3 +278,59 @@ def get_class_table(session):
 
     return stat
 
+def get_item_list(session):
+    blacksmith_items = session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithType.value.label("type"),
+                                     Rarity.value.label("rarity"))\
+        .join(BlackSmithType, BlackSmithItem.sub_type == BlackSmithType.id)\
+        .join(Rarity, BlackSmithItem.rarity == Rarity.id)
+
+    items = []
+
+    for i in blacksmith_items:
+        i_dict = {}
+        i_dict["name"] = i.name
+        i_dict["id"] = i.id
+        i_dict["type"] = i.type
+        i_dict["rarity"] = i.rarity
+        i_dict["table"] = "Blacksmith"
+        items.append(i_dict)
+
+    consumable_items = session.query(ConsumableItem.id, ConsumableItem.name, ConsumableType.value.label("type"),
+                                     Rarity.value.label("rarity"))\
+        .join(ConsumableType, ConsumableItem.sub_type == ConsumableType.id)\
+        .join(Rarity, ConsumableItem.rarity == Rarity.id)
+
+    for i in consumable_items:
+        i_dict = {}
+        i_dict["name"] = i.name
+        i_dict["id"] = i.id
+        i_dict["type"] = i.type
+        i_dict["rarity"] = i.rarity
+        i_dict["table"] = "Consumable"
+        items.append(i_dict)
+
+    scroll_items = session.query(ScrollItem.id, ScrollItem.name, Rarity.value.label("rarity"))\
+        .join(Rarity, ScrollItem.rarity == Rarity.id)
+
+    for i in scroll_items:
+        i_dict = {}
+        i_dict["name"] = i.name
+        i_dict["id"] = i.id
+        i_dict["type"] = ""
+        i_dict["rarity"] = i.rarity
+        i_dict["table"] = "Scroll"
+        items.append(i_dict)
+
+    wondrous_items = session.query(WondrousItem.id, WondrousItem.name, Rarity.value.label("rarity"))\
+        .join(Rarity, WondrousItem.rarity == Rarity.id)
+
+    for i in wondrous_items:
+        i_dict = {}
+        i_dict["name"] = i.name
+        i_dict["id"] = i.id
+        i_dict["type"] = ""
+        i_dict["rarity"] = i.rarity
+        i_dict["table"] = "Wondrous"
+        items.append(i_dict)
+
+    return items

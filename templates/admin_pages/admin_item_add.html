@@ -1,0 +1,141 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="m-2">Add {{table}} Item</h1>
+
+<div class="containter-fluid m-2">
+    <form action="/admin/items/add_item/{{table}}" method="post">
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                    <label for="name">Name</label>
+                </div>
+            </div>
+
+            {% if table in ['Blacksmith', 'Consumable'] %}
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="Subtype Select" id="sub-type" name="sub-type" required>
+                        <option selected="" disabled="" value="">Select a sub-type</option>
+                        {% for s in subs %}
+                            <option value="{{s.id}}">{{s.value}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="sub-type">Subtype</label>
+                </div>>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                 <div class="form-floating">
+                    <select class="form-select" aria-label="Rarity Select" id="rarity" name="rarity" required>
+                        <option selected="" disabled="" value="">Select item rarity</option>
+                        {% for r in rarity%}
+                        <option value="{{r.id}}">{{r.value}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="rarity">Rarity</label>
+                 </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="input-group">
+                    <span class="input-group-text">gp</span>
+                    <div class="form-floating">
+                        <input type="number" id="cost" class="form-control form-icon-trailing" placeholder="Cost" required name="cost" required min="0">
+                        <label for="cost">Cost</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                {% if table in ['Scroll'] %}
+                <div class="form-floating">
+                    <input type="number" id="level" class="form-control" placeholder="Level" required name="level" min="0" max="9">
+                    <label for="level">Level</label>
+                </div>
+                {% endif %}
+
+                {% if table in ['Blacksmith'] %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="item-modifier" name="item-modifier">
+                    <label class="form-check-label text-white" for="item-modifier">Item Modifier</label>
+                </div>
+                {% endif %}
+
+                {% if table in ['Blacksmith', 'Consumable', 'Wondrous'] %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="attunement" name="attunement">
+                    <label class="form-check-label text-white" for="attunement">Attunement Required</label>
+                </div>
+                {% endif %}
+
+                {% if table in ['Blacksmith', 'Consumable', 'Wondrous'] %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="seeking" name="seeking">
+                    <label class="form-check-label text-white" for="seeking">Seeking Only</label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if table in ['Scroll'] %}
+         <div class="row mb-3">
+            <div class="col-auto text-white">Classes:</div>
+            {% for c in classes %}
+            <div class="col-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="{{c.value}}" name="class-{{c.id}}" value="{{c.id}}">
+                    <label class="form-check-label text-white" for="{{c.value}}">{{c.value}}</label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="source" placeholder="Source" name="source">
+                    <label for="source">Source</label>
+                </div>
+            </div>
+
+            {% if table in ['Scroll'] %}
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="School Select" id="school" name="school" required>
+                        <option selected="" disabled="" value="">Select magic school</option>
+                        {% for s in schools %}
+                        <option value="{{s.id}}">{{s.value}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="school">School</label>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="notes" placeholder="Notes" name="notes">
+                    <label for="notes">Notes</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-auto">
+                <a href="/admin/items/add_item" class="btn btn-secondary" role="button">Back to Add Items</a>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

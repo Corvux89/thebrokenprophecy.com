@@ -1,0 +1,211 @@
+{% extends "template.html" %} {% block body %}
+
+{% if item == None %}
+<h1 class="m-2">Item not found</h1>
+<a href="/admin/items" class="btn btn-primary m-2" role="button">Back to Items</a>
+
+{% else %}
+<h1 class="m-2">{{item.name}}</h1>
+<h2 class="m-2 text-center">{{table}} item</h2>
+
+<div class="container-fluid m-2">
+    <form action="/admin/items/{{table}}/{{item.id}}" method="post">
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="name"  name="name" value="{{item.name}}" required>
+                    <label for="name">Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            {% if subs != "" and subs != None and subs != blank %}
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="Subtype Select" id="sub-type" name="sub-type">
+                        {% for s in subs %}
+                            {% if s.id == item.sub_type %}
+                            <option selected value="{{s.id}}">{{s.value}}</option>
+                            {% else %}
+                            <option value="{{s.id}}">{{s.value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="sub-type">Subtype</label>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="Rarity Select" id="rarity" name="rarity">
+                        {% for r in rarity%}
+                            {% if r.id == item.rarity %}
+                            <option selected value="{{r.id}}">{{r.value}}</option>
+                            {% else %}
+                            <option value="{{r.id}}">{{r.value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="rarity">Rarity</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="input-group">
+                    <span class="input-group-text">gp</span>
+                    <div class="form-floating">
+                        <input type="number" id="cost" class="form-control form-icon-trailing" value="{{item.cost}}" required name="cost" min="0">
+                        <label for="cost">Cost</label>
+                    </div>
+                </div>
+            </div>
+
+            {% if item.item_modifier != blank or item.attunement != blank  or item.seeking_only != blank %}
+            <div class="col-sm">
+                {% if item.item_modifier != blank %}
+                <div class="form-check form-check-inline">
+                    {% if item.item_modifier == True %}
+                    <input class="form-check-input" type="checkbox" value="" id="item-modifier" checked name="item-modifier">
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" value="" id="item-modifier" name="item-modifier">
+                    {% endif %}
+                    <label class="form-check-label text-white" for="item-modifier">Item Modifier</label>
+                </div>
+                {% endif %}
+
+                {% if item.attunement != blank %}
+                <div class="form-check form-check-inline">
+                    {% if item.attunement == True %}
+                    <input class="form-check-input" type="checkbox" value="" id="attunement" checked name="attunement">
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" value="" id="attunement" name="attunement">
+                    {% endif %}
+                    <label class="form-check-label text-white" for="attunement">Attunement Required</label>
+                </div>
+                {% endif %}
+
+                {% if item.seeking_only != blank %}
+                <div class="form-check form-check-inline">
+                    {% if item.seeking_only == True %}
+                    <input class="form-check-input" type="checkbox" value="" id="seeking" checked name="seeking">
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" value="" id="seeking" name="seeking">
+                    {% endif %}
+                    <label class="form-check-label text-white" for="seeking">Seeking Only</label>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="source" value="{{item.source}}" placeholder="Source" name="source">
+                    <label for="source">Source</label>
+                </div>
+            </div>
+
+            {% if item.school != blank %}
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="School Select" id="school" name="school">
+                        {% for s in schools %}
+                            {% if s.id == item.school %}
+                            <option selected value="{{s.id}}">{{s.value}}</option>
+                            {% else %}
+                            <option value="{{s.id}}">{{s.value}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="school">School</label>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if item.level != blank %}
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="number" id="level" class="form-control" placeholder="Level" required name="level" min="0" max="9" value="{{item.level}}">
+                    <label for="level">Level</label>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if item.classes != blank %}
+        <div class="row mb-3">
+            <div class="col-auto text-white">Classes:</div>
+            {% for c in classes %}
+            <div class="col-auto">
+                <div class="form-check form-check-inline">
+                    {% if c.id in item.classes %}
+                    <input class="form-check-input" type="checkbox" id="{{c.value}}" name="class-{{c.id}}" value="{{c.id}}" checked>
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" id="{{c.value}}" name="class-{{c.id}}" value="{{c.id}}">
+                    {% endif %}
+                    <label class="form-check-label text-white" for="{{c.value}}">{{c.value}}</label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row mb-3">
+           <div class="col-sm">
+                <div class="col-sm">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="notes" value="{{item.notes}}" placeholder="Notes" name="notes">
+                        <label for="notes">Notes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-auto">
+                <a href="/admin/items" class="btn btn-secondary" role="button">Back to Items</a>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid m-2">
+    <form action="/admin/items/delete_item/{{table}}/{{item.id}}", method="post">
+        <div class="row mb-3">
+            <div class="col-sm">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">Delete Item</button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalLabel">Confirm</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this item?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+
+{% endblock %}

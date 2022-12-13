@@ -32,3 +32,26 @@ class CharacterSubclass(db.Model):
     parent = db.Column(db.Integer)
     pass
 
+class Rarity(db.Model):
+    __tablename__ = 'c_rarity'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)
+
+class BlackSmithType(db.Model):
+    __tablename__ = 'c_blacksmith_type'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)
+
+class ConsumableType(db.Model):
+    __tablename__ = 'c_consumable_type'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)
+
+class MagicSchool(db.Model):
+    __tablename__ = 'c_magic_school'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)

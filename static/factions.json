@@ -7,9 +7,8 @@
       "name": "The Azure Guardians",
       "description": "When trouble calls, The Azure Guardians is ready to protect those in need. The weak or the strong, the babe in the woods or the elder in the street, everyone can count on the Azure in a beat.",
       "captain": "Plackart",
-      "icon": "\uD83D\uDEE1",
-      "key": "Azure_Guardians",
-      "url": ""
+      "icon": "\uD83D\uDEE1\uFE0F",
+      "key": "Azure_Guardians"
     },
     {
       "name": "Order of the Copper Dragon",
@@ -58,7 +57,8 @@
       "name": "The Falcon Eyes",
       "description": "Cunning and clever, the eyes that see all. Intelligent and detail oriented, ready to solve the cases that baffle those on the watch. Both high and low come to the Falcon Eyes to find the unfindable and to solve the unsolvable. When a case gets too hard, only the Falcon Eyes will do.",
       "captain": "Ja'Kala",
-      "icon": "\uD83E\uDD85"
+      "icon": "\uD83E\uDD85",
+      "key": "The_Falcon_Eyes"
     }
   ]
 }
