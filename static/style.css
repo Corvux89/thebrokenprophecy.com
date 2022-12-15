@@ -120,7 +120,6 @@ body {
     color: black;
     max-width: 18rem;
     min-width: 18rem;
-    position: relative;
     border-radius: 10px;
     box-shadow: 0 3px 6px
     rgba(0,0,0,0.16), 0 3px 6px
@@ -132,10 +131,7 @@ body {
 }
 
 .card-title{
-    font-size: 110%;
-    text-align: center;
     word-wrap: break-word;
-    color: black;
 }
 
 .dataTables_wrapper{
@@ -149,3 +145,4 @@ body {
 .item-table{
     cursor: pointer;
 }
+

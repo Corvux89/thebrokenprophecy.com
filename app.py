@@ -303,14 +303,14 @@ def census():
 
 @app.route('/commands')
 def bot():
-    f = open('static/commands.json')
+    f = open('json/commands.json')
     commands = json.load(f)
     return render_template('commands.html', commands=commands['category'])
 
 
 @app.route('/factions')
 def faction_list():
-    f = open('static/factions.json', encoding="utf8")
+    f = open('json/factions.json', encoding="utf8")
     guild = json.load(f)
     return render_template('faction_list.html', guild=guild)
 
