@@ -1,5 +1,10 @@
 {% extends "template.html" %} {% block body %}
-<h1 class="command-header">ProphetBot Commands - In Progress</h1>
+{% if role != blank%}
+<h1 class="command-header">ProphetBot Commands - {{role}}</h1>
+{% else %}
+<h1 class="command-header">ProphetBot Commands</h1>
+{% endif %}
+
 <div class="command-overview border border-primary rounded m-2">
     <div class="d-flex flex-column">
         <div class="p-2 text-white">Format:
@@ -15,15 +20,27 @@
 </div>
 
 <div class="bot-command-container m-1">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle m-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"">Categories</button>
-        <ul class="dropdown-menu">
-            {% for category in commands %}
-            <a class="dropdown-item" href="#{{category.name}}">{{category.name}}</a>
-            {% endfor %}
-        </ul>
-    </div>
+    <div class="container-fluid">
+        <div class="dropdown d-inline">
+            <button class="btn btn-secondary dropdown-toggle m-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</button>
+            <ul class="dropdown-menu">
+                {% for category in commands %}
+                <a class="dropdown-item" href="#{{category.name}}">{{category.name}}</a>
+                {% endfor %}
+            </ul>
+        </div>
 
+        <div class="dropdown d-inline">
+            <button class="btn btn-secondary dropdown-toggle m-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Roles</button>
+            <ul class="dropdown-menu">
+                <a class="dropdown-item" href="/commands/Player">Player</a>
+                <a class="dropdown-item" href="/commands/DM">DM</a>
+                <a class="dropdown-item" href="/commands/Magewright">Magewright/Mod</a>
+                <a class="dropdown-item" href="/commands/Council">Council</a>
+                <a class="dropdown-item" href="/commands">All Commands</a>
+            </ul>
+        </div>
+    </div>
 
     {% for category in commands %}
     <div class="category-container border border-primary rounded m-2 p-0" id="{{category.name}}">
@@ -66,5 +83,4 @@
     </div>
     {% endfor %}
 </div>
-
 {% endblock %}

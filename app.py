@@ -318,7 +318,7 @@ def player_commands(role):
         if "role" in c and role in c["role"]:
             filter_commands['category'].append(c)
 
-    return render_template('commands.html', commands=filter_commands['category'])
+    return render_template('commands.html', commands=filter_commands['category'], role=role)
 
 
 
