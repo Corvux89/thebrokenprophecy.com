@@ -307,6 +307,20 @@ def bot():
     commands = json.load(f)
     return render_template('commands.html', commands=commands['category'])
 
+@app.route('/commands/<role>')
+def player_commands(role):
+    f = open('json/commands.json')
+    commands = json.load(f)
+    filter_commands = {}
+    filter_commands['category'] = []
+
+    for c in commands['category']:
+        if "role" in c and role in c["role"]:
+            filter_commands['category'].append(c)
+
+    return render_template('commands.html', commands=filter_commands['category'])
+
+
 
 @app.route('/factions')
 def faction_list():

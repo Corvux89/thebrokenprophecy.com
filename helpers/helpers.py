@@ -110,6 +110,8 @@ def get_class_table(session):
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
         .group_by(PlayerCharacterClass.character_id).all()
 
+    stat["classes"] = sorted(stat["classes"], key=lambda c: c["name"])
+
     m_dict = {}
     m_dict["name"] = "Multiclass"
     m_dict["subclasses"] = []
@@ -120,8 +122,6 @@ def get_class_table(session):
     m_dict["count"] = m_count
 
     stat["classes"].append(m_dict)
-
-    stat["classes"] = sorted(stat["classes"], key=lambda c: c["name"])
 
     return stat
 

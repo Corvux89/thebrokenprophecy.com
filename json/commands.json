@@ -3,6 +3,7 @@
     {
       "name": "General",
       "description": "",
+      "role": ["Player"],
       "commands": [
         {
           "name": "get",
@@ -19,6 +20,7 @@
     {
       "name": "Adventures",
       "description": "Adventure Commands",
+      "role": ["DM"],
       "commands": [
         {
           "name": "create",
@@ -123,6 +125,7 @@
     {
       "name": "Room",
       "description": "Tools for DM's to manage channels within their adventure without having manage server permissions",
+      "role": ["DM"],
       "commands": [
         {
           "name": "add_room",
@@ -166,6 +169,7 @@
     {
       "name": "Arena",
       "description": "Arena commands. FIGHT!!!",
+      "role": ["Player"],
       "commands": [
         {
           "name": "claim",
@@ -211,6 +215,7 @@
     {
       "name": "Character Admin",
       "description": "Commands for player Character administration",
+      "role": ["Magewright"],
       "commands": [
         {
           "name": "create",
@@ -336,6 +341,7 @@
     {
       "name": "Faction",
       "description": "Faction specific commands",
+      "role": ["Magewright"],
       "commands": [
         {
           "name": "set",
@@ -354,6 +360,7 @@
     {
       "name": "Dashboards",
       "description": "Administrative dashboard commands",
+      "role": ["Council"],
       "commands": [
         {
           "name": "rp_create",
@@ -395,6 +402,7 @@
     {
       "name": "Global Event",
       "description": "Commands to help stage a mass-player global event for logging",
+      "role": ["Council"],
       "commands": [
         {
           "name": "create",
@@ -534,6 +542,7 @@
     {
       "name": "Guild",
       "description": "Commands specific to Guild/server settings and configurations.",
+      "role": ["Council"],
       "commands": [
         {
           "name": "max_level",
@@ -611,6 +620,7 @@
     {
       "name": "Items",
       "description": "Server item commands",
+      "role": ["Player", "Magewright"],
       "commands": [
         {
           "name": "lookup",
@@ -626,6 +636,7 @@
     {
       "name": "Log",
       "description": "Log commands for the <strike>magewrongs</strike> magewrights",
+      "role": ["Magewright", "Council"],
       "commands": [
         {
           "name": "get_history",
@@ -750,6 +761,7 @@
     {
       "name": "Shops",
       "description": "Shop commands",
+      "role": ["Magewright"],
       "commands": [
         {
           "name": "inventory",

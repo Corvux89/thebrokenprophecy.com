@@ -74,3 +74,14 @@ class WondrousItem(db.Model):
     seeking_only = db.Column(db.Boolean)
     source = db.Column(db.String)
     notes = db.Column(db.String)
+
+class Adventures(db.Model):
+    __tablename__ = 'adventures'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    role_id = db.Column(db.Integer)
+    dms = db.Column(ARRAY(db.Integer))
+    tier = db.Column(db.Integer)
+    ep = db.Column(db.Integer)
+    end_ts = db.Column(db.DateTime)

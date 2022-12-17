@@ -25,15 +25,6 @@ body {
     background-color: #2C2F33;
 }
 
-
-.bg-image{
-    background-image: url('/static/images/BP_Banner.png');
-    height: 100vh;
-    width: auto;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
 .mask{
     background-color: rgba(0,0,0,0.6);
 }
@@ -115,7 +106,7 @@ body {
     width: 10% !important;
 }
 
-.card {
+.faction-card {
     background-color: rgba(166,166,166,1);
     color: black;
     max-width: 18rem;
@@ -126,7 +117,7 @@ body {
     rgba(0,0,0,0.23);
 }
 
-.card:hover{
+.faction-card:hover{
     box-shadow: 0 12px 24px rgba(0,0,0,0.16), 0 12px 24px rgba(0,0,0,0.23);
 }
 
