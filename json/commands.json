@@ -1,4 +1,5 @@
 {
+  "roles": ["Player", "Shopkeeper","Magewright-Mod", "DM", "Council"],
   "category": [
     {
       "name": "General",
@@ -215,7 +216,7 @@
     {
       "name": "Character Admin",
       "description": "Commands for player Character administration",
-      "role": ["Magewright"],
+      "role": ["Magewright-Mod"],
       "commands": [
         {
           "name": "create",
@@ -341,7 +342,7 @@
     {
       "name": "Faction",
       "description": "Faction specific commands",
-      "role": ["Magewright"],
+      "role": ["Magewright-Mod"],
       "commands": [
         {
           "name": "set",
@@ -620,7 +621,7 @@
     {
       "name": "Items",
       "description": "Server item commands",
-      "role": ["Player", "Magewright"],
+      "role": ["Player", "Magewright-Mod", "Shopkeeper"],
       "commands": [
         {
           "name": "lookup",
@@ -761,7 +762,7 @@
     {
       "name": "Shops",
       "description": "Shop commands",
-      "role": ["Magewright"],
+      "role": ["Magewright", "Shopkeeper"],
       "commands": [
         {
           "name": "inventory",
