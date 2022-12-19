@@ -1,12 +1,13 @@
 {% extends "template.html" %} {% block body %}
-<div class="container-fluid p-0 m-0">
-    <img class="img-fluid opacity-25 w-100" src="{{ url_for('static', filename='images/BP_Banner.png') }}">
-    <div class="position-absolute top-50 start-50 translate-middle w-100 p-2">
-        <h1>The Prismatic Guild</h1>
-        <p>In recent years the power of the Tribunal of Thronehold has been waning. Immediately after the war they sent their forces to gather what war criminals they could find to prosecute. However the nations proved slow to cooperate. Even now a dozen years later, they are still hunting down criminals of war and trying to hold together a fragile peace. In addition to the Deneith Marshalls the Tribunal has turned to a growing adventuring guild. The Prismatic Guild is based on the island of Thronehold outside of the jurisdiction of any nation. Their work with the Tribunal of Thronehold has taken them across the continent spreading their reputation far and wide. They have a purpose of preventing the Last War from breaking out again. To hold this fragile peace and let it grow.</p>
-        <p>As your new character comes to Thronehold, they will arrive in the city of Throneport with the intent of joining this growing guild of adventurers. There will be chances to travel the nations, to fight dangerous foes, to stop subtle intrigues against the peace, and to adventure far and wide. Within The Prismatic Guild there are a set of factions that members might aspire to join, to gather with like minded adventurers.</p>
-        <p>The Guild was founded after the war was over, about 1 year after. The Tribunal initially didn't need to rely on hiring the Guild, because the nations started somewhat cooperative. Within 2 years it was clear that didn't work, so the Tribunal switched to using House Deneith Marshalls when needed. Since those are expensive, only the worst offenders were getting hunted down.</p>
-        <p>4 years after the war, the now somewhat established Prismatic Guild used their connections to secure a relationship with the Tribunal and supplanting the pricey Marshalls. Thus saving the cash strapped Tribunal enough money to go for more objectives.</p>
-    </div>
+
+<div class="card text-bg-dark">
+  <img src="{{ url_for('static', filename='images/BP_Banner.png') }}" class="card-img opacity-25">
+  <div class="card-img-overlay">
+    <h1 class="card-title">The Prismatic Guild</h1>
+    <p class="card-text">In recent years the power of the Tribunal of Thronehold has been waning. Immediately after the war they sent their forces to gather what war criminals they could find to prosecute. However the nations proved slow to cooperate. Even now a dozen years later, they are still hunting down criminals of war and trying to hold together a fragile peace. In addition to the Deneith Marshalls the Tribunal has turned to a growing adventuring guild. The Prismatic Guild is based on the island of Thronehold outside of the jurisdiction of any nation. Their work with the Tribunal of Thronehold has taken them across the continent spreading their reputation far and wide. They have a purpose of preventing the Last War from breaking out again. To hold this fragile peace and let it grow.</p>
+    <p class="card-text">As your new character comes to Thronehold, they will arrive in the city of Throneport with the intent of joining this growing guild of adventurers. There will be chances to travel the nations, to fight dangerous foes, to stop subtle intrigues against the peace, and to adventure far and wide. Within The Prismatic Guild there are a set of factions that members might aspire to join, to gather with like minded adventurers.</p>
+    <p class="card-text">The Guild was founded after the war was over, about 1 year after. The Tribunal initially didn't need to rely on hiring the Guild, because the nations started somewhat cooperative. Within 2 years it was clear that didn't work, so the Tribunal switched to using House Deneith Marshalls when needed. Since those are expensive, only the worst offenders were getting hunted down.</p>
+    <p class="card-text">4 years after the war, the now somewhat established Prismatic Guild used their connections to secure a relationship with the Tribunal and supplanting the pricey Marshalls. Thus saving the cash strapped Tribunal enough money to go for more objectives.</p>
+  </div>
 </div>
 {% endblock %}
