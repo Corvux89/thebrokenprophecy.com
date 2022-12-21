@@ -637,7 +637,7 @@
     {
       "name": "Log",
       "description": "Log commands for the <strike>magewrongs</strike> magewrights",
-      "role": ["Magewright", "Council"],
+      "role": ["Magewright-Mod", "Council"],
       "commands": [
         {
           "name": "get_history",
@@ -717,7 +717,7 @@
         },
         {
           "name": "ep",
-          "description": "Grant adventure rewards to the players and DMs of a given Adventure Role",
+          "description": "Grant adventure rewards to the players and DMs of a given Adventure Role. NOTE: You must be an Admin/Council to run this command",
           "required": [
             {
               "name": "role"
@@ -747,7 +747,7 @@
         },
         {
           "name": "null",
-          "description": "Nullifies a log, and reverses all gold/xp rewards. NOTE: You must be an Admin to run this command",
+          "description": "Nullifies a log, and reverses all gold/xp rewards. NOTE: You must be an Admin/Council to run this command",
           "required": [
             {
               "name": "log_id"
