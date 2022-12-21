@@ -695,7 +695,7 @@
         },
         {
           "name": "bonus",
-          "description": "Gives bonus gold and/or experience to a  player",
+          "description": "Gives bonus gold and/or experience to a  player. Seek council approval for bonuses exceeding 25 xp/gp.",
           "required": [
             {
               "name": "player"
