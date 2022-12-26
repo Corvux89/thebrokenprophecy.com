@@ -760,30 +760,109 @@
       ]
     },
     {
-      "name": "Shops",
+      "name": "shop_admin",
+      "description": "Commands for shop/establishment administration",
+      "role": ["Council"],
+      "commands": [
+        {
+          "name": "create",
+          "description": "Creates a new shop/establishment. Creating the channel and settingt permissions",
+          "required": [
+            {
+              "name": "name"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "owner"
+            },
+            {
+              "name": "category_channel"
+            }
+          ],
+          "optional": [
+            {
+              "name": "shelf",
+              "description": "# of shelf upgrades if starting with upgrades"
+            },
+            {
+              "name": "network",
+              "description": "# of network upgrades if starting with upgrades"
+            },
+            {
+              "name": "mastery",
+              "description": "# of mastery upgrades if starting with upgrades"
+            }
+          ]
+        },
+        {
+          "name": "upgrade",
+          "description": "Document an upgrade for a shop",
+          "required": [
+            {
+              "name": "owner"
+            },
+            {
+              "name": "type"
+            }
+          ],
+          "optional": [
+            {
+              "name": "num",
+              "description": "Number of upgrades for type. Default of 1"
+            }
+          ]
+        },
+        {
+          "name": "close",
+          "description": "Closes a shop",
+          "required": [
+            {
+              "name": "owner"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shop",
       "description": "Shop commands",
       "role": ["Magewright", "Shopkeeper"],
       "commands": [
         {
           "name": "inventory",
-          "description": "Used to roll inventory for a shop",
+          "description": "Used to roll inventory for a shop. This can only be ran by a shop owner"
+        },
+        {
+          "name": "max_cost",
+          "description": "Sets the maximum item cost for inventory for a shop",
           "required": [
             {
-              "name": "inventory_type"
+              "name": "max_cost"
             }
-          ],
+          ]
+        },
+        {
+          "name": "info",
+          "description": "Gets the information for a shop",
           "optional": [
             {
-              "name": "quantity",
-              "description": "Quantity of items to roll for. Default is 1"
-            },
+              "name": "channel",
+              "description": "Shop channel to get if not ran in a shop channel"
+            }
+          ]
+        },
+        {
+          "name": "seek",
+          "description": "Updates the number of seeks for a shop. This can only be ran by the shop owner",
+          "optional": [
             {
-              "name": "max_cost",
-              "description": "The individual maximum cost of the items to return"
+              "name": "num_seeks",
+              "description": "Number of seeks available. If not specified will decrement number of seeks by 1"
             }
           ]
         }
-
       ]
     }
   ]
