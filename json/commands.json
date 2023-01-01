@@ -153,6 +153,12 @@
             {
               "name": "view"
             }
+          ],
+          "optional": [
+            {
+              "name": "allow_post",
+              "description": "Whether to allow the @Quester role to send messages in the room."
+            }
           ]
         },
         {
