@@ -67,7 +67,7 @@
                     {% endfor %}
                     {% endif %}
                 </ul>
-            <ul class="d-flex flex-row ps-4 command-description">{{command.description}}</ul>
+            <ul class="d-flex flex-row ps-4 command-description">{{command.description | safe}}</ul>
 
             {% for param in command.optional %}
             {% if param.description != blank %}

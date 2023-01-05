@@ -260,6 +260,57 @@
           ]
         },
         {
+          "name": "resurrect",
+          "description": "Log a resurrection for the player. Deducts 1,000 xp",
+          "required": [
+            {
+              "name": "player"
+            }
+          ],
+          "optional": [
+            {
+              "name": "cost",
+              "description": "Any cost associated with the resurrection if not already logged"
+            }
+          ]
+        },
+        {
+          "name": "reroll",
+          "description": "Log's and reroll's a player's character",
+          "required": [
+            {
+              "name": "player"
+            },
+            {
+              "name": "death_reroll"
+            },
+            {
+              "name": "character_class"
+            },
+            {
+              "name": "character_race"
+            }
+          ],
+          "optional": [
+            {
+              "name": "gold",
+              "description": "New gold amount if not a death reroll, and different from the old characters"
+            },
+            {
+              "name": "character_subrace",
+              "description": "New character's subrace"
+            },
+            {
+              "name": "character_subclass",
+              "description": "New character's subclass"
+            },
+            {
+              "name": "level",
+              "description": "New level if not a death reroll, and different from the old characters"
+            }
+          ]
+        },
+        {
           "name": "level",
           "description": "Manually levels a character once they have completed their level 1 or 2 questions and their sheet has been approved.",
           "required": [
@@ -855,7 +906,16 @@
           "optional": [
             {
               "name": "channel",
-              "description": "Shop channel to get if not ran in a shop channel"
+              "description": "Shop channel to get if not ran in a shop channel or ran by shop owner"
+            }
+          ]
+        },
+        {
+          "name": "set_seek_roll",
+          "description": "<p class='m-0'>Sets the seek roll for a shop. This can only be ran by the shop owner. Ex: 1d20 + 8 \n Uses the same formatting as Avrae's <kbd>!roll</kbd> commands</p>",
+          "required": [
+            {
+              "name": "roll"
             }
           ]
         },
@@ -864,8 +924,16 @@
           "description": "Updates the number of seeks for a shop. This can only be ran by the shop owner",
           "optional": [
             {
+              "name": "rarity",
+              "description": "Seek item rarity"
+            },
+            {
+              "name": "phrase",
+              "description": "Description or flavortext for the seek"
+            },
+            {
               "name": "num_seeks",
-              "description": "Number of seeks available. If not specified will decrement number of seeks by 1"
+              "description": "Sets the number of seeks available if not seeking."
             }
           ]
         }
