@@ -454,6 +454,18 @@
               "name": "excluded_channel"
             }
           ]
+        },
+        {
+          "name": "shop_create",
+          "description": "Creates a dashboard showing open shops, shop type, owner, and available seeks"
+        },
+        {
+          "name": "adventure_create",
+          "description": "Creates a dashboard showing active adventures"
+        },
+        {
+          "name": "guild_create",
+          "description": "Creates a dashboard showing basic server level progression"
         }
       ]
     },

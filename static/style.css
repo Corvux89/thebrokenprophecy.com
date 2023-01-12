@@ -133,7 +133,17 @@ body {
     color: white !important;
 }
 
-.item-table{
+.item-table, .parent-table, .child-table{
     cursor: pointer;
 }
 
+.race-card {
+    background-color: rgba(166,166,166,1);
+    color: black;
+    max-width: 18rem;
+    min-width: 18rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px
+    rgba(0,0,0,0.16), 0 3px 6px
+    rgba(0,0,0,0.23);
+}

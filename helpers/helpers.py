@@ -125,10 +125,11 @@ def get_class_table(session):
 
     return stat
 
+
 def get_item_list(session):
     blacksmith_items = session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithType.value.label("type"),
-                                     Rarity.value.label("rarity"))\
-        .join(BlackSmithType, BlackSmithItem.sub_type == BlackSmithType.id)\
+                                     Rarity.value.label("rarity")) \
+        .join(BlackSmithType, BlackSmithItem.sub_type == BlackSmithType.id) \
         .join(Rarity, BlackSmithItem.rarity == Rarity.id)
 
     items = []
@@ -143,8 +144,8 @@ def get_item_list(session):
         items.append(i_dict)
 
     consumable_items = session.query(ConsumableItem.id, ConsumableItem.name, ConsumableType.value.label("type"),
-                                     Rarity.value.label("rarity"))\
-        .join(ConsumableType, ConsumableItem.sub_type == ConsumableType.id)\
+                                     Rarity.value.label("rarity")) \
+        .join(ConsumableType, ConsumableItem.sub_type == ConsumableType.id) \
         .join(Rarity, ConsumableItem.rarity == Rarity.id)
 
     for i in consumable_items:
@@ -156,7 +157,7 @@ def get_item_list(session):
         i_dict["table"] = "Consumable"
         items.append(i_dict)
 
-    scroll_items = session.query(ScrollItem.id, ScrollItem.name, Rarity.value.label("rarity"))\
+    scroll_items = session.query(ScrollItem.id, ScrollItem.name, Rarity.value.label("rarity")) \
         .join(Rarity, ScrollItem.rarity == Rarity.id)
 
     for i in scroll_items:
@@ -168,7 +169,7 @@ def get_item_list(session):
         i_dict["table"] = "Scroll"
         items.append(i_dict)
 
-    wondrous_items = session.query(WondrousItem.id, WondrousItem.name, Rarity.value.label("rarity"))\
+    wondrous_items = session.query(WondrousItem.id, WondrousItem.name, Rarity.value.label("rarity")) \
         .join(Rarity, WondrousItem.rarity == Rarity.id)
 
     for i in wondrous_items:
@@ -181,3 +182,79 @@ def get_item_list(session):
         items.append(i_dict)
 
     return items
+
+
+def get_races(session):
+    races = session.query(CharacterRace)
+
+    d_out = dict()
+    d_out["parents"] = []
+
+    for r in races:
+        subraces = get_subraces(session, r.id)
+        r_dict = {}
+        r_dict['id'] = r.id
+        r_dict['name'] = r.value
+        r_dict['children'] = len(subraces['children'])
+
+        d_out['parents'].append(r_dict)
+
+    d_out["parents"] = sorted(d_out["parents"], key=lambda r: r["name"])
+
+    return d_out
+
+
+def get_subraces(session, race):
+    subraces = session.query(CharacterSubrace).filter(CharacterSubrace.parent == race)
+
+    d_out = dict()
+    d_out['children'] = []
+
+    for s in subraces:
+        s_dict = {}
+        s_dict['id'] = s.id
+        s_dict['name'] = s.value
+
+        d_out['children'].append(s_dict)
+
+    d_out["children"] = sorted(d_out["children"], key=lambda r: r["name"])
+
+    return d_out
+
+
+def get_classes(session):
+    classes = session.query(CharacterClass)
+
+    d_out = dict()
+    d_out["parents"] = []
+
+    for c in classes:
+        subclasses = get_subclasses(session, c.id)
+        r_dict = {}
+        r_dict['id'] = c.id
+        r_dict['name'] = c.value
+        r_dict['children'] = len(subclasses['children'])
+
+        d_out['parents'].append(r_dict)
+
+    d_out["parents"] = sorted(d_out["parents"], key=lambda r: r["name"])
+
+    return d_out
+
+
+def get_subclasses(session, c):
+    subclasses = session.query(CharacterSubclass).filter(CharacterSubclass.parent == c)
+
+    d_out = dict()
+    d_out['children'] = []
+
+    for s in subclasses:
+        s_dict = {}
+        s_dict['id'] = s.id
+        s_dict['name'] = s.value
+
+        d_out['children'].append(s_dict)
+
+    d_out["children"] = sorted(d_out["children"], key=lambda r: r["name"])
+
+    return d_out

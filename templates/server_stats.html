@@ -8,11 +8,6 @@
     <li class="nav-item stats" role="presentation">
         <button class="nav-link" id="class-tab" data-bs-toggle="tab" data-bs-target="#class" type="button" role="tab" aria-controls="class" aria-selected="false">Classes/Subclasses</button>
     </li>
-
-<!--    <li class="nav-item stats" role="presentation">-->
-<!--        <button class="nav-link" id="adventure-tab" data-bs-toggle="tab" data-bs-target="#adventure" type="button" role="tab" aria-controls="adventure" aria-selected="false">Adventures</button>-->
-<!--    </li>-->
-
 </ul>
 
 <div class="tab-content m-2" id="statTabContent">
@@ -20,7 +15,7 @@
     <div class="tab-pane fade show active" id="race" role="tabpanel" aria-labelledby="race-tab" tabindex="0">
         <p class="text-white">* - Denotes an expandable/collapsible subrace table</p>
          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="collapse" aria-expanded="false">Goto Race</button>
+            <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Goto Race</button>
             <ul class="dropdown-menu">
                 {% for race in race_data['races'] %}
                 <a class="dropdown-item" href="#{{race.name}}">{{race.name}}</a>

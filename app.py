@@ -10,7 +10,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 
 from constants import WEB_DEBUG, DB_URI, SECRET_KEY, USERNAME, PASSWORD
-from helpers.helpers import get_race_table, get_class_table, get_item_list
+from helpers.helpers import get_race_table, get_class_table, get_item_list, get_races, get_subraces, get_classes, \
+    get_subclasses
 from models import *
 
 app = Flask(__name__)
@@ -29,10 +30,12 @@ app.config.update(
 
 admin_user = {USERNAME: {"pw": PASSWORD}}
 
+
 @app.before_request
 def make_session_permanent():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=30)
+
 
 @login_manager.user_loader
 def user_loader(username):
@@ -75,6 +78,178 @@ def admin():
 @flask_login.login_required
 def admin_menu():
     return render_template('/admin_pages/admin_menu.html')
+
+@app.route('/admin/classes', methods=['GET', 'POST'])
+@flask_login.login_required
+def admin_classes():
+    if flask.request.method == 'POST':
+        c_class = CharacterClass(
+            value = flask.request.form.get('name')
+        )
+
+        if c_class is not None:
+            db.session.add(c_class)
+            db.session.commit()
+
+    classes = get_classes(db.session)
+
+    return render_template('/admin_pages/admin_parent_list.html', parents=classes, label="Class", child="Subclasses",
+                           path="classes")
+
+@app.route('/admin/classes/<c_class>', methods=['GET', 'POST'])
+@flask_login.login_required
+def admin_subclasses(c_class):
+    if flask.request.method == 'POST':
+        parent = db.get_or_404(CharacterClass, c_class)
+        subclass = CharacterSubclass(
+            value=flask.request.form.get('name'),
+            parent = parent.id
+        )
+
+        if subclass is not None:
+            db.session.add(subclass)
+            db.session.commit()
+
+    subclasses = get_subclasses(db.session, c_class)
+    p_class = db.session.query(CharacterClass).filter(CharacterClass.id == c_class).first()
+
+    return render_template('/admin_pages/admin_child_list.html', children=subclasses, parent="class", label="Subclass",
+                           path="classes", parent_name=p_class.value, parent_id=p_class.id)
+
+@app.route('/admin/classes/Subclass', methods=['POST'])
+@flask_login.login_required
+def admin_subclass_edit():
+    if flask.request.method == 'POST':
+        s_class = db.get_or_404(CharacterSubclass, flask.request.form.get('childID'))
+        if flask.request.form.get('update') is not None:
+            s_class.value = flask.request.form.get('childName')
+
+            if s_class is not None:
+                db.session.add(s_class)
+                db.session.commit()
+
+        elif flask.request.form.get('delete') is not None:
+            c_classes = db.session.query(PlayerCharacterClass).filter(PlayerCharacterClass.subclass == s_class.id)
+
+            if s_class is not None:
+
+                for c in c_classes:
+                    c.subclass = None
+                    db.session.add(c)
+
+                db.session.delete(s_class)
+                db.session.commit()
+
+    return redirect(f'/admin/classes/{s_class.parent}')
+
+
+@app.route('/admin/classes/delete', methods=['POST'])
+@flask_login.login_required
+def admin_class_delete():
+    if flask.request.method == 'POST':
+        c_class = db.get_or_404(CharacterClass, flask.request.form.get('parentID'))
+        subclasses = db.session.query(CharacterSubclass).filter(CharacterSubclass.parent == c_class.id)
+        c_classes = db.session.query(PlayerCharacterClass).filter(PlayerCharacterClass.primary_class == c_class.id)
+
+        for c in c_classes:
+            c.primary_class = 13  # Default to a Wizard
+            c.subclass = None
+            db.session.add(c)
+
+        for s in subclasses:
+            db.session.delete(s)
+
+        db.session.delete(c_class)
+        db.session.commit()
+
+        return redirect(url_for('admin_classes'))
+
+
+
+@app.route('/admin/races', methods=['GET', 'POST'])
+@flask_login.login_required
+def admin_races():
+    if flask.request.method == 'POST':
+        race = CharacterRace(
+            value=flask.request.form.get('name')
+        )
+        if race is not None:
+            db.session.add(race)
+            db.session.commit()
+
+    races = get_races(db.session)
+
+    return render_template('/admin_pages/admin_parent_list.html', parents=races, label="Race", child="Subraces",
+                           path="races")
+
+
+@app.route('/admin/races/<race>', methods=['GET', 'POST'])
+@flask_login.login_required
+def admin_subraces(race):
+    if flask.request.method == 'POST':
+        parent = db.get_or_404(CharacterRace, race)
+        subrace = CharacterSubrace(
+            value=flask.request.form.get('name'),
+            parent=parent.id
+        )
+
+        if subrace is not None:
+            db.session.add(subrace)
+            db.session.commit()
+
+    subraces = get_subraces(db.session, race)
+    race = db.session.query(CharacterRace).filter(CharacterRace.id == race).first()
+
+    return render_template('/admin_pages/admin_child_list.html', children=subraces, parent="race", label="Subrace",
+                           path="races", parent_name=race.value, parent_id=race.id)
+
+
+@app.route('/admin/races/Subrace', methods=['POST'])
+@flask_login.login_required
+def admin_subrace_edit():
+    if flask.request.method == 'POST':
+        s_race = db.get_or_404(CharacterSubrace, flask.request.form.get('childID'))
+        if flask.request.form.get('update') is not None:
+            s_race.value = flask.request.form.get('childName')
+
+            if s_race is not None:
+                db.session.add(s_race)
+                db.session.commit()
+
+        elif flask.request.form.get('delete') is not None:
+            characters = db.session.query(Character).filter(Character.subrace == s_race.id)
+
+            if s_race is not None:
+                for c in characters:
+                    c.subrace = None
+                    db.session.add(c)
+
+                db.session.delete(s_race)
+                db.session.commit()
+
+    return redirect(f'/admin/races/{s_race.parent}')
+
+
+@app.route('/admin/races/delete', methods=['POST'])
+@flask_login.login_required
+def admin_race_delete():
+    if flask.request.method == 'POST':
+        race = db.get_or_404(CharacterRace, flask.request.form.get('parentID'))
+        subraces = db.session.query(CharacterSubrace).filter(CharacterSubrace.parent == race.id)
+        characters = db.session.query(Character).filter(Character.race == race.id)
+
+        for c in characters:
+            c.race = 21  # Default to human
+            c.subrace = None
+            db.session.add(c)
+
+        for s in subraces:
+            db.session.delete(s)
+
+        db.session.delete(race)
+        db.session.commit()
+
+        return redirect(url_for('admin_races'))
 
 
 @app.route('/admin/items')
@@ -307,6 +482,7 @@ def bot():
     commands = json.load(f)
     return render_template('commands.html', commands=commands['category'])
 
+
 @app.route('/commands/<role>')
 def player_commands(role):
     f = open('json/commands.json')
@@ -319,7 +495,6 @@ def player_commands(role):
             filter_commands['category'].append(c)
 
     return render_template('commands.html', commands=filter_commands['category'], role=role)
-
 
 
 @app.route('/factions')
