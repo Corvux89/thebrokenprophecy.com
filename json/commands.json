@@ -15,6 +15,20 @@
               "description": "Player to get the character for if not looking for the character of the author"
             }
           ]
+        },
+        {
+          "name": "adventures",
+          "description": "Shows current adventure information for a player. Can be used for adventure applications",
+          "optional": [
+            {
+              "name": "player",
+              "description": "Player to get the information for if not looking for the character of the author"
+            },
+            {
+              "name": "phrase",
+              "description": "Additional question/phrase to add. In the format question|answer Ex: What is your favorite color?|Blue"
+            }
+          ]
         }
       ]
     },
@@ -118,6 +132,15 @@
             {
               "name": "role",
               "description": "Role for the adventure, if not ran in one fo the adventure channels."
+            }
+          ]
+        },
+        {
+          "name": "set_tier",
+          "description": "Manually override the adventure tier if incorrect, or player levels are different than what they joined as",
+          "required": [
+            {
+              "name": "tier"
             }
           ]
         }
@@ -829,7 +852,7 @@
       ]
     },
     {
-      "name": "shop_admin",
+      "name": "Shop Admin",
       "description": "Commands for shop/establishment administration",
       "role": ["Council"],
       "commands": [
@@ -889,6 +912,18 @@
           "required": [
             {
               "name": "owner"
+            }
+          ]
+        },
+        {
+          "name": "convert",
+          "description": "Converts a shop from one type to another, while retaining all other information",
+          "required": [
+            {
+              "name": "owner"
+            },
+            {
+              "name": "type"
             }
           ]
         }
