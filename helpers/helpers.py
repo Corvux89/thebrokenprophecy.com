@@ -33,17 +33,17 @@ def get_race_table(session):
         .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
         .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.value.label("race")).all()
 
-    subrace_count = session.query(CharacterSubrace.value, func.count(Character.subrace).label("count")) \
+    subrace_count = session.query(CharacterSubrace.id, func.count(Character.subrace).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterSubrace, Character.subrace == CharacterSubrace.id) \
-        .group_by(CharacterSubrace.value).all()
+        .group_by(CharacterSubrace.id).all()
 
     for s in subraces:
         sub_dict = {}
         sub_dict["name"] = s.value
         sub_dict["count"] = 0
         for c in subrace_count:
-            if c.value == s.value:
+            if c.id == s.id:
                 sub_dict["count"] = c.count
                 break
 
@@ -83,18 +83,18 @@ def get_class_table(session):
         .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
         .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.value.label("char_class")).all()
 
-    subclass_count = session.query(CharacterSubclass.value, func.count(PlayerCharacterClass.subclass).label("count")) \
+    subclass_count = session.query(CharacterSubclass.id, func.count(PlayerCharacterClass.subclass).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
         .join(CharacterSubclass, PlayerCharacterClass.subclass == CharacterSubclass.id) \
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
-        .group_by(CharacterSubclass.value).all()
+        .group_by(CharacterSubclass.id).all()
 
     for s in subclasses:
         sub_dict = {}
         sub_dict["name"] = s.value
         sub_dict["count"] = 0
         for c in subclass_count:
-            if c.value == s.value:
+            if c.id == s.id:
                 sub_dict["count"] = c.count
                 break
 
