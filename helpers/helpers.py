@@ -20,7 +20,6 @@ def get_race_table(session):
 
     for r in races:
         race_dict = {}
-        race_dict["id"] = r.id
         race_dict["name"] = r.value
         race_dict["count"] = 0
         race_dict["subraces"] = []
@@ -32,24 +31,24 @@ def get_race_table(session):
 
     subraces = session.query(CharacterSubrace) \
         .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
-        .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.id.label("race")).all()
+        .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.value.label("race")).all()
 
-    subrace_count = session.query(CharacterSubrace.value, CharacterSubrace.parent.label("race_id"), func.count(Character.subrace).label("count")) \
+    subrace_count = session.query(CharacterSubrace.value, func.count(Character.subrace).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterSubrace, Character.subrace == CharacterSubrace.id) \
-        .group_by(CharacterSubrace.value, CharacterSubrace.parent).all()
+        .group_by(CharacterSubrace.value).all()
 
     for s in subraces:
         sub_dict = {}
         sub_dict["name"] = s.value
         sub_dict["count"] = 0
         for c in subrace_count:
-            if c.value == s.value and s.race == c.race_id:
+            if c.value == s.value:
                 sub_dict["count"] = c.count
                 break
 
         for r in stat['races']:
-            if r['id'] == s.race:
+            if r['name'] == s.race:
                 r["subraces"].append(sub_dict)
                 break
 
@@ -71,7 +70,6 @@ def get_class_table(session):
 
     for c in classes:
         class_dict = {}
-        class_dict["id"] = c.id
         class_dict["name"] = c.value
         class_dict["count"] = 0
         class_dict["subclasses"] = []
@@ -83,7 +81,7 @@ def get_class_table(session):
 
     subclasses = session.query(CharacterSubclass) \
         .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
-        .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.id.label("char_class")).all()
+        .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.value.label("char_class")).all()
 
     subclass_count = session.query(CharacterSubclass.value, func.count(PlayerCharacterClass.subclass).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
@@ -101,7 +99,7 @@ def get_class_table(session):
                 break
 
         for r in stat["classes"]:
-            if r["id"] == s.char_class:
+            if r["name"] == s.char_class:
                 r["subclasses"].append(sub_dict)
                 break
 
