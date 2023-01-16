@@ -7,6 +7,8 @@ class Character(db.Model):
     __tablename__ = 'characters'
 
     id = db.Column(db.Integer, primary_key=True)
+    player_id = db.Column(db.Integer)
+    name = db.Column(db.String)
     race = db.Column(db.Integer)
     subrace = db.Column(db.Integer)
     active = db.Column(db.Boolean)
@@ -85,3 +87,4 @@ class Adventures(db.Model):
     tier = db.Column(db.Integer)
     ep = db.Column(db.Integer)
     end_ts = db.Column(db.DateTime)
+    guild_id = db.Column(db.Integer)

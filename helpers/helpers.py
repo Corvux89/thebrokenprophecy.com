@@ -2,16 +2,17 @@ from sqlalchemy import and_, func
 
 from constants import GUILD_ID
 from models import *
+from flask import current_app
 
 
-def get_race_table(session):
-    races = session.query(CharacterRace).all()
-    race_count = session.query(CharacterRace.value, func.count(Character.race).label("count")) \
+def get_race_table():
+    races = current_app.db.session.query(CharacterRace).all()
+    race_count = current_app.db.session.query(CharacterRace.value, func.count(Character.race).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterRace, Character.race == CharacterRace.id) \
         .group_by(CharacterRace.value).all()
 
-    total_count = session.query(Character).filter(
+    total_count = current_app.db.session.query(Character).filter(
         and_(Character.active == True, Character.guild_id == GUILD_ID)).count()
 
     stat = dict()
@@ -29,11 +30,11 @@ def get_race_table(session):
                 break
         stat['races'].append(race_dict)
 
-    subraces = session.query(CharacterSubrace) \
+    subraces = current_app.db.session.query(CharacterSubrace) \
         .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
         .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.value.label("race")).all()
 
-    subrace_count = session.query(CharacterSubrace.id, func.count(Character.subrace).label("count")) \
+    subrace_count = current_app.db.session.query(CharacterSubrace.id, func.count(Character.subrace).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterSubrace, Character.subrace == CharacterSubrace.id) \
         .group_by(CharacterSubrace.id).all()
@@ -57,9 +58,9 @@ def get_race_table(session):
     return stat
 
 
-def get_class_table(session):
-    classes = session.query(CharacterClass).all()
-    class_count = session.query(CharacterClass.value, func.count(PlayerCharacterClass.primary_class).label("count")) \
+def get_class_table():
+    classes = current_app.db.session.query(CharacterClass).all()
+    class_count = current_app.db.session.query(CharacterClass.value, func.count(PlayerCharacterClass.primary_class).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
         .join(CharacterClass, PlayerCharacterClass.primary_class == CharacterClass.id) \
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
@@ -79,11 +80,11 @@ def get_class_table(session):
                 break
         stat["classes"].append(class_dict)
 
-    subclasses = session.query(CharacterSubclass) \
+    subclasses = current_app.db.session.query(CharacterSubclass) \
         .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
         .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.value.label("char_class")).all()
 
-    subclass_count = session.query(CharacterSubclass.id, func.count(PlayerCharacterClass.subclass).label("count")) \
+    subclass_count = current_app.db.session.query(CharacterSubclass.id, func.count(PlayerCharacterClass.subclass).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
         .join(CharacterSubclass, PlayerCharacterClass.subclass == CharacterSubclass.id) \
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
@@ -103,7 +104,7 @@ def get_class_table(session):
                 r["subclasses"].append(sub_dict)
                 break
 
-    player_count = session.query(PlayerCharacterClass.character_id,
+    player_count = current_app.db.session.query(PlayerCharacterClass.character_id,
                                  func.count(PlayerCharacterClass.character_id).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID,
                      PlayerCharacterClass.active == True)) \
@@ -125,136 +126,44 @@ def get_class_table(session):
 
     return stat
 
+def get_adventures(guild_members):
+    adventures = current_app.db.session.query(Adventures) \
+        .filter(and_(Adventures.guild_id == GUILD_ID, Adventures.end_ts == None))
 
-def get_item_list(session):
-    blacksmith_items = session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithType.value.label("type"),
-                                     Rarity.value.label("rarity")) \
-        .join(BlackSmithType, BlackSmithItem.sub_type == BlackSmithType.id) \
-        .join(Rarity, BlackSmithItem.rarity == Rarity.id)
+    d_out = {}
 
-    items = []
+    d_out['adventures'] = []
 
-    for i in blacksmith_items:
-        i_dict = {}
-        i_dict["name"] = i.name
-        i_dict["id"] = i.id
-        i_dict["type"] = i.type
-        i_dict["rarity"] = i.rarity
-        i_dict["table"] = "Blacksmith"
-        items.append(i_dict)
+    for a in adventures:
+        a_dict = {}
+        a_dict['name'] = a.name
+        a_dict['dm_ids'] = [str(a) for a in a.dms]
+        a_dict['role_id'] = str(a.role_id)
+        a_dict['tier'] = a.tier
+        a_dict['players'] = []
+        a_dict['dms'] = []
 
-    consumable_items = session.query(ConsumableItem.id, ConsumableItem.name, ConsumableType.value.label("type"),
-                                     Rarity.value.label("rarity")) \
-        .join(ConsumableType, ConsumableItem.sub_type == ConsumableType.id) \
-        .join(Rarity, ConsumableItem.rarity == Rarity.id)
+        d_out['adventures'].append(a_dict)
 
-    for i in consumable_items:
-        i_dict = {}
-        i_dict["name"] = i.name
-        i_dict["id"] = i.id
-        i_dict["type"] = i.type
-        i_dict["rarity"] = i.rarity
-        i_dict["table"] = "Consumable"
-        items.append(i_dict)
-
-    scroll_items = session.query(ScrollItem.id, ScrollItem.name, Rarity.value.label("rarity")) \
-        .join(Rarity, ScrollItem.rarity == Rarity.id)
-
-    for i in scroll_items:
-        i_dict = {}
-        i_dict["name"] = i.name
-        i_dict["id"] = i.id
-        i_dict["type"] = ""
-        i_dict["rarity"] = i.rarity
-        i_dict["table"] = "Scroll"
-        items.append(i_dict)
-
-    wondrous_items = session.query(WondrousItem.id, WondrousItem.name, Rarity.value.label("rarity")) \
-        .join(Rarity, WondrousItem.rarity == Rarity.id)
-
-    for i in wondrous_items:
-        i_dict = {}
-        i_dict["name"] = i.name
-        i_dict["id"] = i.id
-        i_dict["type"] = ""
-        i_dict["rarity"] = i.rarity
-        i_dict["table"] = "Wondrous"
-        items.append(i_dict)
-
-    return items
+    for m in guild_members:
+        for a in d_out['adventures']:
+            if a['role_id'] in m['roles']:
+                m_id = m['user']['id']
+                character = current_app.db.session.query(Character).filter(and_(Character.active == True,
+                                                                           Character.guild_id == GUILD_ID,
+                                                                           Character.player_id == m_id)).first()
+                if character is not None:
+                    if m_id in a['dm_ids']:
+                        a['dms'].append(character.name)
+                    else:
+                        a['players'].append(character.name)
 
 
-def get_races(session):
-    races = session.query(CharacterRace)
+    for a in d_out['adventures']:
+        a['dm_string'] = ", ".join(f"{dm}" for dm in a['dms'])
+        a['player_string'] = ", ".join(f"{player}" for player in a['players'])
 
-    d_out = dict()
-    d_out["parents"] = []
-
-    for r in races:
-        subraces = get_subraces(session, r.id)
-        r_dict = {}
-        r_dict['id'] = r.id
-        r_dict['name'] = r.value
-        r_dict['children'] = len(subraces['children'])
-
-        d_out['parents'].append(r_dict)
-
-    d_out["parents"] = sorted(d_out["parents"], key=lambda r: r["name"])
+    d_out['adventures'] = sorted(d_out['adventures'], key=lambda a: a['name'])
 
     return d_out
 
-
-def get_subraces(session, race):
-    subraces = session.query(CharacterSubrace).filter(CharacterSubrace.parent == race)
-
-    d_out = dict()
-    d_out['children'] = []
-
-    for s in subraces:
-        s_dict = {}
-        s_dict['id'] = s.id
-        s_dict['name'] = s.value
-
-        d_out['children'].append(s_dict)
-
-    d_out["children"] = sorted(d_out["children"], key=lambda r: r["name"])
-
-    return d_out
-
-
-def get_classes(session):
-    classes = session.query(CharacterClass)
-
-    d_out = dict()
-    d_out["parents"] = []
-
-    for c in classes:
-        subclasses = get_subclasses(session, c.id)
-        r_dict = {}
-        r_dict['id'] = c.id
-        r_dict['name'] = c.value
-        r_dict['children'] = len(subclasses['children'])
-
-        d_out['parents'].append(r_dict)
-
-    d_out["parents"] = sorted(d_out["parents"], key=lambda r: r["name"])
-
-    return d_out
-
-
-def get_subclasses(session, c):
-    subclasses = session.query(CharacterSubclass).filter(CharacterSubclass.parent == c)
-
-    d_out = dict()
-    d_out['children'] = []
-
-    for s in subclasses:
-        s_dict = {}
-        s_dict['id'] = s.id
-        s_dict['name'] = s.value
-
-        d_out['children'].append(s_dict)
-
-    d_out["children"] = sorted(d_out["children"], key=lambda r: r["name"])
-
-    return d_out
