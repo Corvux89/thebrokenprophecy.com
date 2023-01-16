@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_login import LoginManager
@@ -16,8 +16,6 @@ from models import *
 app = Flask(__name__)
 
 login_manager = LoginManager()
-
-# os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"  # DEV ONLY
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
