@@ -67,7 +67,7 @@ def admin_sublasses(c_class):
 
 
 @admin_blueprint.route('/classes/Subclass', methods=['POST'])
-@flask_login.login_required
+@is_admin
 def admin_subclass_edit():
     if flask.request.method == 'POST':
         s_class = current_app.db.get_or_404(CharacterSubclass, flask.request.form.get('childID'))
@@ -95,7 +95,7 @@ def admin_subclass_edit():
 
 
 @admin_blueprint.route('/classes/delete', methods=['POST'])
-@flask_login.login_required
+@is_admin
 def admin_class_delete():
     if flask.request.method == 'POST':
         c_class = current_app.db.get_or_404(CharacterClass, flask.request.form.get('parentID'))
@@ -119,7 +119,7 @@ def admin_class_delete():
 
 # Character Race Administration
 @admin_blueprint.route('/races', methods=['GET', 'POST'])
-@flask_login.login_required
+@is_admin
 def admin_races():
     if flask.request.method == 'POST':
         race = CharacterRace(
@@ -136,7 +136,7 @@ def admin_races():
 
 
 @admin_blueprint.route('/races/<race>', methods=['GET', 'POST'])
-@flask_login.login_required
+@is_admin
 def admin_subraces(race):
     if flask.request.method == 'POST':
         parent = current_app.db.get_or_404(CharacterRace, race)
@@ -157,7 +157,7 @@ def admin_subraces(race):
 
 
 @admin_blueprint.route('/races/Subrace', methods=['POST'])
-@flask_login.login_required
+@is_admin
 def admin_subrace_edit():
     if flask.request.method == 'POST':
         s_race = current_app.db.get_or_404(CharacterSubrace, flask.request.form.get('childID'))
@@ -183,7 +183,7 @@ def admin_subrace_edit():
 
 
 @admin_blueprint.route('/races/delete', methods=['POST'])
-@flask_login.login_required
+@is_admin
 def admin_race_delete():
     if flask.request.method == 'POST':
         race = current_app.db.get_or_404(CharacterRace, flask.request.form.get('parentID'))
@@ -206,7 +206,7 @@ def admin_race_delete():
 
 # Item Administration
 @admin_blueprint.route('/items')
-@flask_login.login_required
+@is_admin
 def item_list():
     items = get_item_list()
 
@@ -214,7 +214,7 @@ def item_list():
 
 
 @admin_blueprint.route('/items/<table>/<id>', methods=['GET', 'POST'])
-@flask_login.login_required
+@is_admin
 def item_modify(table, id):
     if flask.request.method == 'POST':
         if table.upper() == "BLACKSMITH":
@@ -300,7 +300,7 @@ def item_modify(table, id):
 
 
 @admin_blueprint.route('/items/delete_item/<table>/<id>', methods=['POST'])
-@flask_login.login_required
+@is_admin
 def delete_item(table, id):
     if flask.request.method == "POST":
         if table.upper() == "BLACKSMITH":
@@ -320,14 +320,14 @@ def delete_item(table, id):
 
 
 @admin_blueprint.route('/items/add_item')
-@flask_login.login_required
+@is_admin
 def select_table():
     tables = ['Blacksmith', 'Consumable', 'Scroll', 'Wondrous']
     return render_template('/admin_pages/admin_item_table.html', tables=tables)
 
 
 @admin_blueprint.route('/items/add_item/<table>', methods=['GET', 'POST'])
-@flask_login.login_required
+@is_admin
 def add_item(table):
     if flask.request.method == "POST":
         if table.upper() == "BLACKSMITH":
