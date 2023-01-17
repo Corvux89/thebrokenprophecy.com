@@ -2,7 +2,15 @@
 
 
 <div class="container-fluid m-2 mt-4">
-    <form method="POST">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="text-danger">{{message}}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for ('auth.login', next=request.args['next']) }}">
         <div class="col-sm-3">
             <input type="text" class="form-control" name="username" id="username" placeholder="username">
         </div>

@@ -69,7 +69,7 @@ def get_races():
     d_out["parents"] = []
 
     for r in races:
-        subraces = get_subraces(current_app.db.session, r.id)
+        subraces = get_subraces(r.id)
         r_dict = {}
         r_dict['id'] = r.id
         r_dict['name'] = r.value
@@ -82,7 +82,7 @@ def get_races():
     return d_out
 
 
-def get_subraces():
+def get_subraces(race):
     subraces = current_app.db.session.query(CharacterSubrace).filter(CharacterSubrace.parent == race)
 
     d_out = dict()
@@ -107,7 +107,7 @@ def get_classes():
     d_out["parents"] = []
 
     for c in classes:
-        subclasses = get_subclasses(current_app.db.session, c.id)
+        subclasses = get_subclasses(c.id)
         r_dict = {}
         r_dict['id'] = c.id
         r_dict['name'] = c.value
@@ -120,7 +120,7 @@ def get_classes():
     return d_out
 
 
-def get_subclasses():
+def get_subclasses(c):
     subclasses = current_app.db.session.query(CharacterSubclass).filter(CharacterSubclass.parent == c)
 
     d_out = dict()

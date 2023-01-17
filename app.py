@@ -3,8 +3,11 @@ from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_login import LoginManager
 from flask_discord import DiscordOAuth2Session
+from werkzeug.security import generate_password_hash
+
 from blueprints.admin import admin_blueprint
 from blueprints.adventures import adventures_blueprint
+from blueprints.auth import auth_blueprint
 from blueprints.commands import commands_blueprint
 from blueprints.factions import factions_blueprint
 from blueprints.stats import stats_blueprint
@@ -34,24 +37,8 @@ app.discord = discord = DiscordOAuth2Session(app)
 
 
 @login_manager.user_loader
-def user_loader(username):
-    if username not in admin_user:
-        return
-
-    user = User()
-    user.id = username
-    return user
-
-
-@login_manager.request_loader
-def request_loader(request):
-    username = request.form.get('username')
-    if not username or username not in admin_user:
-        return
-    user = User()
-    user.id = username
-    return user
-
+def load_user(user_id):
+    return current_app.db.session.query(User).filter(and_(User.id == user_id, User.active == True)).first()
 
 @app.route('/')
 @app.route('/home')
@@ -62,6 +49,10 @@ def homepage():
 @app.route('/credits')
 def credits():
     return render_template('credits.html')
+
+@app.route('/password/<password>')
+def password(password):
+    return f'<p>{generate_password_hash(password)}</p>'
 
 
 csp = get_csp()
@@ -74,6 +65,7 @@ talisman = Talisman(
 )
 
 # Blueprints
+app.register_blueprint(auth_blueprint, url_prefix='/login')
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(commands_blueprint, url_prefix='/commands')
 app.register_blueprint(stats_blueprint, url_prefix="/server_stats")

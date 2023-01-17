@@ -1,52 +1,34 @@
-from datetime import timedelta
-
 import flask
 import flask_login
-from flask import Blueprint, session, current_app, redirect, url_for, render_template
+from flask import Blueprint, current_app, redirect, url_for, render_template, request
 from flask_login import current_user
 
-from constants import admin_user
 from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses
-from models import User, CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
+from models import CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
     Character, BlackSmithItem, ConsumableItem, ScrollItem, WondrousItem, BlackSmithType, ConsumableType, MagicSchool, \
-    Rarity
+    Rarity, is_admin
 
 admin_blueprint = Blueprint("admin", __name__)
-
-
-@admin_blueprint.before_request
-def make_session_permanent():
-    session.permanent = True
-    current_app.permanent_session_lifetime = timedelta(minutes=30)
 
 
 # Routes
 @admin_blueprint.route('/', methods=['GET', 'POST'])
 def admin_base():
-    if flask.request.method == 'POST':
-        username = flask.request.form.get('username')
-        if flask.request.form.get('pw') == admin_user[username]['pw']:
-            user = User()
-            user.id = username
-            flask_login.login_user(user)
-            return redirect(url_for('admin.admin_menu'))
-    elif current_user.is_authenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('admin.admin_menu'))
     else:
-        return render_template("login.html")
-
-    return render_template('main.html')
+        return redirect(url_for('auth.login', next=request.endpoint))
 
 
 @admin_blueprint.route('/admin_menu')
-@flask_login.login_required
+@is_admin
 def admin_menu():
     return render_template('/admin_pages/admin_menu.html')
 
 
 # Character Class Administration
 @admin_blueprint.route('/classes', methods=['GET', 'POST'])
-@flask_login.login_required
+@is_admin
 def admin_classes():
     if flask.request.method == 'POST':
         c_class = CharacterClass(
@@ -64,7 +46,7 @@ def admin_classes():
 
 
 @admin_blueprint.route('/classes/<c_class>', methods=['GET', 'POST'])
-@flask_login.login_required
+@is_admin
 def admin_sublasses(c_class):
     if flask.request.method == 'POST':
         parent = current_app.db.get_or_404(CharacterClass, c_class)
@@ -77,7 +59,7 @@ def admin_sublasses(c_class):
             current_app.db.session.add(subclass)
             current_app.db.session.commit()
 
-    subclasses = get_subclasses()
+    subclasses = get_subclasses(c_class)
     p_class = current_app.db.session.query(CharacterClass).filter(CharacterClass.id == c_class).first()
 
     return render_template('/admin_pages/admin_child_list.html', children=subclasses, parent="class", label="Subclass",
@@ -167,7 +149,7 @@ def admin_subraces(race):
             current_app.db.session.add(subrace)
             current_app.db.session.commit()
 
-    subraces = get_subraces()
+    subraces = get_subraces(race)
     race = current_app.db.session.query(CharacterRace).filter(CharacterRace.id == race).first()
 
     return render_template('/admin_pages/admin_child_list.html', children=subraces, parent="race", label="Subrace",
