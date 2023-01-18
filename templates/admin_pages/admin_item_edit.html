@@ -2,14 +2,14 @@
 
 {% if item == None %}
 <h1 class="m-2">Item not found</h1>
-<a href="/admin/items" class="btn btn-primary m-2" role="button">Back to Items</a>
+<a href="{{ url_for('admin.item_list') }}" class="btn btn-primary m-2" role="button">Back to Items</a>
 
 {% else %}
 <h1 class="m-2">{{item.name}}</h1>
 <h2 class="m-2 text-center">{{table}} item</h2>
 
 <div class="container-fluid m-2">
-    <form action="/admin/items/{{table}}/{{item.id}}" method="post">
+    <form action="{{ url_for('admin.item_modify', table=table, id=item.id) }}" method="post">
         <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">
@@ -168,7 +168,7 @@
 
         <div class="row mb-3">
             <div class="col-auto">
-                <a href="/admin/items" class="btn btn-secondary" role="button">Back to Items</a>
+                <a href="{{ url_for('admin.item_list') }}" class="btn btn-secondary" role="button">Back to Items</a>
             </div>
 
             <div class="col-auto">
@@ -179,7 +179,7 @@
 </div>
 
 <div class="container-fluid m-2">
-    <form action="/admin/items/delete_item/{{table}}/{{item.id}}", method="post">
+    <form action="{{ url_for('admin.delete_item', table=table, id=item.id) }}", method="post">
         <div class="row mb-3">
             <div class="col-sm">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">Delete Item</button>

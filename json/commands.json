@@ -180,7 +180,7 @@
           "optional": [
             {
               "name": "allow_post",
-              "description": "Whether to allow the @Quester role to send messages in the room."
+              "description": "Whether to allow the @Quester role to send messages in the room. This is only relevant if you are opening the room"
             }
           ]
         },

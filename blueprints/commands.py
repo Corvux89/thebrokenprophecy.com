@@ -8,7 +8,7 @@ commands_blueprint = Blueprint("commands", __name__)
 def command_list():
     f = open('json/commands.json')
     commands = json.load(f)
-    return render_template('commands.html', commands=commands['category'])
+    return render_template('commands.html', commands=commands['category'], role_list=commands['roles'])
 
 @commands_blueprint.route('/<role>')
 def role_commands(role):
@@ -21,4 +21,4 @@ def role_commands(role):
         if "role" in c and role in c["role"]:
             filter_commands['category'].append(c)
 
-    return render_template('commands.html', commands=filter_commands['category'], role=role)
+    return render_template('commands.html', commands=filter_commands['category'], role=role, role_list=commands['roles'])

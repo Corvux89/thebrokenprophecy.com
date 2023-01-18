@@ -133,7 +133,7 @@ body {
     color: white !important;
 }
 
-.item-table, .parent-table, .child-table{
+.item-table, .parent-table, .child-table, .issue-table{
     cursor: pointer;
 }
 
@@ -146,4 +146,8 @@ body {
     box-shadow: 0 3px 6px
     rgba(0,0,0,0.16), 0 3px 6px
     rgba(0,0,0,0.23);
+}
+
+.article-body{
+    min-height: calc(1.5em + 0.75rem + 200px);
 }

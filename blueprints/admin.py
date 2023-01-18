@@ -3,32 +3,34 @@ import flask_login
 from flask import Blueprint, current_app, redirect, url_for, render_template, request
 from flask_login import current_user
 
-from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses
+from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses, is_admin
 from models import CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
     Character, BlackSmithItem, ConsumableItem, ScrollItem, WondrousItem, BlackSmithType, ConsumableType, MagicSchool, \
-    Rarity, is_admin
+    Rarity
 
 admin_blueprint = Blueprint("admin", __name__)
 
-
-# Routes
-@admin_blueprint.route('/', methods=['GET', 'POST'])
-def admin_base():
-    if current_user.is_authenticated:
-        return redirect(url_for('admin.admin_menu'))
-    else:
-        return redirect(url_for('auth.login', next=request.endpoint))
-
-
-@admin_blueprint.route('/admin_menu')
+@admin_blueprint.before_request
 @is_admin
-def admin_menu():
-    return render_template('/admin_pages/admin_menu.html')
+def before_request():
+    pass
+
+
+@admin_blueprint.route('/')
+@admin_blueprint.route('/<path>')
+@admin_blueprint.route('/<path>/<sub>')
+def admin_menu(path = None, sub=None):
+    if sub:
+        return redirect(f'{url_for("admin.admin_menu")}/{path}/{sub}')
+    elif path:
+        return redirect(f'{url_for("admin.admin_menu")}/{path}')
+    else:
+        return render_template('/admin_pages/admin_menu.html')
+
 
 
 # Character Class Administration
 @admin_blueprint.route('/classes', methods=['GET', 'POST'])
-@is_admin
 def admin_classes():
     if flask.request.method == 'POST':
         c_class = CharacterClass(
@@ -46,7 +48,6 @@ def admin_classes():
 
 
 @admin_blueprint.route('/classes/<c_class>', methods=['GET', 'POST'])
-@is_admin
 def admin_sublasses(c_class):
     if flask.request.method == 'POST':
         parent = current_app.db.get_or_404(CharacterClass, c_class)
@@ -67,7 +68,6 @@ def admin_sublasses(c_class):
 
 
 @admin_blueprint.route('/classes/Subclass', methods=['POST'])
-@is_admin
 def admin_subclass_edit():
     if flask.request.method == 'POST':
         s_class = current_app.db.get_or_404(CharacterSubclass, flask.request.form.get('childID'))
@@ -95,7 +95,6 @@ def admin_subclass_edit():
 
 
 @admin_blueprint.route('/classes/delete', methods=['POST'])
-@is_admin
 def admin_class_delete():
     if flask.request.method == 'POST':
         c_class = current_app.db.get_or_404(CharacterClass, flask.request.form.get('parentID'))
@@ -119,7 +118,6 @@ def admin_class_delete():
 
 # Character Race Administration
 @admin_blueprint.route('/races', methods=['GET', 'POST'])
-@is_admin
 def admin_races():
     if flask.request.method == 'POST':
         race = CharacterRace(
@@ -136,7 +134,6 @@ def admin_races():
 
 
 @admin_blueprint.route('/races/<race>', methods=['GET', 'POST'])
-@is_admin
 def admin_subraces(race):
     if flask.request.method == 'POST':
         parent = current_app.db.get_or_404(CharacterRace, race)
@@ -157,7 +154,6 @@ def admin_subraces(race):
 
 
 @admin_blueprint.route('/races/Subrace', methods=['POST'])
-@is_admin
 def admin_subrace_edit():
     if flask.request.method == 'POST':
         s_race = current_app.db.get_or_404(CharacterSubrace, flask.request.form.get('childID'))
@@ -183,7 +179,6 @@ def admin_subrace_edit():
 
 
 @admin_blueprint.route('/races/delete', methods=['POST'])
-@is_admin
 def admin_race_delete():
     if flask.request.method == 'POST':
         race = current_app.db.get_or_404(CharacterRace, flask.request.form.get('parentID'))
@@ -206,7 +201,6 @@ def admin_race_delete():
 
 # Item Administration
 @admin_blueprint.route('/items')
-@is_admin
 def item_list():
     items = get_item_list()
 
@@ -214,7 +208,6 @@ def item_list():
 
 
 @admin_blueprint.route('/items/<table>/<id>', methods=['GET', 'POST'])
-@is_admin
 def item_modify(table, id):
     if flask.request.method == 'POST':
         if table.upper() == "BLACKSMITH":
@@ -274,7 +267,7 @@ def item_modify(table, id):
         if item_update is not None:
             current_app.db.session.add(item_update)
             current_app.db.session.commit()
-        return redirect(url_for('item_list'))
+        return redirect(url_for('admin.item_list'))
 
     schools = None
     sub_type = None
@@ -300,7 +293,6 @@ def item_modify(table, id):
 
 
 @admin_blueprint.route('/items/delete_item/<table>/<id>', methods=['POST'])
-@is_admin
 def delete_item(table, id):
     if flask.request.method == "POST":
         if table.upper() == "BLACKSMITH":
@@ -320,14 +312,12 @@ def delete_item(table, id):
 
 
 @admin_blueprint.route('/items/add_item')
-@is_admin
 def select_table():
     tables = ['Blacksmith', 'Consumable', 'Scroll', 'Wondrous']
     return render_template('/admin_pages/admin_item_table.html', tables=tables)
 
 
 @admin_blueprint.route('/items/add_item/<table>', methods=['GET', 'POST'])
-@is_admin
 def add_item(table):
     if flask.request.method == "POST":
         if table.upper() == "BLACKSMITH":
@@ -382,7 +372,7 @@ def add_item(table):
         if item is not None:
             current_app.db.session.add(item)
             current_app.db.session.commit()
-            return redirect(f'{url_for("admin.item_list")}/{table}/{item.id}')
+            return redirect(f'{url_for("admin.item_list")}')
         else:
             return redirect(url_for('admin.item_list'))
 

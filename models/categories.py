@@ -55,3 +55,14 @@ class MagicSchool(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String)
+
+class ChromaticCategory(db.Model):
+    __tablename__ = "c_chromatic_categories"
+
+    name = db.Column(db.String, primary_key=True)
+
+class Faction(db.Model):
+    __tablename__ = "c_faction"
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)

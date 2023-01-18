@@ -1,0 +1,170 @@
+{% extends "template.html" %} {% block body %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script nonce="{{ csp_nonce() }}">
+   $(document).ready( function () {
+    $('#issue-table thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#issue-table thead');
+
+    $('#issue-table').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function(){
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+
+                        }); // .on
+                }); // .on
+        }, // .each
+    }); // initComplete
+}); // DataTable
+</script>
+
+<script nonce="{{ csp_nonce() }}">
+    $(document).on('click', '.issue-row', function(e) {
+        var url = $(this).data('href');
+        window.location = url;
+    });
+</script>
+
+<h1 class="m-2">Issue # {{issue.id}} - {{issue.name}}</h1>
+
+<div class="container-fluid mt-3">
+    <div class="row mb-3">
+        <div class="col-auto">
+            <a href="{{ url_for('chronicle.editor') }}" class="btn btn-secondary">Back to Issue list</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="" class="btn btn-info" data-bs-target="#modalIssueEdit" data-bs-toggle="modal">Edit Issue Information</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="{{ url_for('chronicle.new_article', issue=issue.id) }}" class="btn btn-primary">New Article</a>
+        </div>
+
+        {% if issue.published %}
+        <div class="col-auto">
+            <a href="{{ url_for('chronicle.publish_issue', issue=issue.id, pub=False) }}" class="btn btn-danger">Retract Issue</a>
+        </div>
+        {% else %}
+        <div class="col-auto">
+            <a href="{{ url_for('chronicle.publish_issue', issue=issue.id, pub=True) }}" class="btn btn-primary">Publish Issue</a>
+        </div>
+        {% endif %}
+
+        <div class="col-auto">
+            <a href="#" class="btn btn-danger">Delete Issue</a>
+        </div>
+    </div>
+
+    <table class="table table-striped table-dark table-condensed table-hover mb-0 item-table" id="issue-table">
+        <thead>
+        <tr>
+            <th data-field="article" data-filter-control="select">Article</th>
+            <th data-field ="authors" data-filter-control="select">Authors</th>
+            <th data-field="published" data-filter-control="select">Categories</th>
+            <th data-field="published-date" data-filter-control="input">Priority</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+        <tr class="issue-row" data-href="{{ url_for('chronicle.edit_article', issue=issue.id, article=article.id) }}">
+            <td>{{article.title}}</td>
+            <td>{{article.authors}}</td>
+            <td>{{article.categories}}</td>
+            <td>{{article.priority}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<form method="post" action="{{ url_for('chronicle.modify_issue', issue=issue.id) }}" id="issueEditForm">
+    <div class="modal fade" id="modalIssueEdit" tabindex="-1" role="dialog" aria-labelledby="modalIssueEditLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold text-black" id="modalLabel">Edit Issue</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="md-form mb-4 sm">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="title" name="title" value="{{issue.name}}" placeholder="Title" required>
+                            <label for="title">Title</label>
+                        </div>
+                    </div>
+
+                    <div class="md-form mb-4 sm">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="game-date" name="game-date" value="{{issue.game_date}}" placeholder="Game Date">
+                            <label for="game-date">Game Date</label>
+                        </div>
+
+                        {% if issue.published %}
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="publish-date" name="publish-date" value="{{issue.get_date()}}" required placeholder="Publish Date">
+                            <label for="publish-date">Published Date</label>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center">
+                    <input type="submit"  value="Submit" class="btn btn-info btn-lg btn-block m-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

@@ -33,12 +33,10 @@
         <div class="dropdown d-inline">
             <button class="btn btn-secondary dropdown-toggle m-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Roles</button>
             <ul class="dropdown-menu">
-                <a class="dropdown-item" href="/commands/Player">Player</a>
-                <a class="dropdown-item" href="/commands/Shopkeeper">Shopkeepers</a>
-                <a class="dropdown-item" href="/commands/DM">DM</a>
-                <a class="dropdown-item" href="/commands/Magewright-Mod">Magewright/Mod</a>
-                <a class="dropdown-item" href="/commands/Council">Council</a>
-                <a class="dropdown-item" href="/commands">All Commands</a>
+                {% for role in role_list %}
+                <a class="dropdown-item" href="{{ url_for('commands.role_commands', role=role) }}">{{role}}</a>
+                {% endfor %}
+                <a class="dropdown-item" href="{{ url_for('commands.command_list') }}">All Commands</a>
             </ul>
         </div>
     </div>

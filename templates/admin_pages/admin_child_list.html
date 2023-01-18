@@ -81,7 +81,6 @@
 <script nonce="{{ csp_nonce() }}">
     $(document).on("click", ".delete_child", function() {
         $(document).getElementByID("childEditForm").action= "/admin";
-        console.log('here---------------------------');
     });
 </script>
 
@@ -90,7 +89,7 @@
 <div class="container-fluid m-2">
      <div class="row mb-3">
         <div class="col-auto">
-            <a href="/admin/{{path}}" class="btn btn-secondary">Back to {{parent}} list</a>
+            <a href="{{ url_for('admin.admin_menu', path=path) }}" class="btn btn-secondary">Back to {{parent}} list</a>
         </div>
 
          <div class="col-auto">
@@ -123,7 +122,7 @@
     </table>
 </div>
 
-<form method="post" action="/admin/{{path}}/{{label}}" id="childEditForm">
+<form method="post" action="{{ url_for('admin.admin_menu', path=path, sub=label) }}" id="childEditForm">
     <div class="modal fade" id="modalEditForm" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -187,7 +186,7 @@
     </div>
 </form>
 
-<form method="post" action="/admin/{{path}}/delete">
+<form method="post" action="{{ url_for('admin.admin_menu', path=path, sub=delete) }}">
     <div class="modal fade" id="modalDelParentForm" tabindex="-1" aria-labelledby="modalDelParentFormLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

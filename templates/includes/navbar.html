@@ -29,28 +29,28 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/factions">Factions</a>
+            <a class="nav-link" href="{{ url_for('factions.faction_list') }}">Factions</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/server_stats">Server Statistics</a>
+            <a class="nav-link" href="{{ url_for('stats.census') }}">Server Statistics</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/adventures">Adventures</a>
+            <a class="nav-link" href="{{ url_for('adventures.adventure_list') }}">Adventures</a>
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/commands" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="{{ url_for('commands.command_list') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               ProphetBot
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="/commands/Player">Player Commands</a></li>
-              <li><a class="dropdown-item" href="/commands/Shopkeeper">Shopkeeper Commands</a></li>
-              <li><a class="dropdown-item" href="/commands/DM">DM Commands</a></li>
-              <li><a class="dropdown-item" href="/commands/Magewright-Mod">Magewright/Mod Commands</a></li>
-              <li><a class="dropdown-item" href="/commands/Council">Council Commands</a></li>
-              <li><a class="dropdown-item" href="/commands">All Commands</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('commands.role_commands', role='Player') }}">Player Commands</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('commands.role_commands', role='Shopkeeper') }}">Shopkeeper Commands</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('commands.role_commands', role='DM') }}">DM Commands</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('commands.role_commands', role='Magewright-Mod') }}">Magewright/Mod Commands</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('commands.role_commands', role='Council') }}">Council Commands</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('commands.command_list') }}">All Commands</a></li>
             </ul>
           </li>
 

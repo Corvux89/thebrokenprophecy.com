@@ -78,11 +78,11 @@
 <div class="container-fluid m-2">
      <div class="row mb-3">
         <div class="col-auto">
-            <a href="/admin" class="btn btn-secondary">Back to Admin Menu</a>
+            <a href="{{ url_for('admin.admin_menu')}}" class="btn btn-secondary">Back to Admin Menu</a>
         </div>
 
          <div class="col-auto">
-             <a href="/admin/items/add_item" class="btn btn-primary">Add Item</a>
+             <a href="{{ url_for('admin.select_table')}}" class="btn btn-primary">Add Item</a>
          </div>
     </div>
 
@@ -97,7 +97,7 @@
         </thead>
         <tbody>
             {% for item in items %}
-            <tr class="item-row" data-href="/admin/items/{{item.table}}/{{item.id}}">
+            <tr class="item-row" data-href="{{ url_for('admin.item_modify', table=item.table, id=item.id)}}">
                 <td>{{item.name}}</td>
                 <td>{{item.table}}</td>
                 <td>{{item.type}}</td>

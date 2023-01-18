@@ -1,0 +1,93 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="m-2">New Article for {{issue.name}}</h1>
+
+<div class="container-fluid mt-3">
+    <form action="{{ url_for('chronicle.new_article', issue=issue.id) }}" method="post">
+        <div class="row mb-3">
+            <div class="col-auto">
+                <a href="{{url_for('chronicle.edit_issue', issue=issue.id) }}" class="btn btn-secondary" role="button">Back to Issue</a>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="title" name="title" required>
+                    <label for="title">Title</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="number" id="issue" class="form-control" placeholder="Issue" required name="issue" min="0" max="{{issue_max}}" value="{{issue.id}}">
+                    <label for="issue">Issue</label>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="form-floating">
+                    <input type="number" id="priority" class="form-control" placeholder="Priority" name="priority" required min="0" max="10" value="0">
+                    <label for="priority">Priority</label>
+                </div>
+            </div>
+
+            <div class="col-9">
+                <div class="form-floating">
+                    <input type="text" id="players" class="form-control" id="player" name="players">
+                    <label for="player">Players</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-auto text-white">Factions:</div>
+            {% for faction in factions %}
+            <div class="col-4">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="{{faction.value}}" name=faction-{{faction.id}}" value="{{faction.id}}">
+                    <label class="form-check-label text-white" for="{{faction.value}}">{{faction.value}}</label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <label for="authors" class="form-label text-white">Authors</label>
+                <select class="form-select" size="3" multiple aria-label="authors" id="authors" name="authors" required>
+                    {% for author in authors %}
+                    <option value={{author.id}}>{{author.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <label for="categories" class="form-label text-white">Categories</label>
+                <select class="form-select" size="3" multiple aria-label="categories" id="categories" name="categories">
+                    {% for category in categories%}
+                    <option value="{{category.name}}">{{category.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Article Text" id="body" name="body" required></textarea>
+                    <label for="body">Article Body</label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
