@@ -36,7 +36,8 @@ def get_csp():
             'https://cdnjs.cloudflare.com/',
             'https://cdn.jsdelivr.net/',
             'https://ajax.googleapis.com',
-            'https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js'
+            'https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js',
+            'https://www.googletagmanager.com/'
         ]
     }
 
