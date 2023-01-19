@@ -77,7 +77,11 @@
 <div class="container-fluid mt-3">
     <div class="row mb-3">
         <div class="col-auto">
-            <a href="#" class="btn btn-primary" data-bs-target="#modalNewIssue" data-bs-toggle="modal">New Issue</a>
+            <a href="" class="btn btn-primary" data-bs-target="#modalNewIssue" data-bs-toggle="modal">New Issue</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="{{ url_for('chronicle.view_authors') }}" class="btn btn-primary">Edit Authors</a>
         </div>
     </div>
 
@@ -135,5 +139,4 @@
         </div>
     </div>
 </form>
-
 {% endblock %}

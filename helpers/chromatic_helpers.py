@@ -101,3 +101,29 @@ def fetch_article(request: flask.Request):
     article.factions = factions
 
     return article
+
+
+def get_formatted_articles(issue: Issue):
+    articles = current_app.db.session.query(Article).filter(Article.issue == issue.id).all()
+    authors = current_app.db.session.query(Author).all()
+    factions = current_app.db.session.query(Faction).all()
+
+    for a in articles:
+        a.faction_list = []
+        for f in factions:
+            if f.id in a.factions:
+                a.faction_list.append(f)
+
+        a.faction_string = ", ".join(f"{f.value}" for f in a.faction_list)
+
+        a.author_list = []
+        for auth in authors:
+            if auth.id in a.authors:
+                a.author_list.append(auth)
+
+        a.author_string = ", ".join(f"{c.name} - <i>{c.title}</i>" for c in a.author_list)
+        a.category_string = ", ".join(f"{c}" for c in a.categories)
+
+    articles = sorted(articles, key=lambda x: (x.priority, x.title))
+
+    return articles

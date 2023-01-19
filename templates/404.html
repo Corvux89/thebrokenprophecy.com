@@ -1,0 +1,16 @@
+{% extends "template.html" %} {% block body %}
+
+<div class="card text-bg-dark">
+    <img src="{{ url_for('static', filename='images/404.jpg') }}" class=card-img">
+    <div class="card-img-overlay">
+        <h1 class="card-title">Whats with this sassy lost user?</h1>
+    </div>
+    <div class="card-img-overlay d-flex flex-column justify-content-center">
+        <h1 class="card-text text-center fw-bold">Error 404</h1>
+    </div>
+    <div class="card-img-overlay flex-column d-flex justify-content-end">
+        <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Back to homepage</a>
+    </div>
+</div>
+
+{% endblock %}

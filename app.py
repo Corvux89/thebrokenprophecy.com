@@ -42,6 +42,10 @@ app.discord = discord = DiscordOAuth2Session(app)
 def load_user(user_id):
     return db.session.query(User).filter(and_(User.id == user_id, User.active == True)).first()
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html')
+
 @app.route('/')
 @app.route('/home')
 def homepage():

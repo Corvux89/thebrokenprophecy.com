@@ -1,5 +1,29 @@
-{% extends "/chromatic_chronicle/display_template.html" %} {% block body %}
+{% extends "template.html" %} {% block body %}
 
-<h2 class="bg-transparent">here</h2>
+<div class="container-fluid mt-3">
+    <header class="issue-header py-3">
+        <div class="row">
+            <div class="col-sm">
+                <div class="dropdown d-inline">
+                    <button class="btn btn-secondary dropdown-toggle m-2" type="buttom" data-bs-toggle="dropdown" aria-expanded="false">{{drop_string}}</button>
+                    <ul class="dropdown-menu">
+                        {% for other in others %}
+                        <a class="dropdown-item" href="{{ url_for('chronicle.display', issue=other.id) }}">{{other.name}}</a>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm">
+                <h1>{{issue.name}}</h1>
+                {% if issue.game_date != "" %}
+                <h6 class="text-center fw-lighter text-white">{{issue.game_date}}</h6>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+</div>
 
 {% endblock %}
