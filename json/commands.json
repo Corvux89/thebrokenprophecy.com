@@ -148,7 +148,7 @@
     },
     {
       "name": "Room",
-      "description": "Tools for DM's to manage channels within their adventure without having manage server permissions",
+      "description": "Tools for DM's to manage channels within their adventure or player's their holdings without having manage server permissions",
       "role": ["DM"],
       "commands": [
         {
@@ -171,7 +171,7 @@
         },
         {
           "name": "view",
-          "description": "Hides or reveals the room to the @Quester role",
+          "description": "Hides or reveals the room to the @Quester role. This command also works for holdings to make them available/unavailable to Guild Members/Initiates",
           "required": [
             {
               "name": "view"
@@ -981,6 +981,56 @@
             {
               "name": "num_seeks",
               "description": "Sets the number of seeks available if not seeking."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Holding Admin",
+      "description": "Used to manage holdings (Player owned RP channels)",
+      "role": ["Council"],
+      "commands": [
+        {
+          "name": "create",
+          "description": "Used to create a new TextChannel in a category and sets up channel permissions",
+          "required": [
+            {
+              "name": "owner"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "category_channel"
+            }
+          ],
+          "optional": [
+            {
+              "name": "owner_2",
+              "description": "If more than one owner, you can specify it here"
+            },
+            {
+              "name": "owner_3",
+              "description": "If more than two owners, you can specify it here"
+            }
+          ]
+        },
+        {
+          "name": "modify_owner",
+          "description": "Modify the holding channel owners",
+          "required": [
+            {
+              "name": "owner"
+            },
+            {
+              "name": "channel"
+            }
+          ],
+          "optional": [
+            {
+              "name": "modify",
+              "description": "Whether to 'Add' or 'Remove' the owner from the channel"
             }
           ]
         }

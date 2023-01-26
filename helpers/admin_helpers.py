@@ -5,7 +5,7 @@ from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, Consu
 
 
 def get_item_list():
-    blacksmith_items = current_app.db.session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithType.value.label("action"),
+    blacksmith_items = current_app.db.session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithType.value.label("type"),
                                      Rarity.value.label("rarity")) \
         .join(BlackSmithType, BlackSmithItem.sub_type == BlackSmithType.id) \
         .join(Rarity, BlackSmithItem.rarity == Rarity.id)
@@ -16,12 +16,12 @@ def get_item_list():
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
-        i_dict["action"] = i.type
+        i_dict["type"] = i.type
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Blacksmith"
         items.append(i_dict)
 
-    consumable_items = current_app.db.session.query(ConsumableItem.id, ConsumableItem.name, ConsumableType.value.label("action"),
+    consumable_items = current_app.db.session.query(ConsumableItem.id, ConsumableItem.name, ConsumableType.value.label("type"),
                                      Rarity.value.label("rarity")) \
         .join(ConsumableType, ConsumableItem.sub_type == ConsumableType.id) \
         .join(Rarity, ConsumableItem.rarity == Rarity.id)
@@ -30,7 +30,7 @@ def get_item_list():
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
-        i_dict["action"] = i.type
+        i_dict["type"] = i.type
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Consumable"
         items.append(i_dict)
@@ -42,7 +42,7 @@ def get_item_list():
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
-        i_dict["action"] = ""
+        i_dict["type"] = ""
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Scroll"
         items.append(i_dict)
@@ -54,7 +54,7 @@ def get_item_list():
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
-        i_dict["action"] = ""
+        i_dict["type"] = ""
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Wondrous"
         items.append(i_dict)

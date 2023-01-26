@@ -213,7 +213,7 @@ def item_modify(table, id):
         if table.upper() == "BLACKSMITH":
             item_update = current_app.db.get_or_404(BlackSmithItem, id)
             item_update.name = flask.request.form.get('name')
-            item_update.sub_type = flask.request.form.get('sub-action')
+            item_update.sub_type = flask.request.form.get('sub-type')
             item_update.rarity = flask.request.form.get('rarity')
             item_update.cost = flask.request.form.get('cost')
             item_update.item_modifier = True if flask.request.form.get('item-modifier') == "" else False
@@ -226,7 +226,7 @@ def item_modify(table, id):
         elif table.upper() == "CONSUMABLE":
             item_update = current_app.db.get_or_404(ConsumableItem, id)
             item_update.name = flask.request.form.get('name')
-            item_update.sub_type = flask.request.form.get('sub-action')
+            item_update.sub_type = flask.request.form.get('sub-type')
             item_update.rarity = flask.request.form.get('rarity')
             item_update.cost = flask.request.form.get('cost')
             item_update.attunement = True if flask.request.form.get('attunement') == "" else False
@@ -323,7 +323,7 @@ def add_item(table):
         if table.upper() == "BLACKSMITH":
             item = BlackSmithItem(
                 name=flask.request.form.get('name'),
-                sub_type=flask.request.form.get('sub-action'),
+                sub_type=flask.request.form.get('sub-type'),
                 rarity=flask.request.form.get('rarity'),
                 cost=flask.request.form.get('cost'),
                 item_modifier=True if flask.request.form.get('item-modifier') == "" else False,
@@ -335,7 +335,7 @@ def add_item(table):
         elif table.upper() == "CONSUMABLE":
             item = ConsumableItem(
                 name=flask.request.form.get('name'),
-                sub_type=flask.request.form.get('sub-action'),
+                sub_type=flask.request.form.get('sub-type'),
                 rarity=flask.request.form.get('rarity'),
                 cost=flask.request.form.get('cost'),
                 attunement=True if flask.request.form.get('attunement') == "" else False,

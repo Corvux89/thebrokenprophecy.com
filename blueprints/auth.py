@@ -2,7 +2,7 @@ from datetime import timedelta
 
 import flask
 from flask import Blueprint, session, current_app, redirect, url_for, render_template, request, flash
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 from sqlalchemy import and_
 from werkzeug.security import check_password_hash
 
@@ -43,4 +43,9 @@ def login():
         return redirect_dest(url_for('homepage'))
     else:
         return render_template("login.html", url=redirect_dest('homepage'))
+
+@auth_blueprint.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
 
