@@ -12,6 +12,7 @@ from blueprints.auth import auth_blueprint
 from blueprints.chronicle import chronicle_blueprint
 from blueprints.commands import commands_blueprint
 from blueprints.factions import factions_blueprint
+from blueprints.players import players_blueprint
 from blueprints.stats import stats_blueprint
 
 from constants import *
@@ -78,6 +79,7 @@ app.register_blueprint(stats_blueprint, url_prefix="/server_stats")
 app.register_blueprint(factions_blueprint, url_prefix="/factions")
 app.register_blueprint(adventures_blueprint, url_prefix="/adventures")
 app.register_blueprint(chronicle_blueprint, url_prefix="/chromatic_chronicle")
+app.register_blueprint(players_blueprint, url_prefix='/players')
 
 db.init_app(app)
 login_manager.init_app(app)
