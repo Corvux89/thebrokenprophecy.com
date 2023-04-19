@@ -35,7 +35,7 @@
                     <th scope="col" class="columnCount">#</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 {% for race in race_data['races'] %}
                     {% if race['subraces'][0] != blank %}
                     <tr data-bs-toggle="collapse" data-bs-target="#{{race.name}}collapse" class="accordion-toggle" id="{{race.name}}">
@@ -97,7 +97,7 @@
                     <th scope="col" class="columnCount">#</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 {% for class in class_data['classes'] %}
                     {% if class['subclasses'][0] != blank %}
                     <tr data-bs-toggle="collapse" data-bs-target="#{{class.name}}collapse" class="accordion-toggle" id="{{class.name}}">

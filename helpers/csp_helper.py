@@ -18,7 +18,7 @@ def get_csp():
             'https://www.googletagmanager.com/',
             'https://ajax.googleapis.com',
             'https://cdnjs.cloudflare.com/',
-            'https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js'
+            'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js'
         ],
         'img-src': [
             '*',
@@ -29,14 +29,14 @@ def get_csp():
             'https://cdn.jsdelivr.net/',
             'https://use.fontawesome.com',
             'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css',
-            'https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css'
+            'https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css'
         ],
         'script-src-elem': [
             '\'self\'',
             'https://cdnjs.cloudflare.com/',
             'https://cdn.jsdelivr.net/',
             'https://ajax.googleapis.com',
-            'https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js',
+            'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js',
             'https://www.googletagmanager.com/'
         ]
     }
