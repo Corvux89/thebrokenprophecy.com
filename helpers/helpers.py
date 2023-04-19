@@ -167,3 +167,31 @@ def get_adventures(guild_members):
 
     return d_out
 
+def get_players():
+    characters = current_app.db.session.query(Character)\
+        .outerjoin(CharacterSubrace, CharacterSubrace.id == Character.subrace)\
+        .join(CharacterRace, CharacterRace.id == Character.race)\
+        .filter(and_(Character.active == True, Character.guild_id == GUILD_ID))\
+        .add_columns(Character.id, Character.name, Character.player_id, CharacterRace.value.label("race"), CharacterSubrace.value.label("subrace")).all()
+
+    d_out = []
+
+    for c in characters:
+        c_dict = {"name": c.name, "race": c.race, "subrace": c.subrace, "classes": []}
+
+        char_class = current_app.db.session.query(PlayerCharacterClass)\
+            .join(CharacterClass, CharacterClass.id == PlayerCharacterClass.primary_class)\
+            .outerjoin(CharacterSubclass, CharacterSubclass.id == PlayerCharacterClass.subclass)\
+            .filter(and_(PlayerCharacterClass.character_id == c.id, PlayerCharacterClass.active == True))\
+            .add_columns(CharacterClass.value.label("Class"), CharacterSubclass.value.label("Subclass")).all()
+
+        for cl in char_class:
+            c_dict["classes"].append({"prim_class": cl.Class, "subclass": cl.Subclass})
+
+        c_dict["primary_class"] = "<br>".join(f'{x["prim_class"]}' for x in c_dict["classes"])
+        c_dict["subclasses"] = "<br>".join(f'{x["subclass"]}' for x in c_dict["classes"])
+
+        d_out.append(c_dict)
+
+
+    return d_out
