@@ -167,7 +167,7 @@ def get_adventures(guild_members):
 
     return d_out
 
-def get_players():
+def get_characters():
     characters = current_app.db.session.query(Character)\
         .outerjoin(CharacterSubrace, CharacterSubrace.id == Character.subrace)\
         .join(CharacterRace, CharacterRace.id == Character.race)\

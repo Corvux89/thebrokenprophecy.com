@@ -69,7 +69,7 @@
 </script>
 
 <div class="container-fluid m-2">
-     <h1 class="m-2">Active Players</h1>
+     <h1 class="m-2">Active Characters</h1>
 
     <table class="table table-striped table-dark table-condensed table-hover mb-0 player-table" id="player-table">
         <thead>
@@ -82,13 +82,13 @@
         </tr>
         </thead>
         <tbody>
-            {% for player in players %}
+            {% for character in characters %}
             <tr class="item-row">
-                <td>{{player.name}}</td>
-                <td>{{player.race}}</td>
-                <td>{{player.subrace}}</td>
-                <td>{{player.primary_class | safe}}</td>
-                <td>{{player.subclasses | safe}}</td>
+                <td>{{character.name}}</td>
+                <td>{{character.race}}</td>
+                <td>{{character.subrace}}</td>
+                <td>{{character.primary_class | safe}}</td>
+                <td>{{character.subclasses | safe}}</td>
             </tr>
             {% endfor %}
         </tbody>
