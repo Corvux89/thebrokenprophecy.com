@@ -979,6 +979,15 @@
               "description": "Sets the number of seeks available if not seeking."
             }
           ]
+        },
+        {
+          "name": "reroll_item",
+          "description": "Designate and item to be re-rolled from inventory",
+          "required": [
+            {
+              "name": "item"
+            }
+          ]
         }
       ]
     },
