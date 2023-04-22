@@ -11,4 +11,4 @@ def adventure_list():
     guild_members = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members?limit={LIMIT}', method='GET')
     adventures = get_adventures(guild_members)
 
-    return render_template('adventures.html', adventures=adventures)
+    return render_template('/adventures/adventures.html', adventures=adventures)
