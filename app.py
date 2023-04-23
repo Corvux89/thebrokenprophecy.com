@@ -1,9 +1,9 @@
+import traceback
+
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
-from flask_login import LoginManager
 from flask_discord import DiscordOAuth2Session
-from sqlalchemy import and_
 from werkzeug.security import generate_password_hash
 
 from blueprints.admin import admin_blueprint
@@ -51,7 +51,7 @@ def callback():
         data = discord.callback()
         redirect_to = data.get("redirect", "/")
     except Exception as e:
-        print(f"Issue with callback: {e}")
+        print(f"Issue with callback: {e}\n{traceback.print_exc()}")
         pass
     if not redirect_to:
         redirect_to = 'homepage'
