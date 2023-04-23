@@ -33,7 +33,7 @@ app.config.update(
     DEBUG=WEB_DEBUG
 )
 
-if WEB_DEBUG or True:
+if WEB_DEBUG:
     print("Debugging!")
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true" # DEV ONLY!!!!
 
