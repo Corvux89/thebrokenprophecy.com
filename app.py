@@ -51,6 +51,7 @@ def callback():
         data = discord.callback()
         redirect_to = data.get("redirect", "/")
     except:
+        print("Issue with callback")
         pass
     if not redirect_to:
         redirect_to = 'homepage'
