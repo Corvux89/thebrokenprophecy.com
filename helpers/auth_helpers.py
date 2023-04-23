@@ -7,7 +7,7 @@ def is_admin(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_app.discord.authorized:
-                return redirect(url_for('auth.login', next=request.endpoint))
+                return redirect(url_for('login', next=request.endpoint))
 
 
             user = current_app.discord.fetch_user()

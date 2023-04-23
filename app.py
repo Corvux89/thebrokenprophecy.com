@@ -1,6 +1,6 @@
 import traceback
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_discord import DiscordOAuth2Session
@@ -33,7 +33,7 @@ app.config.update(
     DEBUG=WEB_DEBUG
 )
 
-if WEB_DEBUG:
+if WEB_DEBUG or True:
     print("Debugging!")
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true" # DEV ONLY!!!!
 
@@ -71,6 +71,15 @@ def credits():
 def password(password):
     return f'<p>{generate_password_hash(password)}</p>'
 
+@app.route('/login')
+def login():
+    return discord.create_session(data=dict(redirect=request.args.get('next')))
+
+@app.route('/logout')
+def logout():
+    discord.revoke()
+    return redirect(url_for('homepage'))
+
 
 csp = get_csp()
 
@@ -82,7 +91,7 @@ talisman = Talisman(
 )
 
 # Blueprints
-app.register_blueprint(auth_blueprint, url_prefix='/login')
+# app.register_blueprint(auth_blueprint, url_prefix='/login')
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(commands_blueprint, url_prefix='/commands')
 app.register_blueprint(stats_blueprint, url_prefix="/server_stats")
