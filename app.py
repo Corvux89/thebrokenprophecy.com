@@ -52,7 +52,7 @@ def callback():
         redirect_to = data.get("redirect", "/")
     except Exception as e:
         print(f"Issue with callback: {e}\n{traceback.print_exc()}")
-        print(f'{discord.client_id} | {discord.user_id} | {discord.get_authorization_token()} | {discord.fetch_connections()} ')
+        print(f'{discord.client_id} | {discord.user_id}')
         pass
     if not redirect_to:
         redirect_to = 'homepage'
