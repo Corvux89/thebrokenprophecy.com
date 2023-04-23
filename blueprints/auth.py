@@ -1,5 +1,4 @@
-from datetime import timedelta
-from flask import Blueprint, session, current_app, redirect, url_for, request
+from flask import Blueprint, current_app, redirect, url_for, request
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -10,11 +9,6 @@ def redirect_dest(fallback):
     except:
         return redirect(fallback)
     return redirect(dest_url)
-
-@auth_blueprint.before_request
-def make_session_permanent():
-    session.permanent = True
-    current_app.permanent_session_lifetime = timedelta(minutes=30)
 
 @auth_blueprint.route('/')
 def login():
