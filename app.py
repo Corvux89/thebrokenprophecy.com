@@ -34,6 +34,7 @@ app.config.update(
 )
 
 if WEB_DEBUG:
+    print("Debugging!")
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true" # DEV ONLY!!!!
 
 app.db = db = SQLAlchemy()
