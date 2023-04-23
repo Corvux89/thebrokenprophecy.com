@@ -48,7 +48,7 @@ def not_found(e):
 def callback():
     redirect_to = None
     try:
-        data = app.discord.callback()
+        data = discord.callback()
         redirect_to = data.get("redirect", "/")
     except Exception as e:
         print(f"Issue with callback: {e}\n{traceback.print_exc()}")
