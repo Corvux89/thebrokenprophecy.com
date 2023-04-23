@@ -1,6 +1,6 @@
 import traceback
 
-from flask import Flask, render_template, redirect, url_for, current_app
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_discord import DiscordOAuth2Session
@@ -48,7 +48,7 @@ def not_found(e):
 def callback():
     redirect_to = None
     try:
-        data = current_app.discord.callback()
+        data = app.discord.callback()
         redirect_to = data.get("redirect", "/")
     except Exception as e:
         print(f"Issue with callback: {e}\n{traceback.print_exc()}")
