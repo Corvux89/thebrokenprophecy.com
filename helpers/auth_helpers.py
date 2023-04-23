@@ -14,6 +14,7 @@ def is_admin(f):
             member = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
 
             if not has_role(member, ADMIN_ROLE):
+                print(f'{user.name} tried to get access to admin menus')
                 return redirect(url_for('homepage'))
             return f(*args, **kwargs)
         return decorated_function
