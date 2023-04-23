@@ -52,6 +52,7 @@ def callback():
         redirect_to = data.get("redirect", "/")
     except Exception as e:
         print(f"Issue with callback: {e}\n{traceback.print_exc()}")
+        print(f'{discord.client_id | discord.SESSION_KEYS}')
         pass
     if not redirect_to:
         redirect_to = 'homepage'
@@ -71,15 +72,6 @@ def credits():
 def password(password):
     return f'<p>{generate_password_hash(password)}</p>'
 
-@app.route('/login')
-def login():
-    return discord.create_session(data=dict(redirect=request.args.get('next')))
-
-@app.route('/logout')
-def logout():
-    discord.revoke()
-    return redirect(url_for('homepage'))
-
 
 csp = get_csp()
 
@@ -91,7 +83,7 @@ talisman = Talisman(
 )
 
 # Blueprints
-# app.register_blueprint(auth_blueprint, url_prefix='/login')
+app.register_blueprint(auth_blueprint, url_prefix='/login')
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(commands_blueprint, url_prefix='/commands')
 app.register_blueprint(stats_blueprint, url_prefix="/server_stats")
