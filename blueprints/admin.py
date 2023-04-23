@@ -1,5 +1,7 @@
 import flask
 from flask import Blueprint, current_app, redirect, url_for, render_template
+
+from constants import GUILD_ID
 from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses, is_admin
 from models import CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
     Character, BlackSmithItem, ConsumableItem, ScrollItem, WondrousItem, BlackSmithType, ConsumableType, MagicSchool, \
@@ -23,6 +25,21 @@ def admin_menu(path = None, sub=None):
         return redirect(f'{url_for("admin.admin_menu")}/{path}')
     else:
         return render_template('/admin_pages/admin_menu.html')
+
+@admin_blueprint.route('/message', methods=['GET', 'POST'])
+def admin_message():
+    channels = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/channels')
+    channel = ""
+
+    if flask.request.method == 'POST':
+        channel = flask.request.form.get('channel')
+        message = flask.request.form.get('message')
+        if channel and message:
+            current_app.discord.bot_request(f'/channels/{channel}/messages', "POST", json={"content": message})
+
+    return render_template('/admin_pages/admin_message.html', channels=channels, selected=channel)
+
+
 
 
 

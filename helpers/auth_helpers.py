@@ -1,23 +1,19 @@
 from functools import wraps
-
-from flask import session, redirect, url_for, current_app, request
-from sqlalchemy import and_
-
-from models import User, Role
+from flask import redirect, url_for, current_app, request
+from constants import ADMIN_ROLE, GUILD_ID, CHRON_ROLE
 
 
 def is_admin(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            user_id = session.get('_user_id')
-            if not user_id:
+            if not current_app.discord.authorized:
                 return redirect(url_for('auth.login', next=request.endpoint))
 
-            user = current_app.db.session.query(User).filter(and_(User.id == user_id, User.active == True)).first()
 
-            role = current_app.db.session.query(Role).filter(Role.name == 'Admin').first()
+            user = current_app.discord.fetch_user()
+            member = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
 
-            if not user.allowed([role.id]):
+            if not has_role(member, ADMIN_ROLE):
                 return redirect(url_for('homepage'))
             return f(*args, **kwargs)
         return decorated_function
@@ -26,17 +22,24 @@ def is_admin(f):
 def is_chronicler(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        user_id = session.get('_user_id')
-        if not user_id:
+        if not current_app.discord.authorized:
             return redirect(url_for('auth.login', next=request.endpoint))
 
-        user = current_app.db.session.query(User).filter(and_(User.id == user_id, User.active == True)).first()
+        user = current_app.discord.fetch_user()
+        member = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
 
-        admin_role = current_app.db.session.query(Role).filter(Role.name == 'Admin').first()
-        press_role = current_app.db.session.query(Role).filter(Role.name == 'Press').first()
+        role_to_check = ADMIN_ROLE + CHRON_ROLE
 
-        if not user.allowed([admin_role.id, press_role.id]):
+        if not bool(set(role_to_check) & set(member['roles'])):
             return redirect(url_for('homepage'))
         return f(*args, **kwargs)
 
     return decorated_function
+
+def has_role(member, roles_to_check):
+    for r in member['roles']:
+        if r in roles_to_check:
+            return True
+
+    return False
+

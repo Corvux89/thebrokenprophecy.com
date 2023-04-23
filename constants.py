@@ -1,3 +1,4 @@
+import json
 import os
 
 WEB_DEBUG = os.environ.get("DEBUG", False)
@@ -15,10 +16,9 @@ LIMIT = os.environ.get("LIMIT", 1)
 
 
 # Admin User
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "password")
+ADMIN_ROLE = json.loads(os.environ["ADMIN_ROLES"]) if "ADMIN_ROLES" in os.environ else []
 
 # Chronicler
-CHRON_USERNAME = os.environ.get("CHRON_USERNAME", "chron")
-CHRON_PASSWORD = os.environ.get("CHRON_PASSWORD", "password")
+CHRON_ROLE = json.loads(os.environ["CHRON_ROLES"]) if "CHRON_ROLES" in os.environ else []
+
 

@@ -1,0 +1,44 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="m-2">Message from the Bot</h1>
+
+<div class="container-fluid m-2">
+    <form action="{{ url_for('admin.admin_message') }}" method="post">
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="Channel Select", id="channel" name="channel">
+                        {% for channel in channels %}
+                        {% if channel.parent_id %}
+                        {% if channel.id == selected %}
+                        <option value="{{channel.id}}" selected>{{channel.name}}</option>
+                        {% else %}
+                        <option value="{{channel.id}}">{{channel.name}}</option>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="channel">Channel</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="form-floating">
+                <textarea class="form-control" id="message" placeholder="Message" name="message" rows="10"></textarea>
+                <label for="message">Message</label>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-auto">
+                <a href="{{ url_for('admin.admin_menu') }}" class="btn btn-secondary" role="button">Back to Admin Menu</a>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
