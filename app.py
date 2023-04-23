@@ -19,6 +19,7 @@ from constants import *
 from helpers import get_csp
 from models import *
 
+
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
@@ -35,14 +36,16 @@ app.config.update(
 
 if WEB_DEBUG:
     print("Debugging!")
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true" # DEV ONLY!!!!
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true"  # DEV ONLY!!!!
 
 app.db = db = SQLAlchemy()
 app.discord = discord = DiscordOAuth2Session(app)
 
+
 @app.errorhandler(404)
 def not_found(e):
     return render_template('404.html')
+
 
 @app.route("/callback/")
 def callback():
@@ -58,6 +61,7 @@ def callback():
         redirect_to = 'homepage'
     return redirect(url_for(redirect_to))
 
+
 @app.route('/')
 @app.route('/home')
 def homepage():
@@ -67,6 +71,7 @@ def homepage():
 @app.route('/credits')
 def credits():
     return render_template('credits.html')
+
 
 @app.route('/password/<password>')
 def password(password):

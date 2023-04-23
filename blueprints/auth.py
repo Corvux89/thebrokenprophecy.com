@@ -18,5 +18,3 @@ def login():
 def logout():
     current_app.discord.revoke()
     return redirect(url_for('homepage'))
-
-

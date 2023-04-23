@@ -8,8 +8,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 GUILD_ID = os.environ.get("GUILD_ID", "")
 
-DISCORD_CLIENT_ID = os.environ.get("DISCORD_CLIENT_ID", "")
-DISCORD_CLIENT_SECRET = os.environ.get("DISCORD_CLIeNT_SECRET", "")
+DISCORD_CLIENT_ID = os.environ.get(r"DISCORD_CLIENT_ID", "")
+DISCORD_CLIENT_SECRET = os.environ.get("DISCORD_CLIENT_SECRET", "")
 DISCORD_BOT_TOKEN = os.environ.get("DISCORD_BOT_TOKEN", "")
 OAUTH_REDIRECT_URI = os.environ.get("OAUTH_REDIRECT_URI", "")
 LIMIT = os.environ.get("LIMIT", 1)
