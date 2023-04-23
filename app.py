@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_login import LoginManager
@@ -21,8 +21,6 @@ from models import *
 
 app = Flask(__name__)
 
-login_manager = LoginManager()
-
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
 app.config["DISCORD_CLIENT_ID"] = DISCORD_CLIENT_ID
@@ -35,17 +33,27 @@ app.config.update(
     DEBUG=WEB_DEBUG
 )
 
+if WEB_DEBUG:
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "true" # DEV ONLY!!!!
+
 app.db = db = SQLAlchemy()
 app.discord = discord = DiscordOAuth2Session(app)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return db.session.query(User).filter(and_(User.id == user_id, User.active == True)).first()
 
 @app.errorhandler(404)
 def not_found(e):
     return render_template('404.html')
+
+@app.route("/callback/")
+def callback():
+    redirect_to = None
+    try:
+        data = discord.callback()
+        redirect_to = data.get("redirect", "/")
+    except:
+        pass
+    if not redirect_to:
+        redirect_to = 'homepage'
+    return redirect(url_for(redirect_to))
 
 @app.route('/')
 @app.route('/home')
@@ -82,7 +90,6 @@ app.register_blueprint(chronicle_blueprint, url_prefix="/chromatic_chronicle")
 app.register_blueprint(characters_blueprint, url_prefix='/characters')
 
 db.init_app(app)
-login_manager.init_app(app)
 
 if __name__ == "__main__":
     app.run()
