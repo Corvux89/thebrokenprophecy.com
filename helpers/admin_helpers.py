@@ -5,7 +5,7 @@ from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, Consu
 
 
 def get_item_list():
-    blacksmith_items = current_app.db.session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithType.value.label("type"),
+    blacksmith_items = current_app.db.session.query(BlackSmithItem.id, BlackSmithItem.name, BlackSmithItem.cost, BlackSmithType.value.label("type"),
                                      Rarity.value.label("rarity")) \
         .join(BlackSmithType, BlackSmithItem.sub_type == BlackSmithType.id) \
         .join(Rarity, BlackSmithItem.rarity == Rarity.id)
@@ -16,12 +16,13 @@ def get_item_list():
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
+        i_dict["cost"] = i.cost
         i_dict["type"] = i.type
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Blacksmith"
         items.append(i_dict)
 
-    consumable_items = current_app.db.session.query(ConsumableItem.id, ConsumableItem.name, ConsumableType.value.label("type"),
+    consumable_items = current_app.db.session.query(ConsumableItem.id, ConsumableItem.name, ConsumableItem.cost, ConsumableType.value.label("type"),
                                      Rarity.value.label("rarity")) \
         .join(ConsumableType, ConsumableItem.sub_type == ConsumableType.id) \
         .join(Rarity, ConsumableItem.rarity == Rarity.id)
@@ -30,30 +31,33 @@ def get_item_list():
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
+        i_dict["cost"] = i.cost
         i_dict["type"] = i.type
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Consumable"
         items.append(i_dict)
 
-    scroll_items = current_app.db.session.query(ScrollItem.id, ScrollItem.name, Rarity.value.label("rarity")) \
+    scroll_items = current_app.db.session.query(ScrollItem.id, ScrollItem.name, ScrollItem.cost, Rarity.value.label("rarity")) \
         .join(Rarity, ScrollItem.rarity == Rarity.id)
 
     for i in scroll_items:
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
+        i_dict["cost"] = i.cost
         i_dict["type"] = ""
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Scroll"
         items.append(i_dict)
 
-    wondrous_items = current_app.db.session.query(WondrousItem.id, WondrousItem.name, Rarity.value.label("rarity")) \
+    wondrous_items = current_app.db.session.query(WondrousItem.id, WondrousItem.name, WondrousItem.cost, Rarity.value.label("rarity")) \
         .join(Rarity, WondrousItem.rarity == Rarity.id)
 
     for i in wondrous_items:
         i_dict = {}
         i_dict["name"] = i.name
         i_dict["id"] = i.id
+        i_dict["cost"] = i.cost
         i_dict["type"] = ""
         i_dict["rarity"] = i.rarity
         i_dict["table"] = "Wondrous"
