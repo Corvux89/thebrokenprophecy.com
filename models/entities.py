@@ -88,3 +88,19 @@ class Adventures(db.Model):
     ep = db.Column(db.Integer)
     end_ts = db.Column(db.DateTime)
     guild_id = db.Column(db.Integer)
+
+class BPLog(db.Model):
+    __tablename__ = 'log'
+
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.Integer)
+    xp = db.Column(db.Integer)
+    server_xp = db.Column(db.Integer)
+    gold = db.Column(db.Integer)
+    created_ts = db.Column(db.DateTime)
+    character_id = db.Column(db.Integer)
+    activity = db.Column(db.Integer)
+    notes = db.Column(db.String)
+    shop_id = db.Column(db.Integer)
+    adventure_id = db.Column(db.Integer)
+    invalid = db.Column(db.Boolean)

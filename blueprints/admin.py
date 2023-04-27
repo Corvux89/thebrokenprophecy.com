@@ -2,7 +2,7 @@ import flask
 from flask import Blueprint, current_app, redirect, url_for, render_template
 
 from constants import GUILD_ID
-from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses, is_admin
+from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses, is_admin, get_logs
 from models import CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
     Character, BlackSmithItem, ConsumableItem, ScrollItem, WondrousItem, BlackSmithType, ConsumableType, MagicSchool, \
     Rarity
@@ -404,3 +404,8 @@ def add_item(table):
 
     return render_template('/admin_pages/admin_item_add.html', table=table, subs=sub_type, rarity=rarity,
                            classes=classes, schools=schools)
+
+@admin_blueprint.route('/logs')
+def view_logs():
+    logs = get_logs()
+    return render_template('/admin_pages/log_list.html', logs=logs)

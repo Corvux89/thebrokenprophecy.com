@@ -1,0 +1,114 @@
+{% extends "template.html" %} {% block body %}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script nonce="{{ csp_nonce() }}">
+   $(document).ready( function () {
+    $('#log-table thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#log-table thead');
+
+    $('#log-table').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+        order: [[0, 'desc']],
+        initComplete: function(){
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+
+                        }); // .on
+                }); // .on
+        }, // .each
+    }); // initComplete
+}); // DataTable
+</script>
+
+<div class="container-fluid m-2">
+     <div class="row mb-3">
+        <div class="col-auto">
+            <a href="{{ url_for('admin.admin_menu')}}" class="btn btn-secondary">Back to Admin Menu</a>
+        </div>
+    </div>
+
+    <table class="table table-striped table-dark table-condensed table-hover mb-0 log-table" id="log-table">
+        <thead>
+        <tr>
+            <th data-field="id" data-filter-control="input">ID</th>
+            <th data-field="timestamp" data-filter-control="input">Timestamp</th>
+            <th data-field="name" data-filter-control="select">Character Name</th>
+            <th data-field="xp" data-filter-control="select">Player XP</th>
+            <th data-field="gold" data-filter-control="select">Player Gold</th>
+            <th data-field="server_xp" data-filter-control="select">Server XP</th>
+            <th data-field="activity" data-filter-control="select">Activity</th>
+            <th data-field="notes" data-filter-control="select">Notes</th>
+            <th data-field="invalid" data-filter-control="select">Invalid</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr class="log-row">
+                <td>{{log.id}}</td>
+                <td>{{log.timestamp}}</td>
+                <td>{{log.name}}</td>
+                <td>{{log.xp}}</td>
+                <td>{{log.gold}}</td>
+                <td>{{log.server_xp}}</td>
+                <td>{{log.activity}}</td>
+                <td>{{log.notes}}</td>
+                {% if log.invalid == False %}
+                <td><i class="bi bi-square"></i></td>
+                {% else %}
+                <td><i class="bi bi-x-square"></i></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,8 +1,9 @@
 from flask import current_app
 from sqlalchemy import literal, union, select
 
+from constants import GUILD_ID, LIMIT
 from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, ConsumableType, ScrollItem, WondrousItem, \
-    CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass
+    CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, BPLog, Character, Activity
 
 
 def get_item_list():
@@ -76,7 +77,8 @@ def get_classes():
     classes = current_app.db.session.query(CharacterClass)
 
     d_out = dict()
-    d_out["parents"] = [{"id": c.id, "name": c.value, "children": len(get_subclasses(c.id)['children'])} for c in classes]
+    d_out["parents"] = [{"id": c.id, "name": c.value, "children": len(get_subclasses(c.id)['children'])} for c in
+                        classes]
 
     d_out["parents"] = sorted(d_out["parents"], key=lambda r: r["name"])
 
@@ -92,3 +94,30 @@ def get_subclasses(c):
     d_out["children"] = sorted(d_out["children"], key=lambda r: r["name"])
 
     return d_out
+
+
+def get_logs():
+    db_logs = current_app.db.session.query(BPLog.id,
+                                           BPLog.xp,
+                                           BPLog.gold,
+                                           BPLog.server_xp,
+                                           BPLog.created_ts.label('timestamp'),
+                                           Character.name,
+                                           Activity.value.label('activity'),
+                                           BPLog.notes,
+                                           BPLog.invalid) \
+        .join(Character, BPLog.character_id == Character.id) \
+        .join(Activity, BPLog.activity == Activity.id) \
+        .order_by(BPLog.id.desc()).all()
+
+    logs = [{"id": l.id,
+             "xp": l.xp,
+             "gold": l.gold,
+             "server_xp": l.server_xp,
+             "timestamp": l.timestamp.strftime("%m/%d/%Y %H:%M:%S"),
+             "name": l.name,
+             "activity": l.activity,
+             "notes": l.notes,
+             "invalid": l.invalid} for l in db_logs]
+
+    return logs

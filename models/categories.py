@@ -66,3 +66,11 @@ class Faction(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String)
+
+class Activity(db.Model):
+    __tablename__ = "c_activity"
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)
+    ratio = db.Column(db.Float)
+    diversion = db.Column(db.Boolean)

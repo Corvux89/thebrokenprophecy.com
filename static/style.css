@@ -133,7 +133,7 @@ body {
     color: white !important;
 }
 
-.item-table, .parent-table, .child-table, .issue-table, .player-table{
+.item-table, .parent-table, .child-table, .issue-table, .player-table, .log-table{
     cursor: pointer;
 }
 
