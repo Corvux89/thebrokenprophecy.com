@@ -108,7 +108,7 @@ def get_logs():
                                            BPLog.invalid) \
         .join(Character, BPLog.character_id == Character.id) \
         .join(Activity, BPLog.activity == Activity.id) \
-        .order_by(BPLog.id.desc()).all()
+        .order_by(BPLog.id.desc()).limit(1000).all()
 
     logs = [{"id": l.id,
              "xp": l.xp,
