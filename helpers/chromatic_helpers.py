@@ -122,7 +122,11 @@ def get_formatted_articles(issue: Issue):
                 a.author_list.append(auth)
 
         a.author_string = ", ".join(f"{c.name} - <i>{c.title}</i>" for c in a.author_list)
-        a.category_string = ", ".join(f"{c}" for c in a.categories)
+        a.category_string = ", ".join(f"#{c}" for c in a.categories)
+        if "global" in a.category_string:
+            a.preview = ' '.join(a.body.split()[:255]) + "..."
+        else:
+            a.preview = ' '.join(a.body.split()[:100]) + "..."
 
     articles = sorted(articles, key=lambda x: (x.priority, x.title))
 

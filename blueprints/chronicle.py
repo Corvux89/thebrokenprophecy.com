@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import flask
-from flask import Blueprint, render_template, current_app, redirect, url_for
+from flask import Blueprint, current_app, redirect, url_for, render_template
 from sqlalchemy import and_, desc
 
 from helpers import is_chronicler, get_issues, get_articles, update_article, fetch_article, get_formatted_articles
@@ -12,7 +12,7 @@ chronicle_blueprint = Blueprint("chronicle", __name__)
 
 @chronicle_blueprint.route('/')
 @chronicle_blueprint.route('/<issue>')
-def display(issue=None):
+def display_issue(issue=None):
     latest_issue = current_app.db.session.query(Issue).filter(Issue.published == True).order_by(
             desc(Issue.publish_date)).first()
     drop_string ="Previous Issues"
@@ -30,6 +30,10 @@ def display(issue=None):
 
     return render_template('/chromatic_chronicle/display_issue.html', issue=issue, articles=articles, others=issues,
                            drop_string=drop_string)
+
+@chronicle_blueprint.route('/<issue>/<article>')
+def display_article(issue, article):
+    return f"Page for Issue {issue} article {article} coming soon!"
 
 
 # Editor Stuff

@@ -8,7 +8,7 @@
                     <button class="btn btn-secondary dropdown-toggle m-2" type="buttom" data-bs-toggle="dropdown" aria-expanded="false">{{drop_string}}</button>
                     <ul class="dropdown-menu">
                         {% for other in others %}
-                        <a class="dropdown-item" href="{{ url_for('chronicle.display', issue=other.id) }}">{{other.name}}</a>
+                        <a class="dropdown-item" href="{{ url_for('chronicle.display_issue', issue=other.id) }}">{{other.name}}</a>
                         {% endfor %}
                     </ul>
                 </div>
@@ -25,27 +25,41 @@
         </div>
     </header>
 
-    {% for article in articles %}
-    {% if "global" in article.categories  %}
-    <div class="card priority-card w-100 mb-3">
-        <div class="card-header priority-header">
-            {{article.title}}
-        </div>
-        <div class="card-body priority-body">
-            <p class="card-text priority-text">{{article.body | safe}}</p>
-        </div>
+    <div class="row w-100 row-cols-1 row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-lg-3 g-2">
+        {% for article in articles %}
+            {% if "global" in article.categories %}
+            <div class="col w-100">
+                <div class="card priority-card m-3">
+                    <div class="card-header priority-header text-center text-black fw-bold fs-1">
+                        {{article.title}}
+                        <p class="fw-lighter fs-6 text-center text-grey">{{article.author_string | safe}}</p>
+                    </div>
+                    <div class="card-body priority-body">
+                        <p class="card-text priority-text">{{article.preview | safe}}</p>
+                        <a href="{{ url_for('chronicle.display_article', issue=issue.id, article=article.id) }}" class="article-link"></a>
+                    </div>
+                    <div class="card-footer fs-6">Tags: {{article.category_string}}</div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col w-25">
+                <div class="card article-card m-3">
+                    <div class="card-header article-header text-center text-black fw-bold fs-2">
+                        {{article.title}}
+                        <p class="fw-lighter fs-6 text-center text-grey">{{ article.author_string | safe}}</p>
+                    </div>
+                    <div class="card-body article-body">
+                        <p class="card-text priority-text">{{article.preview | safe}}</p>
+                        <a href="{{ url_for('chronicle.display_article', issue=issue.id, article=article.id) }}" class="article-link"></a>
+                    </div>
+                    {% if article.category_string %}
+                    <div class="card-footer fs-6">Tags: {{article.category_string}}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
-    {% else %}
-    <div class="card article-card w-25 mb-3">
-        <div class="card-header article-header">
-            {{article.title}}
-        </div>
-        <div class="card-body article-body">
-            <p class="card-text priority-text">{{article.body | safe}}</p>
-        </div>
-    </div>
-    {% endif %}
-    {% endfor %}
 </div>
 
 {% endblock %}

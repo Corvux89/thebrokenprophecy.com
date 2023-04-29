@@ -1,6 +1,6 @@
 import traceback
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_discord import DiscordOAuth2Session

@@ -146,3 +146,19 @@ body {
     rgba(0,0,0,0.16), 0 3px 6px
     rgba(0,0,0,0.23);
 }
+
+.priority-card:hover, .article-card:hover{
+    box-shadow: 0 12px 24px rgba(0,0,0,0.16), 0 12px 24px rgba(0,0,0,0.23);
+}
+
+.article-link::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: auto;
+    content: "";
+    background-color: rgba(0,0,0,0);
+}
