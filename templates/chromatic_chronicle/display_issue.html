@@ -24,6 +24,28 @@
             </div>
         </div>
     </header>
+
+    {% for article in articles %}
+    {% if "global" in article.categories  %}
+    <div class="card priority-card w-100 mb-3">
+        <div class="card-header priority-header">
+            {{article.title}}
+        </div>
+        <div class="card-body priority-body">
+            <p class="card-text priority-text">{{article.body | safe}}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="card article-card w-25 mb-3">
+        <div class="card-header article-header">
+            {{article.title}}
+        </div>
+        <div class="card-body article-body">
+            <p class="card-text priority-text">{{article.body | safe}}</p>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
 </div>
 
 {% endblock %}
