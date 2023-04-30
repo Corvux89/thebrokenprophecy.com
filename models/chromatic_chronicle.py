@@ -43,3 +43,5 @@ class Article(db.Model):
     players = db.Column(db.String)
     factions = db.Column(ARRAY(db.Integer))
     priority = db.Column(db.Integer)
+    submit_user = db.Column(db.Integer)
+    approved = db.Column(db.Boolean)

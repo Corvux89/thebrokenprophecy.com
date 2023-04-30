@@ -20,6 +20,14 @@
             <div class="col-auto">
                 <a href="" class="btn btn-danger" data-bs-target="#modalDelForm" data-bs-toggle="modal">Delete Article</a>
             </div>
+
+            <div class="col-auto">
+                {% if article.approved == False %}
+                <a href="{{url_for('chronicle.approve_article',issue=issue, article=article.id, approve=True) }}" class="btn btn-success">Approve</a>
+                {% else %}
+                <a href="{{url_for('chronicle.approve_article',issue=issue, article=article.id, approve=False) }}" class="btn btn-warning">Retract Article</a>
+                {% endif %}
+            </div>
         </div>
 
         <div class="row mb-3">

@@ -35,6 +35,8 @@ def display_issue(issue=None):
 def display_article(issue, article):
     issue = current_app.db.get_or_404(Issue, issue)
     article = current_app.db.get_or_404(Article, article)
+    if not article.approved:
+        return redirect(url_for('chronicle.display_issue', issue=issue.id))
     authors = current_app.db.session.query(Author).all()
     article.author_str = ', '.join([f"{a.name}" for a in authors if a.id in article.authors])
     return render_template('/chromatic_chronicle/display_article.html', issue=issue, article=article)
@@ -195,3 +197,13 @@ def view_authors():
     authors = current_app.db.session.query(Author).all()
 
     return render_template('/chromatic_chronicle/edit_author.html', authors=authors)
+
+@chronicle_blueprint.route('/editor/<issue>/<article>/approve/<approve>')
+@is_chronicler
+def approve_article(issue, article, approve):
+    article = current_app.db.get_or_404(Article,article)
+    article.approved = False if approve=="False" else True
+    current_app.db.session.add(article)
+    current_app.db.session.commit()
+
+    return render_template('/chromatic_chronicle/edit_article.html', issue=issue, article=article)

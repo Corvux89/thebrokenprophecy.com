@@ -2,14 +2,15 @@ import calendar
 
 import flask
 from flask import current_app
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 from models import *
 
 
 def get_issues():
     issues = current_app.db.session.query(Issue).all()
-    art_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count')) \
+    art_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count'),
+                                             func.count(Article.approved).label('approved')) \
         .join(Article, Article.issue == Issue.id) \
         .group_by(Issue.id).all()
 
@@ -26,7 +27,7 @@ def get_issues():
 
         for c in art_count:
             if c.id == i.id:
-                i_dict['articles'] = c.count
+                i_dict['articles'] = f"{c.approved} ({c.count})"
                 break
         d_out.append(i_dict)
 
@@ -49,6 +50,7 @@ def get_articles(issue):
         a_dict['priority'] = a.priority
         a_dict['author_list'] = []
         a_dict['categories'] = ", ".join(f"{c}" for c in a.categories)
+        a_dict['approved'] = a.approved
 
         for a in a.authors:
             for author in authors:
@@ -104,7 +106,7 @@ def fetch_article(request: flask.Request):
 
 
 def get_formatted_articles(issue: Issue):
-    articles = current_app.db.session.query(Article).filter(Article.issue == issue.id).all()
+    articles = current_app.db.session.query(Article).filter(and_(Article.issue == issue.id, Article.approved==True)).all()
     authors = current_app.db.session.query(Author).all()
     factions = current_app.db.session.query(Faction).all()
 

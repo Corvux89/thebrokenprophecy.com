@@ -112,6 +112,7 @@
             <th data-field ="authors" data-filter-control="select">Authors</th>
             <th data-field="published" data-filter-control="select">Categories</th>
             <th data-field="published-date" data-filter-control="input">Priority</th>
+            <th data-field="approved" data-filter-control="select">Approved?</th>
         </tr>
         </thead>
         <tbody>
@@ -121,6 +122,11 @@
             <td>{{article.authors}}</td>
             <td>{{article.categories}}</td>
             <td>{{article.priority}}</td>
+            {% if article.approved == False %}
+            <td><i class="bi bi-x-square"></i></td>
+            {% else %}
+            <td><i class="bi bi-check-square"></i></td>
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>
