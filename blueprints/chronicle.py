@@ -33,7 +33,11 @@ def display_issue(issue=None):
 
 @chronicle_blueprint.route('/<issue>/<article>')
 def display_article(issue, article):
-    return f"Page for Issue {issue} article {article} coming soon!"
+    issue = current_app.db.get_or_404(Issue, issue)
+    article = current_app.db.get_or_404(Article, article)
+    authors = current_app.db.session.query(Author).all()
+    article.author_str = ', '.join([f"{a.name}" for a in authors if a.id in article.authors])
+    return render_template('/chromatic_chronicle/display_article.html', issue=issue, article=article)
 
 
 # Editor Stuff

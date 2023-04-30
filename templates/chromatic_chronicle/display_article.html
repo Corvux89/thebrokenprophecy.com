@@ -1,0 +1,17 @@
+{% extends "template.html" %} {% block body %}
+
+<div class="container-fluid mt-3">
+    <div class="text-left text-white fs-1">{{article.title}}</div>
+    <div class="row ">
+        <div class="col">
+            <div class="text-white fw-lighter d-inline-block">Article by {{article.author_str}}</div>
+            {% for cat in article.categories %}
+            <div class="ml-4 d-inline-block"><span class="badge bg-primary">{{ cat }}</span></div>
+            {% endfor %}
+        </div>
+    <div>
+
+    <div class="article-body mt-3">{{ article.body | safe}}</div>
+</div>
+
+{% endblock %}
