@@ -137,6 +137,10 @@ body {
     cursor: pointer;
 }
 
+.article-edit-body{
+    height: 500px !important;
+}
+
 /* Chromatic Chronicle CSS below */
 .priority-card, .article-card{
     background-color: rgba(166,166,166,1);

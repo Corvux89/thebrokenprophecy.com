@@ -9,9 +9,14 @@ from models import *
 
 def get_issues():
     issues = current_app.db.session.query(Issue).all()
-    art_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count'),
-                                             func.count(Article.approved).label('approved')) \
+
+    art_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count')) \
         .join(Article, Article.issue == Issue.id) \
+        .group_by(Issue.id).all()
+
+    approved_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count'))\
+        .join(Article, Article.issue == Issue.id) \
+        .filter(Article.approved == True)\
         .group_by(Issue.id).all()
 
     d_out = []
@@ -27,8 +32,10 @@ def get_issues():
 
         for c in art_count:
             if c.id == i.id:
-                i_dict['articles'] = f"{c.approved} ({c.count})"
-                break
+                for a in approved_count:
+                    if a.id == c.id:
+                        i_dict['articles'] = f"{a.count} ({c.count})"
+                        break
         d_out.append(i_dict)
 
     d_out = sorted(d_out, key=lambda i: i['id'], reverse=True)
@@ -91,7 +98,9 @@ def fetch_article(request: flask.Request):
         players=None if request.form.get('players') == "None" else request.form.get('players'),
         priority=request.form.get('priority'),
         body=request.form.get('body'),
-        categories=request.form.getlist('categories')
+        categories=request.form.getlist('categories'),
+        approved=False,
+        submit_user=current_app.discord.fetch_user().id
     )
 
     factions = []
