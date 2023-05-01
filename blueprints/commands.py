@@ -8,7 +8,7 @@ commands_blueprint = Blueprint("commands", __name__)
 def command_list():
     f = open('json/commands.json')
     commands = json.load(f)
-    return render_template('commands.html', commands=commands['category'], role_list=commands['roles'])
+    return render_template('/commands/commands.html', commands=commands['category'], role_list=commands['roles'])
 
 @commands_blueprint.route('/<role>')
 def role_commands(role):
