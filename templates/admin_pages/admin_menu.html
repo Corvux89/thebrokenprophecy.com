@@ -3,21 +3,39 @@
 <h1 class="m-2">Administrator's Menu</h1>
 
 <form method="get">
-    <div class="row mb-3">
-        <div class="col-sm-3 m-3">
-            <a href="{{ url_for('admin.item_list') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Add/Modify Items</a>
+    <div class="row w-100 row-cols-1 row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-lg-3 g-2">
+        <div class="col">
+            <a href="{{ url_for('admin.item_list') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Add/Modify
+                Items</a>
+        </div>
 
-            <a href="{{ url_for('admin.admin_races') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Add/Modify Races</a>
+        <div class="col">
+            <a href="{{ url_for('admin.admin_races') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Add/Modify
+                Races</a>
+        </div>
 
-            <a href="{{ url_for('admin.admin_classes') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Add/Modify Classes</a>
+        <div class="col">
+            <a href="{{ url_for('admin.admin_classes') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Add/Modify
+                Classes</a>
+        </div>
 
-            <a href="{{ url_for('admin.view_logs') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">View logs</a>
+        <div class="col">
+            <a href="{{ url_for('admin.view_logs') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">View
+                logs</a>
+        </div>
 
-            <a href="{{ url_for('admin.admin_message') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Send messages</a>
+        <div class="col">
+            <a href="{{ url_for('admin.admin_message') }}" class="btn btn-primary btn-lg btn-block m-2" role="button">Send
+                messages</a>
+        </div>
+
+        <div class="col">
+            <a href="{{ url_for('admin.greeting_message') }}" class="btn btn-primary btn-lg btn-block m-2"
+               role="button">Update
+                Greeting</a>
         </div>
     </div>
-
-    <div class="row mb-3">
+    <div class="row mb-3 w-100">
         <div clss="col-auto">
             <a href="{{ url_for('auth.logout') }}" class="btn btn-danger m-2" role="button">Logout</a>
         </div>

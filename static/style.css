@@ -19,7 +19,7 @@ p {
     font-size: 120%;
 }
 
-body {
+body{
     display: inline;
     font-family: verdana;
     background-color: #2C2F33;
@@ -41,7 +41,7 @@ body {
     background-color: rgba(0,0,0,0);
 }
 
-:root {
+:root{
     color: #d5e0e7;
 }
 
@@ -59,7 +59,7 @@ body {
     font-weight: lighter;
 }
 
-.command-name{
+.command-name, .var-example{
     color: #77b5f7;
     font-weight: bold;
 }
@@ -72,7 +72,7 @@ body {
     background-color: silver;
 }
 
-.required-name{
+.required-name, .var-name{
     font-weight: bold;
     color: #e36927;
 }
@@ -137,8 +137,8 @@ body {
     cursor: pointer;
 }
 
-.article-edit-body{
-    height: 500px !important;
+.bigtext{
+    height: calc(3.5rem + 500px) !important;
 }
 
 /* Chromatic Chronicle CSS below */
@@ -165,4 +165,8 @@ body {
     pointer-events: auto;
     content: "";
     background-color: rgba(0,0,0,0);
+}
+
+.article-edit-body{
+    height: 500px !important;
 }

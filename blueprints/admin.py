@@ -5,7 +5,7 @@ from constants import GUILD_ID
 from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses, is_admin, get_logs
 from models import CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
     Character, BlackSmithItem, ConsumableItem, ScrollItem, WondrousItem, BlackSmithType, ConsumableType, MagicSchool, \
-    Rarity
+    Rarity, BPGuild
 
 admin_blueprint = Blueprint("admin", __name__)
 
@@ -25,6 +25,19 @@ def admin_menu(path = None, sub=None):
         return redirect(f'{url_for("admin.admin_menu")}/{path}')
     else:
         return render_template('/admin_pages/admin_menu.html')
+
+@admin_blueprint.route('/greeting', methods=['GET', 'POST'])
+def greeting_message():
+    guild = current_app.db.get_or_404(BPGuild, GUILD_ID)
+
+    if flask.request.method == 'POST':
+        guild.greeting = flask.request.form.get('message')
+        current_app.db.session.add(guild)
+        current_app.db.session.commit()
+        return redirect(f'{url_for("admin.admin_menu")}')
+
+
+    return render_template('/admin_pages/admin_greeting_edit.html', guild=guild)
 
 @admin_blueprint.route('/message', methods=['GET', 'POST'])
 def admin_message():

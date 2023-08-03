@@ -1,0 +1,42 @@
+{% extends "template.html" %} {% block body %}
+<h1 class="m-2">Greeting Message</h1>
+
+<div class="container-fluid">
+    <form action="{{ url_for('admin.greeting_message') }}" method="post">
+        <div class="row m-3">
+            <div class="form-floating">
+                <textarea class="form-control bigtext" id="message" rows="20"
+                          name="message">{{ guild.greeting }}</textarea>
+                <label for="message">Message</label>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-auto">
+                <a href="{{ url_for('admin.admin_menu') }}" class="btn btn-secondary" role="button">Back to Admin
+                    Menu</a>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="d-flex flex-column">
+                <div class="border border-primary rounded m-2">
+                    <div class="p-2 text-white">Variables:</div>
+                    <div class="d-inline var-name ms-2">{user}:</div>
+                    <div class="d-inline text-white">Mention of the user calling the command/function Ex:</div>
+                    <div class="d-inline var-example">Hello {user}</div>
+                    <br>
+                    <div class="d-inline var-name ms-2">{&#35;channel}:</div>
+                    <div class="d-inline text-white">Channel Link Ex:</div>
+                    <div class="d-inline var-example">Check out {&#35;intro-and-format} for cool information</div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

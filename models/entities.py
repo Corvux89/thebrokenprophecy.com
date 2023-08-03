@@ -104,3 +104,9 @@ class BPLog(db.Model):
     shop_id = db.Column(db.Integer)
     adventure_id = db.Column(db.Integer)
     invalid = db.Column(db.Boolean)
+
+class BPGuild(db.Model):
+    __tablename__ = 'guilds'
+
+    id = db.Column(db.Integer, primary_key=True)
+    greeting = db.Column(db.String)
