@@ -1,17 +1,22 @@
 {% extends "template.html" %} {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+            <div class="position-sticky">
+                <a role="button" class="btn btn-light issue-button" href="{{ url_for('chronicle.display_issue', issue=issue.id) }}">
+                    Back
+                </a>
 
-<div class="container-fluid mt-3">
-    <div class="text-left text-white fs-1">{{article.title}}</div>
-    <div class="row ">
-        <div class="col">
-            <div class="text-white fw-lighter d-inline-block">Article by {{article.author_str}}</div>
-            {% for cat in article.categories %}
-            <div class="ml-4 d-inline-block"><span class="badge bg-primary">{{ cat }}</span></div>
-            {% endfor %}
+            </div>
         </div>
-    <div>
-
-    <div class="article-body mt-3">{{ article.body | safe}}</div>
+        <div class="col-md">
+            <article class="cc-post mb-4">
+                <h2 class="cc-post-title mb-1">{{article.title}}</h2>
+                <p class="cc-post-meta mb-1">By {{article.author_str}}</p>
+                <p class="cc-body">{{article.body | safe }}</p>
+            </article>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

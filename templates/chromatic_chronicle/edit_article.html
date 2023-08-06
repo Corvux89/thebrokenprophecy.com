@@ -1,5 +1,6 @@
 {% extends "template.html" %} {% block body %}
 
+
 {% if article == None %}
 <h1 class="m-2">Article not found</h1>
 <a href="/admin/items" class="btn btn-primary m-2" role="button">Back to issue</a>
@@ -10,7 +11,8 @@
     <form action="{{ url_for('chronicle.edit_article', issue=issue, article=article.id) }}" method="post">
         <div class="row mb-3">
             <div class="col-auto">
-                <a href="{{url_for('chronicle.edit_issue', issue=issue) }}" class="btn btn-secondary" role="button">Back to Issue</a>
+                <a href="{{url_for('chronicle.edit_issue', issue=issue) }}" class="btn btn-secondary" role="button">Back
+                    to Issue</a>
             </div>
 
             <div class="col-auto">
@@ -18,14 +20,17 @@
             </div>
 
             <div class="col-auto">
-                <a href="" class="btn btn-danger" data-bs-target="#modalDelForm" data-bs-toggle="modal">Delete Article</a>
+                <a href="" class="btn btn-danger" data-bs-target="#modalDelForm" data-bs-toggle="modal">Delete
+                    Article</a>
             </div>
 
             <div class="col-auto">
                 {% if article.approved == False %}
-                <a href="{{url_for('chronicle.approve_article',issue=issue, article=article.id, approve=True) }}" class="btn btn-success">Approve</a>
+                <a href="{{url_for('chronicle.approve_article',issue=issue, article=article.id, approve=True) }}"
+                   class="btn btn-success">Approve</a>
                 {% else %}
-                <a href="{{url_for('chronicle.approve_article',issue=issue, article=article.id, approve=False) }}" class="btn btn-warning">Retract Article</a>
+                <a href="{{url_for('chronicle.approve_article',issue=issue, article=article.id, approve=False) }}"
+                   class="btn btn-warning">Retract Article</a>
                 {% endif %}
             </div>
         </div>
@@ -42,21 +47,24 @@
         <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">
-                    <input type="number" id="issue" class="form-control" placeholder="Issue" required name="issue" min="0" max="{{issue_max}}" value={{article.issue}}>
+                    <input type="number" id="issue" class="form-control" placeholder="Issue" required name="issue"
+                           min="0" max="{{issue_max}}" value={{article.issue}}>
                     <label for="issue">Issue</label>
                 </div>
             </div>
 
             <div class="col-sm">
                 <div class="form-floating">
-                    <input type="number" id="priority" class="form-control" placeholder="Priority" name="priority" required min="0" max="10" value="{{article.priority}}">
+                    <input type="number" id="priority" class="form-control" placeholder="Priority" name="priority"
+                           required min="0" max="10" value="{{article.priority}}">
                     <label for="priority">Priority</label>
                 </div>
             </div>
 
             <div class="col-9">
                 <div class="form-floating">
-                    <input type="text" id="players" class="form-control" id="player" name="players" value="{{article.players}}">
+                    <input type="text" id="players" class="form-control" id="player" name="players"
+                           value="{{article.players}}">
                     <label for="player">Players</label>
                 </div>
             </div>
@@ -68,9 +76,11 @@
             <div class="col-4">
                 <div class="form-check form-check-inline">
                     {% if faction.id in article.factions %}
-                    <input class="form-check-input" type="checkbox" id="{{faction.value}}" name=faction-{{faction.id}}" value="{{faction.id}}" checked>
+                    <input class="form-check-input" type="checkbox" id="{{faction.value}}" name=faction-{{faction.id}}"
+                           value="{{faction.id}}" checked>
                     {% else %}
-                    <input class="form-check-input" type="checkbox" id="{{faction.value}}" name=faction-{{faction.id}}" value="{{faction.id}}">
+                    <input class="form-check-input" type="checkbox" id="{{faction.value}}" name=faction-{{faction.id}}"
+                           value="{{faction.id}}">
                     {% endif %}
                     <label class="form-check-label text-white" for="{{faction.value}}">{{faction.value}}</label>
                 </div>
@@ -108,14 +118,25 @@
             </div>
         </div>
 
-        <div class="row mb-3"
+        <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">
-                    <textarea class="form-control article-edit-body" placeholder="Article Text" id="body" name="body" required>{{article.body}}</textarea>
+                    <textarea class="form-control article-edit-body" placeholder="Article Text" id="body" name="body"
+                              required>{{article.body}}</textarea>
                     <label for="body">Article Body</label>
                 </div>
             </div>
         </div>
+
+        <div class="row mb-3">
+            <div class="col">
+
+
+
+            </div>
+        </div>
+
+
     </form>
 </div>
 

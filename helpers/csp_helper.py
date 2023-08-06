@@ -10,7 +10,7 @@ def get_csp():
             'https://www.google-analytics.com/',
             'https://use.fontawesome.com',
             'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css',
-            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/fonts/',
+            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/fonts/'
         ],
         'script-src': [
             '\'self\'',

@@ -4,20 +4,20 @@ from constants import ADMIN_ROLE, GUILD_ID, CHRON_ROLE
 
 
 def is_admin(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            if not current_app.discord.authorized:
-                return redirect(url_for('auth.login', next=request.endpoint))
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_app.discord.authorized:
+            return redirect(url_for('auth.login', next=request.endpoint))
 
+        user = current_app.discord.fetch_user()
+        member = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
 
-            user = current_app.discord.fetch_user()
-            member = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
+        if not has_role(member, ADMIN_ROLE):
+            print(f'{user.name} tried to get access to admin menus')
+            return redirect(url_for('homepage'))
+        return f(*args, **kwargs)
 
-            if not has_role(member, ADMIN_ROLE):
-                print(f'{user.name} tried to get access to admin menus')
-                return redirect(url_for('homepage'))
-            return f(*args, **kwargs)
-        return decorated_function
+    return decorated_function
 
 
 def is_chronicler(f):
@@ -37,10 +37,6 @@ def is_chronicler(f):
 
     return decorated_function
 
+
 def has_role(member, roles_to_check):
-    for r in member['roles']:
-        if r in roles_to_check:
-            return True
-
-    return False
-
+    return True if len([r for r in member['roles'] if r in roles_to_check]) > 0 else False

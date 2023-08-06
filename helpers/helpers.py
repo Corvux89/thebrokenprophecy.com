@@ -20,10 +20,7 @@ def get_race_table():
     stat['races'] = []
 
     for r in races:
-        race_dict = {}
-        race_dict["name"] = r.value
-        race_dict["count"] = 0
-        race_dict["subraces"] = []
+        race_dict = {"name": r.value, "count": 0, "subraces": []}
         for c in race_count:
             if c.value == r.value:
                 race_dict["count"] = c.count
@@ -40,9 +37,7 @@ def get_race_table():
         .group_by(CharacterSubrace.id).all()
 
     for s in subraces:
-        sub_dict = {}
-        sub_dict["name"] = s.value
-        sub_dict["count"] = 0
+        sub_dict = {"name": s.value, "count": 0}
         for c in subrace_count:
             if c.id == s.id:
                 sub_dict["count"] = c.count
@@ -70,10 +65,7 @@ def get_class_table():
     stat['classes'] = []
 
     for c in classes:
-        class_dict = {}
-        class_dict["name"] = c.value
-        class_dict["count"] = 0
-        class_dict["subclasses"] = []
+        class_dict = {"name": c.value, "count": 0, "subclasses": []}
         for i in class_count:
             if i.value == c.value:
                 class_dict["count"] = i.count
@@ -91,9 +83,7 @@ def get_class_table():
         .group_by(CharacterSubclass.id).all()
 
     for s in subclasses:
-        sub_dict = {}
-        sub_dict["name"] = s.value
-        sub_dict["count"] = 0
+        sub_dict = {"name": s.value, "count": 0}
         for c in subclass_count:
             if c.id == s.id:
                 sub_dict["count"] = c.count
@@ -113,9 +103,7 @@ def get_class_table():
 
     stat["classes"] = sorted(stat["classes"], key=lambda c: c["name"])
 
-    m_dict = {}
-    m_dict["name"] = "Multiclass"
-    m_dict["subclasses"] = []
+    m_dict = {"name": "Multiclass", "subclasses": []}
     m_count = 0
     for p in player_count:
         if p.count > 1:
@@ -130,18 +118,11 @@ def get_adventures(guild_members):
     adventures = current_app.db.session.query(Adventures) \
         .filter(and_(Adventures.guild_id == GUILD_ID, Adventures.end_ts == None))
 
-    d_out = {}
-
-    d_out['adventures'] = []
+    d_out = {'adventures': []}
 
     for a in adventures:
-        a_dict = {}
-        a_dict['name'] = a.name
-        a_dict['dm_ids'] = [str(a) for a in a.dms]
-        a_dict['role_id'] = str(a.role_id)
-        a_dict['tier'] = a.tier
-        a_dict['players'] = []
-        a_dict['dms'] = []
+        a_dict = {'name': a.name, 'dm_ids': [str(a) for a in a.dms], 'role_id': str(a.role_id), 'tier': a.tier,
+                  'players': [], 'dms': []}
 
         d_out['adventures'].append(a_dict)
 
@@ -157,7 +138,6 @@ def get_adventures(guild_members):
                         a['dms'].append(character.name)
                     else:
                         a['players'].append(character.name)
-
 
     for a in d_out['adventures']:
         a['dm_string'] = ", ".join(f"{dm}" for dm in a['dms'])

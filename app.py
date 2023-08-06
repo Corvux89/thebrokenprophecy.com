@@ -84,7 +84,7 @@ Bootstrap(app)
 talisman = Talisman(
     app,
     content_security_policy=csp,
-    content_security_policy_nonce_in=['script-src', 'script-src-elem']
+    content_security_policy_nonce_in=['script-src', 'script-src-elem', 'style-src']
 )
 
 # Blueprints
