@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import redirect, url_for, current_app, request
+from flask import redirect, url_for, current_app, request, session
 from constants import ADMIN_ROLE, GUILD_ID, CHRON_ROLE
 
 
@@ -30,6 +30,8 @@ def is_chronicler(f):
         member = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
 
         role_to_check = ADMIN_ROLE + CHRON_ROLE
+
+        s = session
 
         if not bool(set(role_to_check) & set(member['roles'])):
             return redirect(url_for('homepage'))
