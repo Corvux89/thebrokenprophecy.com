@@ -5,8 +5,8 @@
 <script nonce="{{ csp_nonce() }}">
 tinymce.init({
   selector: 'textarea#body',
-  plugins: 'lists link anchor charmap code',
-  toolbar: 'blocks | bold italic bullist numlist | link image charmap code',
+  plugins: 'lists link anchor charmap code fullscreen',
+  toolbar: 'blocks | bold italic bullist numlist | link image charmap code | fullscreen',
   menubar: false,
   setup: (editor) => {
     editor.on('init', () => {

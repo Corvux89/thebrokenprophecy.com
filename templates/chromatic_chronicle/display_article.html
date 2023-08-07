@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-1">
-            <div class="position-sticky">
+            <div class="position-sticky m-3">
                 <a role="button" class="btn btn-light issue-button" href="{{ url_for('chronicle.display_issue', issue=issue.id) }}">
                     Back
                 </a>
@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-md">
-            <article class="cc-post mb-4">
+            <article class="cc-post m-4 border border-dark rounded">
                 <h2 class="cc-post-title mb-1">{{article.title}}</h2>
                 <p class="cc-post-meta mb-1">By {{article.author_str}}</p>
                 <p class="cc-body">{{article.body | safe }}</p>

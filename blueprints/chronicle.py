@@ -28,7 +28,7 @@ def display_issue(issue=None):
     issues = current_app.db.session.query(Issue).filter(and_(Issue.id != issue.id, Issue.published == True)).order_by(
         desc(Issue.publish_date)).all()
 
-    return render_template('/chromatic_chronicle/display_issue1.html', issue=issue, articles=articles, others=issues,
+    return render_template('/chromatic_chronicle/display_issue.html', issue=issue, articles=articles, others=issues,
                            drop_string=drop_string)
 
 @chronicle_blueprint.route('/<issue>/<article>')

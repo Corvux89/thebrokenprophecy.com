@@ -1,11 +1,13 @@
 {% extends "template.html" %} {% block body %}
 
-<div class="container-fluid mt-3">
+<div class="container">
     <header class="issue-header py-3">
         <div class="row">
             <div class="col-sm">
                 <div class="dropdown d-inline">
-                    <button class="btn btn-secondary dropdown-toggle m-2" type="buttom" data-bs-toggle="dropdown" aria-expanded="false">{{drop_string}}</button>
+                    <button class="btn btn-secondary dropdown-toggle m-2" type="buttom" data-bs-toggle="dropdown"
+                            aria-expanded="false">{{drop_string}}
+                    </button>
                     <ul class="dropdown-menu">
                         {% for other in others %}
                         <a class="dropdown-item" href="{{ url_for('chronicle.display_issue', issue=other.id) }}">{{other.name}}</a>
@@ -25,41 +27,40 @@
         </div>
     </header>
 
-    <div class="row w-100 row-cols-1 row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-lg-3 g-2">
+    <main class="container">
         {% for article in articles %}
-            {% if "global" in article.categories %}
-            <div class="col w-100">
-                <div class="card priority-card m-3">
-                    <div class="card-header priority-header text-center text-black fw-bold fs-1">
-                        {{article.title}}
-                        <p class="fw-lighter fs-6 text-center text-grey">{{article.author_string | safe}}</p>
-                    </div>
-                    <div class="card-body priority-body">
-                        <p class="card-text priority-text">{{article.preview | safe}}</p>
-                        <a href="{{ url_for('chronicle.display_article', issue=issue.id, article=article.id) }}" class="article-link"></a>
-                    </div>
-                    <div class="card-footer fs-6">Tags: {{article.category_string}}</div>
-                </div>
+        {% if "global" in article.categories %}
+        <div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
+            <div class="col-md px-0">
+                <h1 class="display-4 fst-italic global-title">{{article.title}}</h1>
+                <p class="lead my-3">{{article.preview | safe}}</p>
+                <p class="lead mb-0">
+                    <a href="{{ url_for('chronicle.display_article', issue=issue.id, article=article.id) }}" class="article-link text-white fw-bold">Continue reading...</a>
+                </p>
             </div>
-            {% else %}
-            <div class="col w-25">
-                <div class="card article-card m-3">
-                    <div class="card-header article-header text-center text-black fw-bold fs-2">
-                        {{article.title}}
-                        <p class="fw-lighter fs-6 text-center text-grey">{{ article.author_string | safe}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="row mb-3">
+            {% for article in articles %}
+            {% if "global" not in article.categories %}
+            <div class="col-md-6">
+                <div class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative article-card">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        {% if article.category_string %}
+                        <strong class="d-inline-block mb-2 text-primary">{{article.category_string}}</strong>
+                        {% endif %}
+                        <h3 class="mb-0">{{article.title}}</h3>
+                        <p class="card-text mb-auto">{{article.preview | safe}}</p>
+                        <a href="{{ url_for('chronicle.display_article', issue=issue.id, article=article.id) }}" class="article-link stretched-link">Continue reading</a>
                     </div>
-                    <div class="card-body article-body">
-                        <p class="card-text priority-text">{{article.preview | safe}}</p>
-                        <a href="{{ url_for('chronicle.display_article', issue=issue.id, article=article.id) }}" class="article-link"></a>
-                    </div>
-                    {% if article.category_string %}
-                    <div class="card-footer fs-6">Tags: {{article.category_string}}</div>
-                    {% endif %}
                 </div>
             </div>
             {% endif %}
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    </main>
 </div>
 
 {% endblock %}
