@@ -206,4 +206,10 @@ def approve_article(issue, article, approve):
     current_app.db.session.add(article)
     current_app.db.session.commit()
 
-    return render_template('/chromatic_chronicle/edit_article.html', issue=issue, article=article)
+    authors = current_app.db.session.query(Author).all()
+    issue_max = current_app.db.session.query(Issue).order_by(Issue.id.desc()).first()
+    categories = current_app.db.session.query(ChromaticCategory).all()
+    factions = current_app.db.session.query(Faction).all()
+
+    return render_template('/chromatic_chronicle/edit_article.html', issue=issue, article=article, authors=authors,
+                           issue_max=issue_max.id, categories=categories, factions=factions)
