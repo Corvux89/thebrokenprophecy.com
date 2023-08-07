@@ -1,5 +1,31 @@
 {% extends "template.html" %} {% block body %}
 
+<script src="{{ url_for('static', filename='tinymce/js/tinymce/tinymce.min.js') }}"></script>
+
+<script nonce="{{ csp_nonce() }}">
+tinymce.init({
+  selector: 'textarea#body',
+  plugins: 'lists link anchor charmap code',
+  toolbar: 'blocks | bold italic bullist numlist | link image charmap code',
+  menubar: false,
+  setup: (editor) => {
+    editor.on('init', () => {
+      editor.getContainer().style.transition='border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out';
+    });
+    editor.on('focus', () => {
+      editor.getContainer().style.boxShadow='0 0 0 .2rem rgba(0, 123, 255, .25)';
+      editor.getContainer().style.borderColor='#80bdff';
+    });
+    editor.on('blur', () => {
+      editor.getContainer().style.boxShadow='';
+      editor.getContainer().style.borderColor='';
+    });
+  }
+});
+
+
+</script>
+
 <h1 class="m-2">New Article for {{issue.name}}</h1>
 
 <div class="container-fluid mt-3">

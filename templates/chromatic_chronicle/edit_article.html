@@ -1,5 +1,30 @@
 {% extends "template.html" %} {% block body %}
 
+<script src="{{ url_for('static', filename='tinymce/js/tinymce/tinymce.min.js') }}"></script>
+
+<script nonce="{{ csp_nonce() }}">
+tinymce.init({
+  selector: 'textarea#body',
+  plugins: 'lists link anchor charmap code',
+  toolbar: 'blocks | bold italic bullist numlist | link image charmap code',
+  menubar: false,
+  setup: (editor) => {
+    editor.on('init', () => {
+      editor.getContainer().style.transition='border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out';
+    });
+    editor.on('focus', () => {
+      editor.getContainer().style.boxShadow='0 0 0 .2rem rgba(0, 123, 255, .25)';
+      editor.getContainer().style.borderColor='#80bdff';
+    });
+    editor.on('blur', () => {
+      editor.getContainer().style.boxShadow='';
+      editor.getContainer().style.borderColor='';
+    });
+  }
+});
+
+
+</script>
 
 {% if article == None %}
 <h1 class="m-2">Article not found</h1>
@@ -120,23 +145,10 @@
 
         <div class="row mb-3">
             <div class="col-sm">
-                <div class="form-floating">
-                    <textarea class="form-control article-edit-body" placeholder="Article Text" id="body" name="body"
-                              required>{{article.body}}</textarea>
-                    <label for="body">Article Body</label>
-                </div>
+                <textarea id="body" name="body" class="article-edit-body form-control" placeholder="Article Text"
+                          required>{{article.body}}</textarea>
             </div>
         </div>
-
-        <div class="row mb-3">
-            <div class="col">
-
-
-
-            </div>
-        </div>
-
-
     </form>
 </div>
 

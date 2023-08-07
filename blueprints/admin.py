@@ -48,7 +48,7 @@ def admin_message():
         channel = flask.request.form.get('channel')
         message = flask.request.form.get('message')
         if channel and message:
-            current_app.discord.bot_request(f'/channels/{channel}/messages', "POST", json={"content": message})
+            msg = current_app.discord.bot_request(f'/channels/{channel}/messages', "POST", json={"content": message})
 
     return render_template('/admin_pages/admin_message.html', channels=channels, selected=channel)
 
