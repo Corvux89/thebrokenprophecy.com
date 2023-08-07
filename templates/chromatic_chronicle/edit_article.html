@@ -20,6 +20,9 @@ tinymce.init({
       editor.getContainer().style.boxShadow='';
       editor.getContainer().style.borderColor='';
     });
+     editor.on('change', function(){
+        tinymce.triggerSave();
+    });
   }
 });
 

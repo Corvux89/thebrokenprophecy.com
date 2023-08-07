@@ -20,6 +20,9 @@ tinymce.init({
       editor.getContainer().style.boxShadow='';
       editor.getContainer().style.borderColor='';
     });
+    editor.on('change', function(){
+        tinymce.triggerSave();
+    });
   }
 });
 
@@ -110,7 +113,6 @@ tinymce.init({
             <div class="col-sm">
                 <div class="form-floating">
                     <textarea class="form-control article-edit-body" placeholder="Article Text" id="body" name="body" required></textarea>
-                    <label for="body">Article Body</label>
                 </div>
             </div>
         </div>

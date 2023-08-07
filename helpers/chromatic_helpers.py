@@ -90,7 +90,7 @@ def fetch_article(request: flask.Request):
         submit_user=current_app.discord.fetch_user().id
     )
 
-    factions = [f for f in request.form.items() if 'faction' in f[0]]
+    factions = [f[1] for f in request.form.items() if 'faction' in f[0]]
 
     article.factions = factions
 
