@@ -1,30 +1,24 @@
 import flask
 from flask import Blueprint, current_app, redirect, url_for, render_template
 
+from blueprints.admin.category_admin import cat_admin_blueprint
 from constants import GUILD_ID
-from helpers import get_item_list, get_races, get_subraces, get_classes, get_subclasses, is_admin, get_logs
+from helpers import get_item_list, get_races, get_subraces, is_admin, get_logs
 from models import CharacterClass, CharacterSubclass, PlayerCharacterClass, CharacterRace, CharacterSubrace, \
     Character, BlackSmithItem, ConsumableItem, ScrollItem, WondrousItem, BlackSmithType, ConsumableType, MagicSchool, \
     Rarity, BPGuild
 
 admin_blueprint = Blueprint("admin", __name__)
+admin_blueprint.register_blueprint(cat_admin_blueprint)
 
 @admin_blueprint.before_request
 @is_admin
 def before_request():
     pass
 
-
 @admin_blueprint.route('/')
-@admin_blueprint.route('/<path>')
-@admin_blueprint.route('/<path>/<sub>')
-def admin_menu(path = None, sub=None):
-    if sub:
-        return redirect(f'{url_for("admin.admin_menu")}/{path}/{sub}')
-    elif path:
-        return redirect(f'{url_for("admin.admin_menu")}/{path}')
-    else:
-        return render_template('/admin_pages/admin_menu.html')
+def admin_menu():
+    return render_template('/admin_pages/admin_menu.html')
 
 @admin_blueprint.route('/greeting', methods=['GET', 'POST'])
 def greeting_message():
@@ -56,108 +50,22 @@ def admin_message():
 
 
 
-# Character Class Administration
-@admin_blueprint.route('/classes', methods=['GET', 'POST'])
-def admin_classes():
-    if flask.request.method == 'POST':
-        c_class = CharacterClass(
-            value=flask.request.form.get('name')
-        )
-
-        if c_class is not None:
-            current_app.db.session.add(c_class)
-            current_app.db.session.commit()
-
-    classes = get_classes()
-
-    return render_template('/admin_pages/admin_parent_list.html', parents=classes, label="Class", child="Subclasses",
-                           path="classes")
-
-
-@admin_blueprint.route('/classes/<c_class>', methods=['GET', 'POST'])
-def admin_sublasses(c_class):
-    if flask.request.method == 'POST':
-        parent = current_app.db.get_or_404(CharacterClass, c_class)
-        subclass = CharacterSubclass(
-            value=flask.request.form.get('name'),
-            parent=parent.id
-        )
-
-        if subclass is not None:
-            current_app.db.session.add(subclass)
-            current_app.db.session.commit()
-
-    subclasses = get_subclasses(c_class)
-    p_class = current_app.db.session.query(CharacterClass).filter(CharacterClass.id == c_class).first()
-
-    return render_template('/admin_pages/admin_child_list.html', children=subclasses, parent="class", label="Subclass",
-                           path="classes", parent_name=p_class.value, parent_id=p_class.id)
-
-
-@admin_blueprint.route('/classes/Subclass', methods=['POST'])
-def admin_subclass_edit():
-    if flask.request.method == 'POST':
-        s_class = current_app.db.get_or_404(CharacterSubclass, flask.request.form.get('childID'))
-        if flask.request.form.get('update') is not None:
-            s_class.value = flask.request.form.get('childName')
-
-            if s_class is not None:
-                current_app.db.session.add(s_class)
-                current_app.db.session.commit()
-
-        elif flask.request.form.get('delete') is not None:
-            c_classes = current_app.db.session.query(PlayerCharacterClass).filter(
-                PlayerCharacterClass.subclass == s_class.id)
-
-            if s_class is not None:
-
-                for c in c_classes:
-                    c.subclass = None
-                    current_app.db.session.add(c)
-
-                current_app.db.session.delete(s_class)
-                current_app.db.session.commit()
-
-    return redirect(f'{url_for("admin.admin_classes")}/{s_class.parent}')
-
-
-@admin_blueprint.route('/classes/delete', methods=['POST'])
-def admin_class_delete():
-    if flask.request.method == 'POST':
-        c_class = current_app.db.get_or_404(CharacterClass, flask.request.form.get('parentID'))
-        subclasses = current_app.db.session.query(CharacterSubclass).filter(CharacterSubclass.parent == c_class.id)
-        c_classes = current_app.db.session.query(PlayerCharacterClass).filter(
-            PlayerCharacterClass.primary_class == c_class.id)
-
-        for c in c_classes:
-            c.primary_class = 13  # Default to a Wizard
-            c.subclass = None
-            current_app.db.session.add(c)
-
-        for s in subclasses:
-            current_app.db.session.delete(s)
-
-        current_app.db.session.delete(c_class)
-        current_app.db.session.commit()
-
-        return redirect(url_for('admin.admin_classes'))
-
 
 # Character Race Administration
-@admin_blueprint.route('/races', methods=['GET', 'POST'])
-def admin_races():
-    if flask.request.method == 'POST':
-        race = CharacterRace(
-            value=flask.request.form.get('name')
-        )
-        if race is not None:
-            current_app.db.session.add(race)
-            current_app.db.session.commit()
-
-    races = get_races()
-
-    return render_template('/admin_pages/admin_parent_list.html', parents=races, label="Race", child="Subraces",
-                           path="races")
+# @admin_blueprint.route('/races', methods=['GET', 'POST'])
+# def admin_races():
+#     if flask.request.method == 'POST':
+#         race = CharacterRace(
+#             value=flask.request.form.get('name')
+#         )
+#         if race is not None:
+#             current_app.db.session.add(race)
+#             current_app.db.session.commit()
+#
+#     races = get_races()
+#
+#     return render_template('/admin_pages/cat_admin/pparent_list.html', parents=races, label="Race", child="Subraces",
+#                            path="races")
 
 
 @admin_blueprint.route('/races/<race>', methods=['GET', 'POST'])
@@ -176,7 +84,7 @@ def admin_subraces(race):
     subraces = get_subraces(race)
     race = current_app.db.session.query(CharacterRace).filter(CharacterRace.id == race).first()
 
-    return render_template('/admin_pages/admin_child_list.html', children=subraces, parent="race", label="Subrace",
+    return render_template('/admin_pages/child_list.html', children=subraces, parent="race", label="Subrace",
                            path="races", parent_name=race.value, parent_id=race.id)
 
 
@@ -248,7 +156,7 @@ def item_modify(table, id):
             item_update.seeking_only = True if flask.request.form.get('seeking') == "" else False
             item_update.source = None if flask.request.form.get('source') == "None" else \
                 flask.request.form.get('source')
-            item_update.notes = None if flask.request.form.get('notes') == "None" else flask.request.form.get('notes')
+            item_update.notes = None if flask.request.form.get('notes') == "None" or flask.request.form.get('notes') == "" else flask.request.form.get('notes')
 
         elif table.upper() == "CONSUMABLE":
             item_update = current_app.db.get_or_404(ConsumableItem, id)
@@ -260,7 +168,7 @@ def item_modify(table, id):
             item_update.seeking_only = True if flask.request.form.get('seeking') == "" else False
             item_update.source = None if flask.request.form.get('source') == "None" else \
                 flask.request.form.get('source')
-            item_update.notes = None if flask.request.form.get('notes') == "None" else flask.request.form.get('notes')
+            item_update.notes = None if flask.request.form.get('notes') == "None" or flask.request.form.get('notes') == "" else flask.request.form.get('notes')
 
         elif table.upper() == "SCROLL":
             item_update = current_app.db.get_or_404(ScrollItem, id)
@@ -271,7 +179,7 @@ def item_modify(table, id):
                 flask.request.form.get('source')
             item_update.level = flask.request.form.get('level')
             item_update.school = flask.request.form.get('school')
-            item_update.notes = None if flask.request.form.get('notes') == "None" else flask.request.form.get('notes')
+            item_update.notes = None if flask.request.form.get('notes') == "None" or flask.request.form.get('notes') == "" else flask.request.form.get('notes')
 
             classes = []
             for i in flask.request.form.items():
@@ -289,7 +197,7 @@ def item_modify(table, id):
             item_update.seeking_only = True if flask.request.form.get('seeking') == "" else False
             item_update.source = None if flask.request.form.get('source') == "None" else \
                 flask.request.form.get('source')
-            item_update.notes = None if flask.request.form.get('notes') == "None" else flask.request.form.get('notes')
+            item_update.notes = None if flask.request.form.get('notes') == "None" or flask.request.form.get('notes') == "" else flask.request.form.get('notes')
 
         if item_update is not None:
             current_app.db.session.add(item_update)

@@ -1,7 +1,5 @@
 from flask import current_app
 from sqlalchemy import literal, union, select
-
-from constants import GUILD_ID, LIMIT
 from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, ConsumableType, ScrollItem, WondrousItem, \
     CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, BPLog, Character, Activity
 

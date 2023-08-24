@@ -81,7 +81,7 @@
         </div>
 
          <div class="col-auto">
-             <a href="" data-bs-toggle="modal" data-bs-target="#modalParentForm" class="btn btn-primary">Add {{label}}</a>
+             <a href="" data-bs-toggle="modal" data-bs-target="#modalParentForm" class="btn btn-primary">Add {{parent_label | capitalize}}</a>
          </div>
     </div>
 
@@ -89,14 +89,14 @@
         <thead>
         <tr>
             <th data-field="name", data-filter-control="input">Name</th>
-            <th data-field="child", data-filter-control="input"># {{child}}</th>
+            <th data-field="child", data-filter-control="input"># {{child_label | capitalize}}</th>
         </tr>
         </thead>
 
         <tbody>
             {% if parents['parents'] != blank %}
             {% for parent in parents['parents'] %}
-            <tr class="parent-row" data-href="{{ url_for('admin.admin_menu', path=path, sub=parent.id) }}">
+            <tr class="parent-row" data-href="{{ url_for(href, parent=parent.id) }}">
                 <td>{{parent.name}}</td>
                 <td>{{parent.children}}</td>
             </tr>
@@ -111,7 +111,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold text-black">New {{label}}</h4>
+                    <h4 class="modal-title w-100 font-weight-bold text-black">New {{parent_label | capitalize}}</h4>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -120,8 +120,8 @@
                 <div class="modal-body mx-3">
                     <div class="md-form mb-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="{{label}} name" required>
-                            <label for="name">{{label}} Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="{{parent_label | capitalize}} name" required>
+                            <label for="name">{{parent_label | capitalize}} Name</label>
                         </div>
                     </div>
                 </div>

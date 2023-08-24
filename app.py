@@ -1,12 +1,10 @@
-import traceback
-
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_discord import DiscordOAuth2Session
 from werkzeug.security import generate_password_hash
 
-from blueprints.admin import admin_blueprint
+from blueprints.admin.admin import admin_blueprint
 from blueprints.adventures import adventures_blueprint
 from blueprints.auth import auth_blueprint
 from blueprints.chronicle import chronicle_blueprint
