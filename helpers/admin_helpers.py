@@ -1,7 +1,9 @@
 from flask import current_app
 from sqlalchemy import literal, union, select
+from werkzeug.datastructures import ImmutableMultiDict
+
 from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, ConsumableType, ScrollItem, WondrousItem, \
-    CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, BPLog, Character, Activity
+    CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, BPLog, Character, Activity, MagicSchool
 
 
 def get_item_list():
@@ -119,3 +121,110 @@ def get_logs():
              "invalid": l.invalid} for l in db_logs]
 
     return logs
+
+def get_table(str):
+    return BlackSmithItem if str.lower() == "blacksmith" else ConsumableItem if str.lower() == "consumable" else ScrollItem if str.lower() == "scroll" else WondrousItem if str.lower() == "wondrous" else None
+
+def get_subtype(str):
+    return current_app.db.session.query(BlackSmithType).all() if str.lower() == "blacksmith" else current_app.db.session.query(ConsumableType).all() if str.lower() == "consumable" else None
+
+def get_table_items(table, id):
+    sub_type = get_subtype(table)
+    table = get_table(table)
+
+    item = current_app.db.session.query(table).filter(table.id == id).first()
+    schools = current_app.db.session.query(MagicSchool).all() if hasattr(item, "school") else None
+    classes = current_app.db.session.query(CharacterClass).all() if hasattr(item, "classes") else None
+
+    return item, sub_type, schools, classes
+
+def update_item(table, id, form: ImmutableMultiDict[str, str]):
+    table=get_table(table)
+    item = current_app.db.session.query(table).filter(table.id == id).first()
+
+    if not item:
+        return
+
+    item.name = form.get('name')
+    item.rarity = int(form.get('rarity'))
+    item.cost = int(form.get('cost'))
+    item.source = form.get('source') or None
+    item.notes = form.get('notes') or None
+
+    if hasattr(item, 'sub_type'):
+        item.sub_type = int(form.get('sub-type'))
+
+    if hasattr(item, 'item_modifier'):
+        item.item_modifier = bool(form.get('item-modifier', default=False))
+
+    if hasattr(item, 'attunement'):
+        item.attunement = bool(form.get('attunement', default=False))
+
+    if hasattr(item, 'seeking_only'):
+        item.seeking_only = bool(form.get('seeking', default=False))
+
+    if hasattr(item, "school"):
+        item.school = int(form.get('school'))
+
+    if hasattr(item, "level"):
+        item.level = int(form.get('level'))
+
+    if hasattr(item, "classes"):
+        item.classes = [int(i[1]) for i in form.items() if 'class' in i[0]]
+
+    current_app.db.session.add(item)
+    current_app.db.session.commit()
+
+def add_item(table, form: ImmutableMultiDict[str, str]):
+    if table.lower() == 'blacksmith':
+        item = BlackSmithItem(
+            name=form.get('name'),
+            sub_type=int(form.get('sub-type')),
+            rarity=int(form.get('rarity')),
+            cost=int(form.get('cost')),
+            item_modifier=bool(form.get('item-modifier', default=False)),
+            attunement=bool(form.get('attunement', default=False)),
+            seeking_only=bool(form.get('seeking', default=False)),
+            source=form.get('source') or None,
+            notes=form.get('notes') or None
+        )
+
+    elif table.lower() == 'consumable':
+        item = ConsumableItem(
+            name=form.get('name'),
+            sub_type=form.get('sub-type'),
+            rarity=int(form.get('rarity')),
+            cost=int(form.get('cost')),
+            attunement=bool(form.get('attunement', default=False)),
+            seeking_only=bool(form.get('seeking', default=False)),
+            source=form.get('source') or None,
+            notes=form.get('notes') or None
+        )
+
+    elif table.lower() == 'scroll':
+        item = ScrollItem(
+            name=form.get('name'),
+            rarity=int(form.get('rarity')),
+            cost=int(form.get('cost')),
+            level=int(form.get('level')),
+            school=int(form.get('school')),
+            classes=[int(i[1]) for i in form.items() if 'class' in i[0]],
+            source=form.get('source') or None,
+            notes=form.get('notes') or None
+        )
+
+    elif table.lower() == 'wondrous':
+        item = WondrousItem(
+            name=fomr.get('name'),
+            rarity=int(form.get('rarity')),
+            cost=int(form.get('cost')),
+            attunement=bool(form.get('attunement', default=False)),
+            seeking_only=bool(form.get('seeking', default=False)),
+            source=form.get('source') or None,
+            notes=form.get('notes') or None
+        )
+
+    if item is not None:
+        current_app.db.session.add(item)
+        current_app.db.session.commit()
+

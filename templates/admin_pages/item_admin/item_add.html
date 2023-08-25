@@ -3,7 +3,7 @@
 <h1 class="m-2">Add {{table}} Item</h1>
 
 <div class="container-fluid m-2">
-    <form action="/admin/items/add_item/{{table}}" method="post">
+    <form action="{{ url_for('admin.item_admin.item_new', table=table) }}" method="post">
         <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">

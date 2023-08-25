@@ -1,0 +1,14 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="m-2">Select item type to add</h1>
+
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a href="{{ url_for ('admin.item_admin.item_new', table='Blacksmith') }}" class="btn btn-primary">Add Blacksmith Item</a>
+    <a href="{{ url_for ('admin.item_admin.item_new', table='Consumable') }}" class="btn btn-primary">Add Consumable Item</a>
+    <a href="{{ url_for ('admin.item_admin.item_new', table='Scroll') }}" class="btn btn-primary">Add Scroll Item</a>
+    <a href="{{ url_for ('admin.item_admin.item_new', table='Wondrous') }}" class="btn btn-primary">Add Wondrous Item</a>
+    <a href="{{ url_for('admin.item_admin.item_list') }}" class="btn btn-secondary">Back to Item List</a>
+</div>
+
+
+{% endblock %}

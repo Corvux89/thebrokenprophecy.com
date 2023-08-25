@@ -63,7 +63,7 @@ class ScrollItem(db.Model):
     school = db.Column(db.Integer)
     classes = db.Column(ARRAY(db.Integer))
     source = db.Column(db.String)
-    notes = db.Column(db.String)
+    notes = db.Column(db.String, default=None)
 
 class WondrousItem(db.Model):
     __tablename__ = 'item_wondrous'

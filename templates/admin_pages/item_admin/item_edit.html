@@ -2,14 +2,14 @@
 
 {% if item == None %}
 <h1 class="m-2">Item not found</h1>
-<a href="{{ url_for('admin.item_list') }}" class="btn btn-primary m-2" role="button">Back to Items</a>
+<a href="{{ url_for('admin.item_admin.item_list') }}" class="btn btn-primary m-2" role="button">Back to Items</a>
 
 {% else %}
 <h1 class="m-2">{{item.name}}</h1>
-<h2 class="m-2 text-center">{{table}} item</h2>
+<h2 class="m-2 text-center">{{table}} Item</h2>
 
 <div class="container-fluid m-2">
-    <form action="{{ url_for('admin.item_modify', table=table, id=item.id) }}" method="post">
+    <form action="{{ url_for('admin.item_admin.item_modify', table=table, id=item.id) }}" method="post">
         <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">
@@ -69,9 +69,9 @@
                 {% if item.item_modifier != blank %}
                 <div class="form-check form-check-inline">
                     {% if item.item_modifier == True %}
-                    <input class="form-check-input" type="checkbox" value="" id="item-modifier" checked name="item-modifier">
+                    <input class="form-check-input" type="checkbox" value="True" id="item-modifier" checked name="item-modifier">
                     {% else %}
-                    <input class="form-check-input" type="checkbox" value="" id="item-modifier" name="item-modifier">
+                    <input class="form-check-input" type="checkbox" value="False" id="item-modifier" name="item-modifier">
                     {% endif %}
                     <label class="form-check-label text-white" for="item-modifier">Item Modifier</label>
                 </div>
@@ -80,9 +80,9 @@
                 {% if item.attunement != blank %}
                 <div class="form-check form-check-inline">
                     {% if item.attunement == True %}
-                    <input class="form-check-input" type="checkbox" value="" id="attunement" checked name="attunement">
+                    <input class="form-check-input" type="checkbox" value="True" id="attunement" checked name="attunement">
                     {% else %}
-                    <input class="form-check-input" type="checkbox" value="" id="attunement" name="attunement">
+                    <input class="form-check-input" type="checkbox" value="False" id="attunement" name="attunement">
                     {% endif %}
                     <label class="form-check-label text-white" for="attunement">Attunement Required</label>
                 </div>
@@ -91,9 +91,9 @@
                 {% if item.seeking_only != blank %}
                 <div class="form-check form-check-inline">
                     {% if item.seeking_only == True %}
-                    <input class="form-check-input" type="checkbox" value="" id="seeking" checked name="seeking">
+                    <input class="form-check-input" type="checkbox" value="True" id="seeking" checked name="seeking">
                     {% else %}
-                    <input class="form-check-input" type="checkbox" value="" id="seeking" name="seeking">
+                    <input class="form-check-input" type="checkbox" value="False" id="seeking" name="seeking">
                     {% endif %}
                     <label class="form-check-label text-white" for="seeking">Seeking Only</label>
                 </div>
@@ -105,7 +105,7 @@
         <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="source" value="{{item.source}}" placeholder="Source" name="source">
+                    <input type="text" class="form-control" id="source" value="{{item.source if item.source else ''}}" placeholder="Source" name="source">
                     <label for="source">Source</label>
                 </div>
             </div>
@@ -159,7 +159,7 @@
            <div class="col-sm">
                 <div class="col-sm">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="notes" value="{{item.notes}}" placeholder="Notes" name="notes">
+                        <input type="text" class="form-control" id="notes" value="{{item.notes if item.notes else ''}}" placeholder="Notes" name="notes">
                         <label for="notes">Notes</label>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
 
         <div class="row mb-3">
             <div class="col-auto">
-                <a href="{{ url_for('admin.item_list') }}" class="btn btn-secondary" role="button">Back to Items</a>
+                <a href="{{ url_for('admin.item_admin.item_list') }}" class="btn btn-secondary" role="button">Back to Items</a>
             </div>
 
             <div class="col-auto">
@@ -179,7 +179,7 @@
 </div>
 
 <div class="container-fluid m-2">
-    <form action="{{ url_for('admin.delete_item', table=table, id=item.id) }}", method="post">
+    <form method="post" action="{{ url_for('admin.item_admin.item_delete', table=table, id=item.id) }}">
         <div class="row mb-3">
             <div class="col-sm">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">Delete Item</button>
@@ -198,7 +198,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" value="delete" class="btn btn-danger">Delete</button>
               </div>
             </div>
           </div>
