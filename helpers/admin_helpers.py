@@ -2,8 +2,10 @@ from flask import current_app
 from sqlalchemy import literal, union, select
 from werkzeug.datastructures import ImmutableMultiDict
 
+from constants import GUILD_ID
 from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, ConsumableType, ScrollItem, WondrousItem, \
-    CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, BPLog, Character, Activity, MagicSchool
+    CharacterRace, CharacterSubrace, CharacterClass, CharacterSubclass, BPLog, Character, Activity, MagicSchool, \
+    BPMessage
 
 
 def get_item_list():
@@ -227,4 +229,22 @@ def add_item(table, form: ImmutableMultiDict[str, str]):
     if item is not None:
         current_app.db.session.add(item)
         current_app.db.session.commit()
+
+def get_messages():
+    messages = current_app.db.session.query(BPMessage).filter(BPMessage.guild_id==GUILD_ID)
+    out_msg = []
+
+    for m in messages:
+        msg = current_app.discord.bot_request(f'/channels/{m.channel_id}/messages/{m.message_id}', 'GET')
+
+        if not msg.get('id'):
+            current_app.db.session.delete(m)
+            current_app.db.session.commit()
+        else:
+            out_msg.append({"message_id": m.message_id, "channel_id": m.channel_id, "guild_id": m.guild_id, 'title': m.title,
+                            "message": msg})
+
+    return out_msg
+
+
 

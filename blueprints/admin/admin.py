@@ -3,6 +3,7 @@ from flask import Blueprint, current_app, redirect, url_for, render_template
 
 from blueprints.admin.category_admin import cat_admin_blueprint
 from blueprints.admin.item_admin import item_admin_blueprint
+from blueprints.admin.messages import message_blueprint
 from constants import GUILD_ID
 from helpers import is_admin, get_logs
 from models import BPGuild
@@ -10,6 +11,7 @@ from models import BPGuild
 admin_blueprint = Blueprint("admin", __name__)
 admin_blueprint.register_blueprint(cat_admin_blueprint)
 admin_blueprint.register_blueprint(item_admin_blueprint)
+admin_blueprint.register_blueprint(message_blueprint)
 
 @admin_blueprint.before_request
 @is_admin
@@ -33,24 +35,7 @@ def greeting_message():
 
     return render_template('/admin_pages/admin_greeting_edit.html', guild=guild)
 
-@admin_blueprint.route('/message', methods=['GET', 'POST'])
-def admin_message():
-    channels = current_app.discord.bot_request(f'/guilds/{GUILD_ID}/channels')
-    channel = ""
-
-    if flask.request.method == 'POST':
-        channel = flask.request.form.get('channel')
-        message = flask.request.form.get('message')
-        if channel and message:
-            msg = current_app.discord.bot_request(f'/channels/{channel}/messages', "POST", json={"content": message})
-
-    return render_template('/admin_pages/admin_message.html', channels=channels, selected=channel)
-
 @admin_blueprint.route('/logs')
 def view_logs():
     logs = get_logs()
     return render_template('/admin_pages/log_list.html', logs=logs)
-
-@admin_blueprint.route('/tutorials')
-def tutorials():
-    return("here")

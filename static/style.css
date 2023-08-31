@@ -68,7 +68,7 @@ body{
     font-weight: lighter;
 }
 
-.nav-item.stats{
+.nav-item.stats, .nav-item.message{
     background-color: silver;
 }
 

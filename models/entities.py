@@ -110,3 +110,11 @@ class BPGuild(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     greeting = db.Column(db.String)
+
+class BPMessage(db.Model):
+    __tablename__ = "messages"
+
+    guild_id = db.Column(db.Integer)
+    message_id = db.Column(db.Integer, primary_key=True)
+    channel_id = db.Column(db.Integer)
+    title = db.Column(db.String)

@@ -1,0 +1,194 @@
+{% extends "template.html" %} {% block body %}
+
+<h1 class="m-2">Message from the Bot</h1>
+<nav>
+    <div class="nav nav-tabs" id="messageTab" role="tablist">
+        <button class="nav-link active" id="new-msg-tab" data-bs-toggle="tab" data-bs-target="#new-msg" type="button" role="tab" aria-controls="new-msg" aria-selected="true">New Message</button>
+        {% for msg in msgs %}
+        <button class="nav-link" id="edit-{{msg.message_id}}-tab" data-bs-toggle="tab" data-bs-target="#edit-{{msg.message_id}}" type="button" role="tab" aria-controls="edit-{{msg.message_id}}" aria-selected="false">{{msg.title}}</button>
+        {% endfor %}
+    </div>
+</nav>
+
+<div class="tab-content" id="messageTabContent">
+    <div class="tab-pane fade show active" id="new-msg" role="tabpanel" aria-labelledby="new-msg-tab" tabindex="0">
+        <div class="container-fluid m-2">
+            <form action="{{ url_for('admin.message.new_message') }}" method="post">
+                <div class="row mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="title" name="title" required>
+                        <label for="title">Post Title/Description</label>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm">
+                        <div class="form-floating">
+                            <select class="form-select" aria-label="Channel Select" id="channel" name="channel">
+                                {% for channel in channels %}
+                                {% if channel.parent_id %}
+                                <option value="{{channel.id}}">{{channel.name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="channel">Channel</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="pin" value="True" name="pin">
+                            <label class="form-check-label text-white" for="pin">Pin?</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="form-floating">
+                <textarea class="form-control bigtext" maxlength="4000" id="message" placeholder="Message" name="message"
+                          rows="10" required></textarea>
+                        <label for="message">Message</label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <a href="{{ url_for('admin.admin_menu') }}" class="btn btn-secondary" role="button">Back to
+                            Admin
+                            Menu</a>
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Confirm</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to send this message?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="send" value="True" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% for msg in msgs %}
+    <div class="tab-pane fade" id="edit-{{msg.message_id}}" role="tabpanel" aria-labelledby="edit-{{msg.message_id}}-tab" tabindex="0">
+        <div class="container-fluid m-2">
+            <form action="{{ url_for('admin.message.new_message', msg=msg.message_id) }}" method="post">
+                <div class="row mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="edit-{{msg.message_id}}-title" name="edit-{{msg.message_id}}-title" required value="{{msg.title}}">
+                        <label for="edit-{{msg.message_id}}-title">Post Title/Description</label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm">
+                        <div class="form-floating">
+                            <select class="form-select" aria-label="Channel Select" id="edit-{{msg.message_id}}-channel" name="edit-{{msg.message_id}}-channel" disabled>
+                                {% for channel in channels %}
+                                {% if channel.id == msg.message.channel_id %}
+                                <option value="{{channel.id}}" selected>{{channel.name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="edit-{{msg.message_id}}-channel">Channel</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="form-check form-check-inline">
+                            {% if msg.message.pinned %}
+                            <input class="form-check-input" type="checkbox" id="edit-{{msg.message_id}}-pin" value="True" name="edit-{{msg.message_id}}-pin" checked>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" id="edit-{{msg.message_id}}-pin" value="True" name="edit-{{msg.message_id}}-pin">
+                            {% endif %}
+                            <label class="form-check-label text-white" for="edit-{{msg.message_id}}-pin">Pin?</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="form-floating">
+                <textarea class="form-control bigtext" maxlength="4000" required id="edit-{{msg.message_id}}-message" placeholder="Message" name="edit-{{msg.message_id}}-message"
+                          rows="10">{{msg.message.content}}</textarea>
+                        <label for="edit-{{msg.message_id}}-message">Message</label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#edit-{{msg.message_id}}-confirmModal" class="btn btn-primary">
+                            Update
+                        </button>
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#delete-{{msg.message_id}}-confirmModal" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="edit-{{msg.message_id}}-confirmModal" tabindex="-1" aria-labelledby="edit-{{msg.message_id}}-modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Confirm</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to update this message?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="edit" value="True" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="delete-{{msg.message_id}}-confirmModal" tabindex="-1" aria-labelledby="delete-{{msg.message_id}}-modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Confirm</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this message?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="delete" value="True" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

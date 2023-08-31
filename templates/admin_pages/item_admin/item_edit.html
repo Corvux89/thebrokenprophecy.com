@@ -174,14 +174,8 @@
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-        </div>
-    </form>
-</div>
 
-<div class="container-fluid m-2">
-    <form method="post" action="{{ url_for('admin.item_admin.item_delete', table=table, id=item.id) }}">
-        <div class="row mb-3">
-            <div class="col-sm">
+            <div class="col-auto">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">Delete Item</button>
             </div>
         </div>
@@ -198,7 +192,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" value="delete" class="btn btn-danger">Delete</button>
+                <button type="submit" value="True" name="delete" class="btn btn-danger">Delete</button>
               </div>
             </div>
           </div>

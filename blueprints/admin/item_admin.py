@@ -15,7 +15,16 @@ def item_list():
 @item_admin_blueprint.route('/items/<table>/<id>', methods=['GET', 'POST'])
 def item_modify(table, id):
     if flask.request.method == 'POST':
-        update_item(table, id, flask.request.form)
+        if flask.request.form.get('delete'):
+            table = get_table(table)
+            item = current_app.db.session.query(table).filter(table.id == id).first()
+
+            if item is not None:
+                current_app.db.session.delete(item)
+                current_app.db.session.commit()
+
+        else:
+            update_item(table, id, flask.request.form)
 
         return redirect(url_for('admin.item_admin.item_list'))
 
@@ -30,6 +39,7 @@ def item_modify(table, id):
 def item_new(table=None):
     if flask.request.method == 'POST':
         add_item(table, flask.request.form)
+
         return redirect(url_for("admin.item_admin.item_list"))
 
     if not table:
@@ -42,17 +52,5 @@ def item_new(table=None):
 
     return render_template('/admin_pages/item_admin/item_add.html', table=table, subs=sub_type, rarity=rarity,
                            classes=classes, schools=schools)
-
-@item_admin_blueprint.route('/items/del/<table>/<id>', methods=['POST'])
-def item_delete(table, id):
-    if flask.request.method == "POST":
-        table = get_table(table)
-        item = current_app.db.session.query(table).filter(table.id == id).first()
-
-        if item is not None:
-            current_app.db.session.delete(item)
-            current_app.db.session.commit()
-
-    return redirect(url_for('admin.item_admin.item_list'))
 
 
