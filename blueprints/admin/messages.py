@@ -15,7 +15,7 @@ def new_message():
         if flask.request.form.get('send'):
             msg = current_app.discord.bot_request(f'/channels/{flask.request.form.get("channel")}/messages', 'POST',
                                                   json={"content": flask.request.form.get("message")})
-
+            print(f'Message: {msg}')
             if msg.get('id'):
                 if flask.request.form.get('pin'):
                     current_app.discord.bot_request(f'/channels/{flask.request.form.get("channel")}/pins/{msg.get("id")}', 'PUT')
