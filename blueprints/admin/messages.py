@@ -22,7 +22,6 @@ def new_message():
                 bpm = BPMessage(guild_id=GUILD_ID, message_id=msg.get('id'),
                                                      channel_id=flask.request.form.get("channel"),
                                                      title=flask.request.form.get("title"))
-                print(f"Adding: {bpm.message_id} | {bpm.channel_id} | {bpm.guild_id} | {bpm.title}")
                 current_app.db.session.add(bpm)
                 current_app.db.session.commit()
         elif flask.request.form.get('edit'):
