@@ -2,10 +2,10 @@
 
 <h1 class="m-2">Message from the Bot</h1>
 <nav>
-    <div class="nav nav-tabs" id="messageTab" role="tablist">
-        <button class="nav-link active" id="new-msg-tab" data-bs-toggle="tab" data-bs-target="#new-msg" type="button" role="tab" aria-controls="new-msg" aria-selected="true">New Message</button>
+    <div class="nav nav-tabs message-tabs" id="messageTab" role="tablist">
+        <button class="nav-link active message" id="new-msg-tab" data-bs-toggle="tab" data-bs-target="#new-msg" type="button" role="tab" aria-controls="new-msg" aria-selected="true">New Message</button>
         {% for msg in msgs %}
-        <button class="nav-link" id="edit-{{msg.message_id}}-tab" data-bs-toggle="tab" data-bs-target="#edit-{{msg.message_id}}" type="button" role="tab" aria-controls="edit-{{msg.message_id}}" aria-selected="false">{{msg.title}}</button>
+        <button class="nav-link message" id="edit-{{msg.message_id}}-tab" data-bs-toggle="tab" data-bs-target="#edit-{{msg.message_id}}" type="button" role="tab" aria-controls="edit-{{msg.message_id}}" aria-selected="false">{{msg.title}}</button>
         {% endfor %}
     </div>
 </nav>
