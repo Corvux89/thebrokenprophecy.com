@@ -237,7 +237,11 @@ def get_messages():
     for m in messages:
         msg = current_app.discord.bot_request(f'/channels/{m.channel_id}/messages/{m.message_id}', 'GET')
 
-        if not msg.get('id'):
+        if msg.get('message'):
+            channel = current_app.discord.bot_request(f'/channels/{m.channel_id}')
+            out_msg.append({"message_id": m.message_id, "channel_id": m.channel_id, "guild_id": m.guild_id, "title": m.title,
+                            "error": f"{msg.get('message')} - Need to ensure the bot has 'Read Message History` access to #{channel.get('name')}"})
+        elif not msg.get('id'):
             current_app.db.session.delete(m)
             current_app.db.session.commit()
         else:
