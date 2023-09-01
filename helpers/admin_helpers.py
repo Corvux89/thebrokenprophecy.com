@@ -236,7 +236,8 @@ def get_messages():
 
     for m in messages:
         msg = current_app.discord.bot_request(f'/channels/{m.channel_id}/messages/{m.message_id}', 'GET')
-        print(msg)
+        if msg.get('message'):
+            print(msg.message)
         if not msg.get('id'):
             current_app.db.session.delete(m)
             current_app.db.session.commit()
