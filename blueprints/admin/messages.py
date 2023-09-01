@@ -15,14 +15,15 @@ def new_message():
         if flask.request.form.get('send'):
             msg = current_app.discord.bot_request(f'/channels/{flask.request.form.get("channel")}/messages', 'POST',
                                                   json={"content": flask.request.form.get("message")})
-            print(f'Message: {msg}')
             if msg.get('id'):
                 if flask.request.form.get('pin'):
                     current_app.discord.bot_request(f'/channels/{flask.request.form.get("channel")}/pins/{msg.get("id")}', 'PUT')
 
-                current_app.db.session.add(BPMessage(guild_id=GUILD_ID, message_id=msg.get('id'),
+                bpm = BPMessage(guild_id=GUILD_ID, message_id=msg.get('id'),
                                                      channel_id=flask.request.form.get("channel"),
-                                                     title=flask.request.form.get("title")))
+                                                     title=flask.request.form.get("title"))
+                print(f"Adding: {bpm.message_id} | {bpm.channel_id} | {bpm.guild_id} | {bpm.title}")
+                current_app.db.session.add(bpm)
                 current_app.db.session.commit()
         elif flask.request.form.get('edit'):
             msg_id = flask.request.args.get('msg')
