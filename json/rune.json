@@ -1,0 +1,26 @@
+{
+  "total": 27,
+  "runes": [
+    {
+      "name": "Simple",
+      "desc": "0 = Simple, 1 = Martial, 2 = Exotic",
+      "values": [
+        1,
+        2
+      ],
+      "point": ".5"
+    },
+    {
+      "name": "Auto",
+      "desc": "Something later",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "point": "1",
+      "cost": "100",
+      "weight": ".5"
+    }
+  ]
+}

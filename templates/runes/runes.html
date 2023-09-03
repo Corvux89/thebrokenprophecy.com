@@ -1,0 +1,73 @@
+{% extends "template.html" %} {% block body %}
+
+
+
+<div class="container-fluid m-2">
+    <form action="{{ url_for('rune.runes') }}" method="post" id="runeForm">
+        <div class="row mb-3">
+            <div class="form-floating">
+                {% if session['runes'] and session['runes']['name'] %}
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{session['runes']['name']}}" required>
+                {% else %}
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                {% endif %}
+                <label for="name">Name</label>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            {% for rune in info.runes %}
+            <div class="col-sm">
+                <div class="form-floating">
+                    <select class="form-select" aria-label="{{rune.name}}" id="{{rune.name}}" name="{{rune.name}}">
+                        {% for val in rune.get('values',[]) %}
+                        {% set comp = val | string %}
+                        {% if session['runes'] and comp == session['runes'].get(rune.name) %}
+                        <option value="{{val}}" selected>{{val}}</option>
+                        {% else %}
+                        <option value="{{val}}">{{val}}</option>
+                        {% endif%}
+                        {% endfor %}
+                    </select>
+                    <label for="{{rune.name}}">{{rune.name}}</label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm">
+                <div class="points text-white" id="totalPoints">0</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+    const url={{ url_for('rune.total')|tojson }}
+    const rf = document.querySelector('runeForm');
+
+    function getTotal(){
+    document.addEventListener('change', function(event){
+        var form = document.forms.runeForm;
+        var data = new FormData(form);
+        var object = {}
+        data.forEach((value, key) => object[key] = value);
+        $.ajax({
+            url: url,
+            data: JSON.stringify(object),
+            contentType: 'application/json;charset=UTF-8',
+            type: 'POST',
+            success: function(response){
+                console.log(response)
+
+                var x = document.getElementById("totalPoints");
+                x.innerHTML = response.total
+            }
+        });
+    })
+}
+
+getTotal()
+</script>
+
+{% endblock %}
