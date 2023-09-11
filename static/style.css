@@ -137,8 +137,20 @@ body{
     cursor: pointer;
 }
 
+.medtext{
+    height: calc(3.5rem + 50px) !important;
+}
+
 .bigtext{
     height: calc(3.5rem + 500px) !important;
+}
+
+.weaponModal{
+    height: 80%;
+}
+
+.weapon-command{
+    max-height: calc(100% - 120px);
 }
 
 /* Chromatic Chronicle CSS below */

@@ -1,26 +1,77 @@
-{
-  "total": 27,
-  "runes": [
-    {
-      "name": "Simple",
-      "desc": "0 = Simple, 1 = Martial, 2 = Exotic",
-      "values": [
-        1,
-        2
-      ],
-      "point": ".5"
-    },
-    {
-      "name": "Auto",
-      "desc": "Something later",
-      "values": [
-        0,
-        1,
-        2
-      ],
-      "point": "1",
-      "cost": "100",
-      "weight": ".5"
+[
+  {
+    "name": "Disguised",
+    "type": "flavor"
+  },
+  {
+    "name": "Fixed",
+    "type": "flavor"
+  },
+  {
+    "name": "Light",
+    "type": "flavor"
+  },
+  {
+    "name": "Moon Touched",
+    "type": "flavor"
+  },
+  {
+    "name": "Self Sheathing",
+    "type": "flavor"
+  },
+  {
+    "name": "Reach",
+    "type": "flavor"
+  },
+  {
+    "name": "Finesse",
+    "type": "stat",
+    "value": "max(strengthMod,dexterityMod)"
+  },
+  {
+    "name": "Enchant",
+    "type": "hit_bonus",
+    "upgrades": [1,2,3],
+    "value": "#upgrade#"
+  },
+  {
+    "name": "Enhance",
+    "type": "dmg_bonus",
+    "upgrades": [1,2,3],
+    "value": "#upgrade#"
+  },
+  {
+    "name": "Shocking",
+    "upgrades": [1,2,3],
+    "type": "hit_effect",
+    "value": "#upgrade#",
+    "save": {
+      "type": "wis",
+      "fail": {
+        "damage": "1d4 [lighting]",
+        "effect": {
+          "name": "Shocked",
+          "desc": "A shocked creature can’t take reactions.\n - On its turn, a shocked creature can take either an action or a bonus action, but not both.",
+          "duration": 1,
+          "end": true
+        }
+      }
     }
-  ]
-}
+  },
+  {
+    "name": "Versatile",
+    "type": "attack",
+    "attack": "{\"name\":\"2-Handed #name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#upDie1#+{#damageMod#} [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+  },
+  {
+    "name": "Double",
+    "type": "attack",
+    "attack": "{\"name\":\"Double #name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"1d4+{#damageMod#} [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+  },
+  {
+    "name": "Two-Handed",
+    "type": "attack",
+    "replace": true,
+    "attack": "{\"name\":\"#name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#upDie2#+{#damageMod#} [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+  }
+]

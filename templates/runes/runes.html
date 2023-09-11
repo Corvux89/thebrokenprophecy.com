@@ -1,73 +1,148 @@
 {% extends "template.html" %} {% block body %}
+<div id="weaponURL" aria-hidden="true" hidden>{{ url_for('rune.weapon') }}</div>
 
+<div class="container-fluid">
+    <form id="weaponForm">
+        <div class="border rounded p-0 m-3">
+            <div class="col-auto text-white m-3 fs-3">Base Weapon Information</div>
 
+            <div class="row m-3">
+                <div class="col-sm">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="weapon-name" name="weapon-name"
+                               placeholder="Weapon Name" required>
+                        <label for="weapon-name">Weapon Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="damage-die" name="damage-die"
+                               placeholder="Damage Die"
+                               aria-describedby="damage-die-help" required>
+                        <label for="damage-die">Damage Die</label>
+                        <small class="form-text text-white-50" id="damage-die-help">Example: 1d6</small>
+                    </div>
+                </div>
 
-<div class="container-fluid m-2">
-    <form action="{{ url_for('rune.runes') }}" method="post" id="runeForm">
-        <div class="row mb-3">
-            <div class="form-floating">
-                {% if session['runes'] and session['runes']['name'] %}
-                <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{session['runes']['name']}}" required>
-                {% else %}
-                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
-                {% endif %}
-                <label for="name">Name</label>
-            </div>
-        </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="damage-type" name="damage-type" placeholder="Damage Type" aria-describedby="damage-type-help" required>
+                        <label for="damage-type">Damage Type</label>
+                        <small class="form-text text-white-50" id="damage-type-help">Example: Fire, Magical Fire</small>
+                    </div>
+                </div>
 
-        <div class="row mb-3">
-            {% for rune in info.runes %}
-            <div class="col-sm">
-                <div class="form-floating">
-                    <select class="form-select" aria-label="{{rune.name}}" id="{{rune.name}}" name="{{rune.name}}">
-                        {% for val in rune.get('values',[]) %}
-                        {% set comp = val | string %}
-                        {% if session['runes'] and comp == session['runes'].get(rune.name) %}
-                        <option value="{{val}}" selected>{{val}}</option>
-                        {% else %}
-                        <option value="{{val}}">{{val}}</option>
-                        {% endif%}
-                        {% endfor %}
-                    </select>
-                    <label for="{{rune.name}}">{{rune.name}}</label>
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="weapon-melee" name="weapon-type" value="melee"
+                               checked>
+                        <label for="weapon-melee" class="form-check-label text-white">Melee</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="weapon-ranged" name="weapon-type"
+                               value="ranged">
+                        <label for="weapon-ranged" class="form-check-label text-white">Ranged</label>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-        <div class="row mb-3">
-            <div class="col-sm">
-                <div class="points text-white" id="totalPoints">0</div>
+
+            <div class="row m-3">
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="weapon-type-finesse"
+                               name="weapon-type-finesse" value="True">
+                        <label for="weapon-type-finesse" class="form-check-label text-white">Finesse</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="weapon-type-versatile"
+                               name="weapon-type-versatile" value="True">
+                        <label for="weapon-type-versatile" class="form-check-label text-white">Versatile</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="crit-range" name="crit-range"
+                               placeholder="Crit Range"
+                               value="20">
+                        <label for="crit-range">Critical Range</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-3">
+                <div class="form-floating">
+                    <textarea class="form-control medtext" id="weapon-text" name="weapon-text" rows="30" aria-describedby="weapon-text-help"></textarea>
+                    <label for="weapon-text">Flavor Text</label>
+                    <small class="form-text text-white-50" id="weapon-text-help">A place for any flavor text, or notes you want to show when you attack. Ex: Ammunition (range 80/320) or "This blade glistens with an otherworldly glow" </small>
+                </div>
             </div>
         </div>
+
+        <div class="border rounded m-3">
+            <div class="col-auto text-white m-3 fs-3 d-inline mr-0">
+                <p class="d-inline m-0">Runes (</p>
+                <div id="rune-count" class="rune-count d-inline m-0">0</div>
+                <p class="d-inline m-0">/</p>
+                <div id="rune-total" class="rune-total d-inline font-weight-bold m-0">4</div>
+                <p class="d-inline m-0">)</p>
+            </div>
+
+            <div class="row m-3">
+                {% if runes %}
+                {% for rune in runes %}
+                <div class="col-auto p-2">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input {{'upgrade' if rune.upgrades}} rune" type="checkbox" id="{{rune.name}}" name="{{rune.name}}"
+                               value="{{rune.name}}">
+                        <label class="form-check-label text-white" for="{{rune.name}}">{{rune.name}}</label>
+                    </div>
+
+                    {% if rune.upgrades %}
+                    {% for i in rune.upgrades %}
+                    {% set classname = rune.name + '-upgrades' %}
+                    <div class="form-check form-check {{classname if rune.upgrades}}" hidden>
+                        {% if i == rune.upgrades[0] %}
+                        <input class="form-check-input" type="radio" id="{{rune.name}}-{{i}}" value="{{i}}"
+                               name="{{rune.name}}-upgrade" checked>
+                        {% else %}
+                        <input class="form-check-input" type="radio" id="{{rune.name}}-{{i}}" value="{{i}}"
+                               name="{{rune.name}}-upgrade">
+                        {% endif %}
+                        <label class="form-check-label text-white" for="{{rune.name}}-{{i}}">{{i}}</label>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary m-3" id="generate-button">Generate Weapon</button>
     </form>
 </div>
 
-<script nonce="{{ csp_nonce() }}">
-    const url={{ url_for('rune.total')|tojson }}
-    const rf = document.querySelector('runeForm');
+<script nonce="{{ csp_nonce() }}" src="{{ url_for('static', filename='/js/rune.js') }}"></script>
 
-    function getTotal(){
-    document.addEventListener('change', function(event){
-        var form = document.forms.runeForm;
-        var data = new FormData(form);
-        var object = {}
-        data.forEach((value, key) => object[key] = value);
-        $.ajax({
-            url: url,
-            data: JSON.stringify(object),
-            contentType: 'application/json;charset=UTF-8',
-            type: 'POST',
-            success: function(response){
-                console.log(response)
-
-                var x = document.getElementById("totalPoints");
-                x.innerHTML = response.total
-            }
-        });
-    })
-}
-
-getTotal()
-</script>
+<div class="modal fade weaponModal" id="weaponModal" tabindex="-1" role="dialog" aria-labelledby="weaponModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered weaponModal" role="document">
+        <div class="modal-content weaponModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Import Command</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body weapon-command">
+                <div class="border rounded bg-secondary h-100">
+                    <button type="button" id="command-copy" class="btn float-end"><i class="fas fa-copy"></i></button>
+                    <div class="command text-wrap overflow-auto h-100" id="command-text">here</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
