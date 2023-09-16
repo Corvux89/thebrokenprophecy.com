@@ -27,6 +27,14 @@
             {
               "name": "phrase",
               "description": "Additional question/phrase to add. In the format question|answer Ex: What is your favorite color?|Blue"
+            },
+            {
+              "name": "phrase2",
+              "description": "Additional question/phrase to add. In the format question|answer Ex: What is your favorite color?|Blue"
+            },
+            {
+              "name": "phrase3",
+              "description": "Additional question/phrase to add. In the format question|answer Ex: What is your favorite color?|Blue"
             }
           ]
         }
@@ -179,7 +187,7 @@
           ],
           "optional": [
             {
-              "name": "allow_post",
+              "name": "post",
               "description": "Whether to allow the @Quester role to send messages in the room. This is only relevant if you are opening the room"
             }
           ]
