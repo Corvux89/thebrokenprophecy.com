@@ -1,4 +1,5 @@
 import json
+import pprint
 
 import flask
 from flask import Blueprint, render_template, url_for, current_app, session
@@ -6,6 +7,8 @@ from flask import Blueprint, render_template, url_for, current_app, session
 runes_blueprint = Blueprint("rune", __name__)
 
 die_size_map = {4: "1d6", 6: "1d8", 8: "2d4", 10: "1d12", 12: "2d6"}
+format = ["#name#", "#damageStat#", "#dtype#", "#flavorText#", "#criton#", "#attackBonus#", "#upDie1#", "#upDie2#",
+          "#downDie1#", "#damageMod#", "#dmgDie#", "#runeVal#"]
 
 
 @runes_blueprint.route('/')
@@ -58,7 +61,6 @@ def buildWeapon(form):
 
 def processRunes(attacks, form):
     f = open('json/rune.json', encoding="utf8")
-    format = ["#name#", "#damageMod#", "#dtype#", "#flavorText#", "#criton#", "#attackBonus#", "#upDie1#", "#upDie2#"]
     runes = json.load(f)
     flavorText = form.get('weapon-text')
     out = []
@@ -68,20 +70,21 @@ def processRunes(attacks, form):
         a = json.dumps(attack)
         test = getUpDie(a, 1)
         for rune in runes:
+            val = get_rune_value(rune, form)
             if form.get(rune.get('name')):
                 match rune.get('type'):
                     case "flavor":
                         pass
                     case "hit_bonus":
-                        val = get_rune_value(rune, form)
+                        # val = get_rune_value(rune, form)
                         a = a.replace('attackBonus": "', f'attackBonus": "{val}+')
 
                     case "dmg_bonus":
-                        val = get_rune_value(rune, form)
+                        # val = get_rune_value(rune, form)
                         a = a.replace('} [', '}' + f'+{val} [')
 
                     case "stat":
-                        val = get_rune_value(rune, form)
+                        # val = get_rune_value(rune, form)
                         bonus = get_attack_bonus(a)
                         if val in bonus:
                             pass
@@ -124,18 +127,21 @@ def processRunes(attacks, form):
                                          "tick_on_caster": effect.get("tick_on_caster", False)}
                                     s["success"].append(dmg)
 
-                        a = append_on_hit(a, s)
+                        a = append_on_hit(a,s)
 
                     case "attack":
-                        attackMod = get_attack_stat(a)
+                        damageStat = get_attack_stat(a)
                         attackBonus = get_attack_bonus(a)
+                        damageMod = get_damage_bonus(a)
                         dtype = get_damage_type(a)
                         criton = int(get_criton(a))
                         on_hit = get_on_hit_effects(a)
                         upDie1 = getUpDie(a)
                         upDie2 = getUpDie(a, 1)
+                        downDie1 = getUpDie(a, -1)
+                        dmgDie = get_damage_die(a)
 
-                        r = [name, attackMod, dtype, flavorText, criton, attackBonus, upDie1, upDie2]
+                        r = [name, damageStat, dtype, flavorText, criton, attackBonus, upDie1, upDie2, downDie1, damageMod, dmgDie, val]
                         if new_atk := rune.get("attack"):
                             for i in range(len(format)):
                                 new_atk = new_atk.replace(format[i], str(r[i]))
@@ -153,7 +159,10 @@ def processRunes(attacks, form):
     return out
 
 def get_rune_value(rune, form):
-    return rune.get('value').replace('#upgrade#', form.get(f'{rune.get("name")}-upgrade',""))
+    if rune.get('value'):
+        return rune.get('value').replace('#upgrade#', form.get(f'{rune.get("name")}-upgrade',""))
+
+    return None
 
 def get_attack_stat(a):
     bonus = get_attack_bonus(a)
@@ -161,6 +170,12 @@ def get_attack_stat(a):
 def get_attack_bonus(a):
     index = a.find('"attackBonus": "') + 16
     return str(a[index:a[index:].find('"') + index])
+
+def get_damage_bonus(a):
+    index = a.find('}+')+1
+    if index:
+        return str(a[index:a[index:].find(" [") + index])
+    return ""
 
 def get_damage_type(a):
     attack_str = get_attack_str(a)

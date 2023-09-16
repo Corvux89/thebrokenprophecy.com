@@ -21,7 +21,8 @@ function onLoad(){
                 dataType: 'json',
                 type: "post",
                 success: function(response){
-                    document.getElementById('command-text').innerHTML = `!a import ` + JSON.stringify(response)
+//                    document.getElementById('command-text').innerHTML = `!a import ` + JSON.stringify(response)
+                    document.getElementById('command-text').innerHTML = JSON.stringify(response)
                     $('#weaponModal').modal('show')
 
                     document.getElementById('command-copy').addEventListener('click', function(event){

@@ -59,19 +59,25 @@
     }
   },
   {
+    "name": "Biting",
+    "upgrades": [1,2,3],
+    "type": "attack",
+    "attack": "{\"name\":\"#name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#dmgDie#+{#damageStat#}#damageMod# [acid]\"},{\"type\":\"condition\",\"condition\":\"target.hp <= 0\",\"onTrue\":[{\"type\":\"save\",\"stat\":\"con\",\"dc\":\"12+#runeVal#\",\"fail\":[{\"type\":\"ieffect2\",\"name\":\"Disintegrated\",\"desc\":\"Dies immediately without making death saving throws.\\n -  A disintegrated creature and everything nonmagical it is wearing and carrying are reduced to a pile of fine gray dust. A creature destroyed in this way can not be revived.\"}],\"success\":[]}],\"onFalse\":[]}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+  },
+  {
     "name": "Versatile",
     "type": "attack",
-    "attack": "{\"name\":\"2-Handed #name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#upDie1#+{#damageMod#} [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+    "attack": "{\"name\":\"2-Handed #name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#upDie1#+{#damageStat#}#damageMod# [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
   },
   {
     "name": "Double",
     "type": "attack",
-    "attack": "{\"name\":\"Double #name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"1d4+{#damageMod#} [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+    "attack": "{\"name\":\"Double #name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"1d4+{#damageStat#}#damageMod# [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
   },
   {
     "name": "Two-Handed",
     "type": "attack",
     "replace": true,
-    "attack": "{\"name\":\"#name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\",\"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#upDie2#+{#damageMod#} [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
+    "attack": "{\"name\":\"#name#\",\"_v\":2,\"criton\":\"#criton#\",\"automation\":[{\"type\":\"target\",\"target\":\"each\",\"effects\":[{\"type\":\"attack\", \"attackbonus\":\"#attackBonus#\",\"hit\":[{\"type\":\"damage\",\"damage\":\"#upDie2#+{#damageStat#}#damageMod# [#dtype#]\"}],\"miss\":[]}]},{\"type\":\"text\",\"text\":\"#flavorText#\",\"title\":\"effect\"}]}"
   }
 ]

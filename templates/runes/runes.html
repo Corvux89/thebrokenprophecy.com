@@ -126,14 +126,14 @@
 <script nonce="{{ csp_nonce() }}" src="{{ url_for('static', filename='/js/rune.js') }}"></script>
 
 <div class="modal fade weaponModal" id="weaponModal" tabindex="-1" role="dialog" aria-labelledby="weaponModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered weaponModal" role="document">
+    <div class="modal-dialog modal-dialog-centered weaponModal modal-lg" role="document">
         <div class="modal-content weaponModal">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabel">Import Command</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body weapon-command">
-                <div class="border rounded bg-secondary h-100">
+                <div class="border rounded bg-secondary h-100 text-wrap">
                     <button type="button" id="command-copy" class="btn float-end"><i class="fas fa-copy"></i></button>
                     <div class="command text-wrap overflow-auto h-100" id="command-text">here</div>
                 </div>
