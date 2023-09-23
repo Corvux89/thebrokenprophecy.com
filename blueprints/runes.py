@@ -59,6 +59,15 @@ def buildWeapon(form):
 
     return weapons
 
+def getRunes(form):
+    f = open('json/rune.json', encoding="utf8")
+    runes = json.load(f)
+    out = []
+
+    for rune in runes:
+        if form.get(rune.get('name')):
+            out.append(rune)
+
 def processRunes(attacks, form):
     f = open('json/rune.json', encoding="utf8")
     runes = json.load(f)
