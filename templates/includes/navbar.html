@@ -84,6 +84,10 @@
                     <a class="nav-link" href="http://chromatic-chronicle.com/">Chromatic Chronicle</a>
                 </li>
 
+                <!--                <li class="nav-item">-->
+                <!--                    <a class="nav-link" href="{{ url_for('chronicle.display_issue') }}">Chromatic Chronicle</a>-->
+                <!--                </li>-->
+
                 {% if session.get("DISCORD_OAUTH2_STATE") %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}"> Logout</a>

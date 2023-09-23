@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-sm">
                 <div class="dropdown d-inline">
-                    <button class="btn btn-secondary dropdown-toggle m-2" type="buttom" data-bs-toggle="dropdown"
+                    <button class="btn btn-secondary dropdown-toggle m-2" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">{{drop_string}}
                     </button>
                     <ul class="dropdown-menu">
@@ -46,7 +46,7 @@
             {% for article in articles %}
             {% if "global" not in article.categories %}
             <div class="col-md-6">
-                <div class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative article-card">
+                <div class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative article-card text-bg-dark">
                     <div class="col p-4 d-flex flex-column position-static">
                         {% if article.category_string %}
                         <strong class="d-inline-block mb-2 text-primary">{{article.category_string}}</strong>
