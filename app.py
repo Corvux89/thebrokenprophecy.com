@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from urllib.parse import urlparse
+
+from flask import Flask, render_template, make_response, request
 from flask_bootstrap import Bootstrap
 from flask_talisman import Talisman
 from flask_discord import DiscordOAuth2Session
@@ -48,6 +50,22 @@ def not_found(e):
 @app.route('/home')
 def homepage():
     return render_template("main.html")
+
+@app.route('/sitemap.xml')
+def site_map():
+    host_components = urlparse(request.host_url)
+    host_base = host_components.scheme + "://" + host_components.netloc
+    static_urls = []
+
+    for rule in app.url_map.iter_rules():
+        if not str(rule).startswith("/admin") and not str(rule).startswith("/user") and not str(rule).startswith("/chromatic_chronicle/editor"):
+            if "GET" in rule.methods and len(rule.arguments) == 0:
+                url = {"loc": f"{host_base}{str(rule)}"}
+                static_urls.append(url)
+    response = render_template('sitemap.xml', static_urls=static_urls, host_base=host_base)
+    response = make_response(response)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
 
 @app.route('/credits')
