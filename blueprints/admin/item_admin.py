@@ -12,24 +12,17 @@ tables = ['Blacksmith', 'Consumable', 'Scroll', 'Wondrous']
 def item_list():
     return render_template('/admin_pages/item_admin/item_list.html', items=get_item_list())
 
-@item_admin_blueprint.route('/items/<table>/<id>', methods=['GET', 'POST'])
+@item_admin_blueprint.route('/items/<table>/<id>', methods=['GET', 'PATCH'])
 def item_modify(table, id):
-    if flask.request.method == 'POST':
-        if flask.request.form.get('delete'):
-            table = get_table(table)
-            item = current_app.db.session.query(table).filter(table.id == id).first()
-
-            if item is not None:
-                current_app.db.session.delete(item)
-                current_app.db.session.commit()
-
-        else:
-            update_item(table, id, flask.request.form)
-
-        return redirect(url_for('admin.item_admin.item_list'))
+    if flask.request.method == 'PATCH':
+        update_item(table, id, flask.request.form)
+        return "complete"
 
     rarity = current_app.db.session.query(Rarity).all()
     item, sub_type, schools, classes = get_table_items(table, id)
+
+    if not item or not table:
+        return redirect(url_for("admin.item_admin.item_list"))
 
     return render_template('/admin_pages/item_admin/item_edit.html', item=item, table=table, subs=sub_type,
                            rarity=rarity, schools=schools, classes=classes)
@@ -52,5 +45,16 @@ def item_new(table=None):
 
     return render_template('/admin_pages/item_admin/item_add.html', table=table, subs=sub_type, rarity=rarity,
                            classes=classes, schools=schools)
+
+@item_admin_blueprint.route('/items/<table>/<id>', methods=['DELETE'])
+def item_delete(table, id):
+    table = get_table(table)
+    item = current_app.db.session.query(table).filter(table.id == id).first()
+
+    if item is not None:
+        current_app.db.session.delete(item)
+        current_app.db.session.commit()
+
+    return "complete"
 
 

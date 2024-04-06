@@ -1,7 +1,7 @@
 import flask
 from flask import Blueprint, current_app, redirect, url_for, render_template
 
-from blueprints.admin.category_admin import cat_admin_blueprint
+from blueprints.admin.cat_admin import cat_admin_blueprint
 from blueprints.admin.item_admin import item_admin_blueprint
 from blueprints.admin.messages import message_blueprint
 from constants import GUILD_ID

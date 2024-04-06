@@ -217,7 +217,7 @@ def add_item(table, form: ImmutableMultiDict[str, str]):
 
     elif table.lower() == 'wondrous':
         item = WondrousItem(
-            name=fomr.get('name'),
+            name=form.get('name'),
             rarity=int(form.get('rarity')),
             cost=int(form.get('cost')),
             attunement=bool(form.get('attunement', default=False)),

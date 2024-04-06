@@ -105,7 +105,7 @@
         <thead>
         <tr>
             <th>Edit</th>
-            <th data-field="name", data-filter-control="input">Name</th>
+            <th data-field="name" data-filter-control="input">Name</th>
         </tr>
         </thead>
 
@@ -151,7 +151,7 @@
 
                 <div class="modal-footer d-flex justify-content-center">
                     <input type="submit" name="update" value="Submit" class="btn btn-info btn-lg btn-block m-2">
-                    <input type="submit" name="delete"  value="Delete {{label | capitalize}}" class="btn btn-danger btn-lg btn-block m-2 delete-child">
+                    <input type="submit" name="delete" data-parent="{{parent.value}}" data-id="{{}}"  value="Delete {{label | capitalize}}" class="btn btn-danger btn-lg btn-block m-2 delete-child">
                 </div>
             </div>
         </div>
@@ -217,11 +217,13 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" name="delete" value="Delete" class="btn btn-danger">Delete</button>
+                    <button type="button" data-id="{{parent.value}}" data-href="{{ url_for(parent_url) }}" class="btn btn-danger delete-button">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+<script nonce="{{ csp_nonce() }}" src="{{ url_for('static', filename='/js/admin/category.js') }}"></script>
 
 {% endblock %}

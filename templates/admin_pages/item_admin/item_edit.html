@@ -1,5 +1,7 @@
 {% extends "template.html" %} {% block body %}
 
+<% String redirectUrl="{{ url_for('admin.item_admin.item_list') }}" %>
+
 {% if item == None %}
 <h1 class="m-2">Item not found</h1>
 <a href="{{ url_for('admin.item_admin.item_list') }}" class="btn btn-primary m-2" role="button">Back to Items</a>
@@ -9,7 +11,7 @@
 <h2 class="m-2 text-center">{{table}} Item</h2>
 
 <div class="container-fluid m-2">
-    <form action="{{ url_for('admin.item_admin.item_modify', table=table, id=item.id) }}" method="post">
+    <form id="item-edit">
         <div class="row mb-3">
             <div class="col-sm">
                 <div class="form-floating">
@@ -172,7 +174,7 @@
             </div>
 
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary edit-button" data-table="{{table}}" data-item-id="{{item.id}}" data-href="{{url_for('admin.item_admin.item_list')}}">Submit</button>
             </div>
 
             <div class="col-auto">
@@ -192,7 +194,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" value="True" name="delete" class="btn btn-danger">Delete</button>
+                <button type="button" data-href="{{ url_for('admin.item_admin.item_list') }}" class="btn btn-danger delete-button" data-table="{{table}}" data-item-id="{{item.id}}">Delete</button>
               </div>
             </div>
           </div>
@@ -201,5 +203,6 @@
 </div>
 {% endif %}
 
+<script src="{{ url_for('static', filename='/js/admin/items.js')}}" nonce="{{ csp_nonce() }}"></script>
 
 {% endblock %}
