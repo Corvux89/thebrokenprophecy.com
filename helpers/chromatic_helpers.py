@@ -2,19 +2,21 @@ import calendar
 
 import flask
 from flask import current_app
+from flask_discord import DiscordOAuth2Session
 from sqlalchemy import func, and_
 
 from models import *
 
 
 def get_issues():
-    issues = current_app.db.session.query(Issue).all()
+    db: SQLAlchemy = current_app.config.get('DB')
+    issues = db.session.query(Issue).all()
 
-    art_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count')) \
+    art_count = db.session.query(Issue.id, func.count(Article.issue).label('count')) \
         .join(Article, Article.issue == Issue.id) \
         .group_by(Issue.id).all()
 
-    approved_count = current_app.db.session.query(Issue.id, func.count(Article.issue).label('count'))\
+    approved_count = db.session.query(Issue.id, func.count(Article.issue).label('count'))\
         .join(Article, Article.issue == Issue.id) \
         .filter(Article.approved == True)\
         .group_by(Issue.id).all()
@@ -40,8 +42,9 @@ def get_issues():
 
 
 def get_articles(issue):
-    articles = current_app.db.session.query(Article).filter(Article.issue == issue).all()
-    authors = current_app.db.session.query(Author).all()
+    db: SQLAlchemy = current_app.config.get('DB')
+    articles = db.session.query(Article).filter(Article.issue == issue).all()
+    authors = db.session.query(Author).all()
 
     d_out = []
 
@@ -78,6 +81,7 @@ def update_article(article: Article, request: flask.Request):
 
 
 def fetch_article(request: flask.Request):
+    discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
     article: Article = Article(
         title=request.form.get('title'),
         issue=request.form.get('issue'),
@@ -87,7 +91,7 @@ def fetch_article(request: flask.Request):
         body=request.form.get('body'),
         categories=request.form.getlist('categories'),
         approved=False,
-        submit_user=current_app.discord.fetch_user().id
+        submit_user=discord_session.fetch_user().id
     )
 
     factions = [f[1] for f in request.form.items() if 'faction' in f[0]]
@@ -98,9 +102,10 @@ def fetch_article(request: flask.Request):
 
 
 def get_formatted_articles(issue: Issue):
-    articles = current_app.db.session.query(Article).filter(and_(Article.issue == issue.id, Article.approved==True)).all()
-    authors = current_app.db.session.query(Author).all()
-    factions = current_app.db.session.query(Faction).all()
+    db: SQLAlchemy = current_app.config.get('DB')
+    articles = db.session.query(Article).filter(and_(Article.issue == issue.id, Article.approved==True)).all()
+    authors = db.session.query(Author).all()
+    factions = db.session.query(Faction).all()
 
     for a in articles:
         a.faction_list = [f for f in factions if f.id in a.factions]

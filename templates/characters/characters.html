@@ -75,6 +75,9 @@
         <thead>
         <tr>
             <th data-field="name" data-filter-control="input">Name</th>
+            {% if session.get("Council") %}
+            <th data-field="level" data-filter-control="select">Level</th>
+            {% endif %}
             <th data-field="race" data-filter-control="select">Race</th>
             <th data-field="subrace" data-filter-control="select">Subrace</th>
             <th data-field="class" data-filter-control="select">Class</th>
@@ -85,6 +88,9 @@
             {% for character in characters %}
             <tr class="item-row">
                 <td>{{character.name}}</td>
+                {% if session.get("Council") %}
+                <td>{{character.level}}</td>
+                {% endif %}
                 <td>{{character.race}}</td>
                 <td>{{character.subrace}}</td>
                 <td>{{character.primary_class | safe}}</td>

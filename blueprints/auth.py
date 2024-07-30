@@ -1,6 +1,7 @@
 import traceback
 
 from flask import Blueprint, current_app, redirect, url_for, request, session
+from flask_discord import DiscordOAuth2Session
 
 from helpers import is_chronicler, is_admin
 
@@ -8,19 +9,19 @@ auth_blueprint = Blueprint("auth", __name__)
 
 def redirect_dest(fallback):
     dest = request.args.get('next')
-    try:
-        dest_url = url_for(dest)
-    except:
-        return redirect(fallback)
-    return redirect(dest_url)
+    return redirect(url_for(dest)) if dest else redirect(fallback)
 
 @auth_blueprint.route('/')
 def login():
-    return current_app.discord.create_session(data=dict(redirect=request.args.get('next')))
+    discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
+    if discord_session:
+        return current_app.discord.create_session(data={'redirect': request.args.get('next', 'homepage')})
+    return redirect(url_for('homepage'))
 
 @auth_blueprint.route('/logout')
 def logout():
-    current_app.discord.revoke()
+    discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
+    discord_session.revoke()
     session.pop("Council") if session.get("Council") else ''
     session.pop("Chronicler") if session.get("Chronicler") else ''
     return redirect(url_for('homepage'))

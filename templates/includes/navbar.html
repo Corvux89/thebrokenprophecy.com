@@ -5,6 +5,17 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
+     {% if config.DISCORD_SESSION and config.DISCORD_SESSION.authorized %}
+    <a class="navbar-brand ms-auto" href="{{ url_for('auth.logout') }}">
+    {% set active_user = config.DISCORD_SESSION.fetch_user() %}
+        <p class="text-muted d-inline">{{active_user.username}}</p>
+        <img src="{{ active_user.avatar_url}}"
+            class="rounded-circle"
+             width="35"
+             height="auto">
+    </a>
+    {% endif %}
+
     <a class="navbar-brand" href="/">
         <img src="{{ url_for('static', filename='images/Guild_Star.png') }}"
              width="70"
@@ -88,7 +99,7 @@
                 <!--                    <a class="nav-link" href="{{ url_for('chronicle.display_issue') }}">Chromatic Chronicle</a>-->
                 <!--                </li>-->
 
-                {% if session.get("DISCORD_OAUTH2_STATE") %}
+                {% if config.DISCORD_SESSION and config.DISCORD_SESSION.authorized %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}"> Logout</a>
                 </li>

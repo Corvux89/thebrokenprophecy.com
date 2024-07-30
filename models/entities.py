@@ -13,6 +13,7 @@ class Character(db.Model):
     subrace = db.Column(db.Integer)
     active = db.Column(db.Boolean)
     guild_id = db.Column(db.Integer)
+    xp = db.Column(db.Integer)
 
 class PlayerCharacterClass(db.Model):
     __tablename__ = 'character_class'

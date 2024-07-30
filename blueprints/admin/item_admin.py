@@ -1,5 +1,6 @@
 import flask
 from flask import Blueprint, render_template, current_app, url_for, redirect
+from flask_sqlalchemy import SQLAlchemy
 
 from helpers import get_item_list, get_table_items, update_item, get_table, get_subtype
 from helpers.admin_helpers import add_item
@@ -15,20 +16,21 @@ def item_list():
 @item_admin_blueprint.route('/items/<table>/<id>', methods=['GET', 'POST'])
 def item_modify(table, id):
     if flask.request.method == 'POST':
+        db: SQLAlchemy = current_app.config.get('DB')
         if flask.request.form.get('delete'):
             table = get_table(table)
-            item = current_app.db.session.query(table).filter(table.id == id).first()
+            item = db.session.query(table).filter(table.id == id).first()
 
             if item is not None:
-                current_app.db.session.delete(item)
-                current_app.db.session.commit()
+                db.session.delete(item)
+                db.session.commit()
 
         else:
             update_item(table, id, flask.request.form)
 
         return redirect(url_for('admin.item_admin.item_list'))
 
-    rarity = current_app.db.session.query(Rarity).all()
+    rarity = db.session.query(Rarity).all()
     item, sub_type, schools, classes = get_table_items(table, id)
 
     return render_template('/admin_pages/item_admin/item_edit.html', item=item, table=table, subs=sub_type,
@@ -37,6 +39,7 @@ def item_modify(table, id):
 @item_admin_blueprint.route('/items/add_item')
 @item_admin_blueprint.route('/items/add_item/<table>', methods=['GET', 'POST'])
 def item_new(table=None):
+    db: SQLAlchemy = current_app.config.get('DB')
     if flask.request.method == 'POST':
         add_item(table, flask.request.form)
 
@@ -46,9 +49,9 @@ def item_new(table=None):
         return render_template('/admin_pages/item_admin/item_table.html', tables=tables)
 
     sub_type = get_subtype(table)
-    rarity = current_app.db.session.query(Rarity).all()
-    classes = current_app.db.session.query(CharacterClass).all() if table.lower() == 'scroll' else None
-    schools = current_app.db.session.query(MagicSchool).all() if table.lower() == 'scroll' else None
+    rarity = db.session.query(Rarity).all()
+    classes = db.session.query(CharacterClass).all() if table.lower() == 'scroll' else None
+    schools = db.session.query(MagicSchool).all() if table.lower() == 'scroll' else None
 
     return render_template('/admin_pages/item_admin/item_add.html', table=table, subs=sub_type, rarity=rarity,
                            classes=classes, schools=schools)

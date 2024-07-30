@@ -1,4 +1,5 @@
 from flask import current_app
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import literal, union, select
 from werkzeug.datastructures import ImmutableMultiDict
 
@@ -9,6 +10,8 @@ from models import BlackSmithItem, BlackSmithType, Rarity, ConsumableItem, Consu
 
 
 def get_item_list():
+    db: SQLAlchemy = current_app.config.get('DB')
+    
     s1 = select(BlackSmithItem.id,
                 BlackSmithItem.name,
                 BlackSmithItem.cost,
@@ -45,7 +48,7 @@ def get_item_list():
 
     u = union(s1, s2, s3, s4).alias('items')
 
-    vals = current_app.db.session.query(u)
+    vals = db.session.query(u)
 
     items = [{"name": v.name, "id": v.id, "cost": v.cost, "type": v.type, "rarity": v.rarity, "table": v.table} for v in
              vals]
@@ -54,7 +57,8 @@ def get_item_list():
 
 
 def get_races():
-    races = current_app.db.session.query(CharacterRace)
+    db: SQLAlchemy = current_app.config.get('DB')
+    races = db.session.query(CharacterRace)
 
     d_out = dict()
     d_out["parents"] = [{"id": r.id, "name": r.value, "children": len(get_subraces(r.id)['children'])} for r in races]
@@ -65,7 +69,8 @@ def get_races():
 
 
 def get_subraces(race):
-    subraces = current_app.db.session.query(CharacterSubrace).filter(CharacterSubrace.parent == race)
+    db: SQLAlchemy = current_app.config.get('DB')
+    subraces = db.session.query(CharacterSubrace).filter(CharacterSubrace.parent == race)
 
     d_out = dict()
     d_out['children'] = [{"id": s.id, "name": s.value} for s in subraces]
@@ -76,7 +81,8 @@ def get_subraces(race):
 
 
 def get_classes():
-    classes = current_app.db.session.query(CharacterClass)
+    db: SQLAlchemy = current_app.config.get('DB')
+    classes = db.session.query(CharacterClass)
 
     d_out = dict()
     d_out["parents"] = [{"id": c.id, "name": c.value, "children": len(get_subclasses(c.id)['children'])} for c in
@@ -88,7 +94,8 @@ def get_classes():
 
 
 def get_subclasses(c):
-    subclasses = current_app.db.session.query(CharacterSubclass).filter(CharacterSubclass.parent == c)
+    db: SQLAlchemy = current_app.config.get('DB')
+    subclasses = db.session.query(CharacterSubclass).filter(CharacterSubclass.parent == c)
 
     d_out = dict()
     d_out['children'] = [{"id": s.id, "name": s.value} for s in subclasses]
@@ -99,7 +106,8 @@ def get_subclasses(c):
 
 
 def get_logs():
-    db_logs = current_app.db.session.query(BPLog.id,
+    db: SQLAlchemy = current_app.config.get('DB')
+    db_logs = db.session.query(BPLog.id,
                                            BPLog.xp,
                                            BPLog.gold,
                                            BPLog.server_xp,
@@ -128,21 +136,24 @@ def get_table(str):
     return BlackSmithItem if str.lower() == "blacksmith" else ConsumableItem if str.lower() == "consumable" else ScrollItem if str.lower() == "scroll" else WondrousItem if str.lower() == "wondrous" else None
 
 def get_subtype(str):
-    return current_app.db.session.query(BlackSmithType).all() if str.lower() == "blacksmith" else current_app.db.session.query(ConsumableType).all() if str.lower() == "consumable" else None
+    db: SQLAlchemy = current_app.config.get('DB')
+    return db.session.query(BlackSmithType).all() if str.lower() == "blacksmith" else db.session.query(ConsumableType).all() if str.lower() == "consumable" else None
 
 def get_table_items(table, id):
+    db: SQLAlchemy = current_app.config.get('DB')
     sub_type = get_subtype(table)
     table = get_table(table)
 
-    item = current_app.db.session.query(table).filter(table.id == id).first()
-    schools = current_app.db.session.query(MagicSchool).all() if hasattr(item, "school") else None
-    classes = current_app.db.session.query(CharacterClass).all() if hasattr(item, "classes") else None
+    item = db.session.query(table).filter(table.id == id).first()
+    schools = db.session.query(MagicSchool).all() if hasattr(item, "school") else None
+    classes = db.session.query(CharacterClass).all() if hasattr(item, "classes") else None
 
     return item, sub_type, schools, classes
 
 def update_item(table, id, form: ImmutableMultiDict[str, str]):
+    db: SQLAlchemy = current_app.config.get('DB')
     table=get_table(table)
-    item = current_app.db.session.query(table).filter(table.id == id).first()
+    item = db.session.query(table).filter(table.id == id).first()
 
     if not item:
         return
@@ -174,8 +185,8 @@ def update_item(table, id, form: ImmutableMultiDict[str, str]):
     if hasattr(item, "classes"):
         item.classes = [int(i[1]) for i in form.items() if 'class' in i[0]]
 
-    current_app.db.session.add(item)
-    current_app.db.session.commit()
+    db.session.add(item)
+    db.session.commit()
 
 def add_item(table, form: ImmutableMultiDict[str, str]):
     if table.lower() == 'blacksmith':
@@ -217,7 +228,7 @@ def add_item(table, form: ImmutableMultiDict[str, str]):
 
     elif table.lower() == 'wondrous':
         item = WondrousItem(
-            name=fomr.get('name'),
+            name=form.get('name'),
             rarity=int(form.get('rarity')),
             cost=int(form.get('cost')),
             attunement=bool(form.get('attunement', default=False)),
@@ -227,11 +238,13 @@ def add_item(table, form: ImmutableMultiDict[str, str]):
         )
 
     if item is not None:
-        current_app.db.session.add(item)
-        current_app.db.session.commit()
+        db: SQLAlchemy = current_app.config.get('DB')
+        db.session.add(item)
+        db.session.commit()
 
 def get_messages():
-    messages = current_app.db.session.query(BPMessage).filter(BPMessage.guild_id==GUILD_ID)
+    db: SQLAlchemy = current_app.config.get('DB')
+    messages = db.session.query(BPMessage).filter(BPMessage.guild_id==GUILD_ID)
     out_msg = []
 
     for m in messages:
@@ -242,8 +255,8 @@ def get_messages():
             out_msg.append({"message_id": m.message_id, "channel_id": m.channel_id, "guild_id": m.guild_id, "title": m.title,
                             "error": f"{msg.get('message')} - Need to ensure the bot has 'Read Message History` access to #{channel.get('name')}"})
         elif not msg.get('id'):
-            current_app.db.session.delete(m)
-            current_app.db.session.commit()
+            db.session.delete(m)
+            db.session.commit()
         else:
             out_msg.append({"message_id": m.message_id, "channel_id": m.channel_id, "guild_id": m.guild_id, 'title': m.title,
                             "message": msg})

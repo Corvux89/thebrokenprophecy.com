@@ -1,3 +1,4 @@
+import math
 from sqlalchemy import and_, func
 
 from constants import GUILD_ID
@@ -6,13 +7,14 @@ from flask import current_app
 
 
 def get_race_table():
-    races = current_app.db.session.query(CharacterRace).all()
-    race_count = current_app.db.session.query(CharacterRace.value, func.count(Character.race).label("count")) \
+    db: SQLAlchemy = current_app.config.get('DB')
+    races = db.session.query(CharacterRace).all()
+    race_count = db.session.query(CharacterRace.value, func.count(Character.race).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterRace, Character.race == CharacterRace.id) \
         .group_by(CharacterRace.value).all()
 
-    total_count = current_app.db.session.query(Character).filter(
+    total_count = db.session.query(Character).filter(
         and_(Character.active == True, Character.guild_id == GUILD_ID)).count()
 
     stat = dict()
@@ -27,11 +29,11 @@ def get_race_table():
                 break
         stat['races'].append(race_dict)
 
-    subraces = current_app.db.session.query(CharacterSubrace) \
+    subraces = db.session.query(CharacterSubrace) \
         .join(CharacterRace, CharacterRace.id == CharacterSubrace.parent) \
         .add_columns(CharacterSubrace.id, CharacterSubrace.value, CharacterRace.value.label("race")).all()
 
-    subrace_count = current_app.db.session.query(CharacterSubrace.id, func.count(Character.subrace).label("count")) \
+    subrace_count = db.session.query(CharacterSubrace.id, func.count(Character.subrace).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID)) \
         .join(CharacterSubrace, Character.subrace == CharacterSubrace.id) \
         .group_by(CharacterSubrace.id).all()
@@ -54,8 +56,9 @@ def get_race_table():
 
 
 def get_class_table():
-    classes = current_app.db.session.query(CharacterClass).all()
-    class_count = current_app.db.session.query(CharacterClass.value, func.count(PlayerCharacterClass.primary_class).label("count")) \
+    db: SQLAlchemy = current_app.config.get('DB')
+    classes = db.session.query(CharacterClass).all()
+    class_count = db.session.query(CharacterClass.value, func.count(PlayerCharacterClass.primary_class).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
         .join(CharacterClass, PlayerCharacterClass.primary_class == CharacterClass.id) \
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
@@ -72,11 +75,11 @@ def get_class_table():
                 break
         stat["classes"].append(class_dict)
 
-    subclasses = current_app.db.session.query(CharacterSubclass) \
+    subclasses = db.session.query(CharacterSubclass) \
         .join(CharacterClass, CharacterClass.id == CharacterSubclass.parent) \
         .add_columns(CharacterSubclass.id, CharacterSubclass.value, CharacterClass.value.label("char_class")).all()
 
-    subclass_count = current_app.db.session.query(CharacterSubclass.id, func.count(PlayerCharacterClass.subclass).label("count")) \
+    subclass_count = db.session.query(CharacterSubclass.id, func.count(PlayerCharacterClass.subclass).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID, PlayerCharacterClass.active == True)) \
         .join(CharacterSubclass, PlayerCharacterClass.subclass == CharacterSubclass.id) \
         .join(Character, PlayerCharacterClass.character_id == Character.id) \
@@ -94,7 +97,7 @@ def get_class_table():
                 r["subclasses"].append(sub_dict)
                 break
 
-    player_count = current_app.db.session.query(PlayerCharacterClass.character_id,
+    player_count = db.session.query(PlayerCharacterClass.character_id,
                                  func.count(PlayerCharacterClass.character_id).label("count")) \
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID,
                      PlayerCharacterClass.active == True)) \
@@ -115,7 +118,8 @@ def get_class_table():
     return stat
 
 def get_adventures(guild_members):
-    adventures = current_app.db.session.query(Adventures) \
+    db: SQLAlchemy = current_app.config.get('DB')
+    adventures = db.session.query(Adventures) \
         .filter(and_(Adventures.guild_id == GUILD_ID, Adventures.end_ts == None))
 
     d_out = {'adventures': []}
@@ -130,7 +134,7 @@ def get_adventures(guild_members):
         for a in d_out['adventures']:
             if a['role_id'] in m['roles']:
                 m_id = m['user']['id']
-                character = current_app.db.session.query(Character).filter(and_(Character.active == True,
+                character = db.session.query(Character).filter(and_(Character.active == True,
                                                                            Character.guild_id == GUILD_ID,
                                                                            Character.player_id == m_id)).first()
                 if character is not None:
@@ -148,18 +152,19 @@ def get_adventures(guild_members):
     return d_out
 
 def get_characters():
-    characters = current_app.db.session.query(Character)\
+    db: SQLAlchemy = current_app.config.get('DB')
+    characters = db.session.query(Character)\
         .outerjoin(CharacterSubrace, CharacterSubrace.id == Character.subrace)\
         .join(CharacterRace, CharacterRace.id == Character.race)\
         .filter(and_(Character.active == True, Character.guild_id == GUILD_ID))\
-        .add_columns(Character.id, Character.name, Character.player_id, CharacterRace.value.label("race"), CharacterSubrace.value.label("subrace")).all()
+        .add_columns(Character.id, Character.name, Character.player_id, CharacterRace.value.label("race"), CharacterSubrace.value.label("subrace"), Character.xp).all()
 
     d_out = []
 
     for c in characters:
-        c_dict = {"name": c.name, "race": c.race, "subrace": c.subrace, "classes": []}
+        c_dict = {"name": c.name, "race": c.race, "subrace": c.subrace, "classes": [], "level": math.ceil((c.xp +1)/1000)}
 
-        char_class = current_app.db.session.query(PlayerCharacterClass)\
+        char_class = db.session.query(PlayerCharacterClass)\
             .join(CharacterClass, CharacterClass.id == PlayerCharacterClass.primary_class)\
             .outerjoin(CharacterSubclass, CharacterSubclass.id == PlayerCharacterClass.subclass)\
             .filter(and_(PlayerCharacterClass.character_id == c.id, PlayerCharacterClass.active == True))\

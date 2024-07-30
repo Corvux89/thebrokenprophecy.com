@@ -1,5 +1,6 @@
 import flask
 from flask import Blueprint, current_app, redirect, url_for, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 from blueprints.admin.category_admin import cat_admin_blueprint
 from blueprints.admin.item_admin import item_admin_blueprint
@@ -24,12 +25,13 @@ def admin_menu():
 
 @admin_blueprint.route('/greeting', methods=['GET', 'POST'])
 def greeting_message():
-    guild = current_app.db.get_or_404(BPGuild, GUILD_ID)
+    db: SQLAlchemy = current_app.config.get('DB')
+    guild = db.get_or_404(BPGuild, GUILD_ID)
 
     if flask.request.method == 'POST':
         guild.greeting = flask.request.form.get('message')
-        current_app.db.session.add(guild)
-        current_app.db.session.commit()
+        db.session.add(guild)
+        db.session.commit()
         return redirect(f'{url_for("admin.admin_menu")}')
 
 
