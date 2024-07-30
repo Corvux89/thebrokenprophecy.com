@@ -5,9 +5,9 @@ from constants import ADMIN_ROLE, GUILD_ID, CHRON_ROLE
 
 
 def is_admin(f):
-    discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
         if not discord_session.authorized:
             return redirect(url_for('auth.login', next=request.endpoint))
 
@@ -23,9 +23,9 @@ def is_admin(f):
 
 
 def is_chronicler(f):
-    discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
         if not discord_session.authorized:
             return redirect(url_for('auth.login', next=request.endpoint))
 
