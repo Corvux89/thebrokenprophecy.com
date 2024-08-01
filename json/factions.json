@@ -6,14 +6,14 @@
     {
       "name": "The Azure Guardians",
       "description": "When trouble calls, The Azure Guardians is ready to protect those in need. The weak or the strong, the babe in the woods or the elder in the street, everyone can count on the Azure in a beat.",
-      "captain": "Plackart",
+      "captain": "Bes",
       "icon": "\uD83D\uDEE1\uFE0F",
       "key": "Azure_Guardians"
     },
     {
       "name": "Order of the Copper Dragon",
       "description": "In pursuit of that endless quest of knowledge and wisdom, the Copper Dragon sifts and digs through tombs, books, and more. Ever searching, digging and trying to find the answers, but knowing that with one answer, a dozen more questions will unfold.",
-      "captain": "Rozalin",
+      "captain": "Nepheline",
       "icon": "\uD83D\uDC09",
       "key": "Copper_Dragon"
     },
@@ -27,7 +27,7 @@
     {
       "name": "Silver Wolves",
       "description": "Taking the front, up in the lead, seeking and searching, ever exploring for what is up ahead. The silent footstep of the wolf, always sniffing out danger in the world up ahead, ready to bring back the warning, or the details of what is found.",
-      "captain": "Dantalion",
+      "captain": "Eiris",
       "icon": "\uD83D\uDC3A",
       "key": "Silver_Wolves"
     },
