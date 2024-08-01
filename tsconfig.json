@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      "rootDir": "./static/src",
+      "allowJs": true,
+      "target": "ES2020",
+      "moduleResolution": "NodeNext",
+      "module": "NodeNext"
+    },
+    "include": ["./static/src/**/*"]
+  }

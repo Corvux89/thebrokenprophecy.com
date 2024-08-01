@@ -141,32 +141,6 @@
 
 </div> <!--Stat Tab Content Container -->
 
-<script nonce="{{ csp_nonce() }}">
-    //Expand or collapse
-    $('#subraceCollapse').click(function(){
-        if ($(this).data("closedAll")) {
-            $(".subrace-collapse").collapse("show");
-        }
-        else {
-            $(".subrace-collapse").collapse("hide");
-        }
-
-        // save last state
-        $(this).data("closedAll",!$(this).data("closedAll"));
-    });
-
-   //Expand or collapse
-    $('#subclassCollapse').click(function(){
-        if ($(this).data("closedAll")) {
-            $(".subclass-collapse").collapse("show");
-        }
-        else {
-            $(".subclass-collapse").collapse("hide");
-        }
-
-        // save last state
-        $(this).data("closedAll",!$(this).data("closedAll"));
-    });
-</script>
+<script nonce="{{ csp_nonce() }}" src="{{ url_for('static', filename='src/stats/main.js') }}" type="module"></script>
 
 {% endblock %}

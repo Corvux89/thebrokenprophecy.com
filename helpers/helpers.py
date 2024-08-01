@@ -180,3 +180,4 @@ def get_characters():
 
 
     return d_out
+
