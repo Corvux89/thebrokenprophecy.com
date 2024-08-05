@@ -117,40 +117,6 @@ def get_class_table():
 
     return stat
 
-def get_adventures(guild_members):
-    db: SQLAlchemy = current_app.config.get('DB')
-    adventures = db.session.query(Adventures) \
-        .filter(and_(Adventures.guild_id == GUILD_ID, Adventures.end_ts == None))
-
-    d_out = {'adventures': []}
-
-    for a in adventures:
-        a_dict = {'name': a.name, 'dm_ids': [str(a) for a in a.dms], 'role_id': str(a.role_id), 'tier': a.tier,
-                  'players': [], 'dms': []}
-
-        d_out['adventures'].append(a_dict)
-
-    for m in guild_members:
-        for a in d_out['adventures']:
-            if a['role_id'] in m['roles']:
-                m_id = m['user']['id']
-                character = db.session.query(Character).filter(and_(Character.active == True,
-                                                                           Character.guild_id == GUILD_ID,
-                                                                           Character.player_id == m_id)).first()
-                if character is not None:
-                    if m_id in a['dm_ids']:
-                        a['dms'].append(character.name)
-                    else:
-                        a['players'].append(character.name)
-
-    for a in d_out['adventures']:
-        a['dm_string'] = ", ".join(f"{dm}" for dm in a['dms'])
-        a['player_string'] = ", ".join(f"{player}" for player in a['players'])
-
-    d_out['adventures'] = sorted(d_out['adventures'], key=lambda a: a['name'])
-
-    return d_out
-
 def get_characters():
     db: SQLAlchemy = current_app.config.get('DB')
     characters = db.session.query(Character)\

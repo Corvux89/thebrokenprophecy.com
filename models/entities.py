@@ -1,5 +1,8 @@
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import DateTime, Integer
 
 db = SQLAlchemy()
 
@@ -78,17 +81,16 @@ class WondrousItem(db.Model):
     source = db.Column(db.String)
     notes = db.Column(db.String)
 
-class Adventures(db.Model):
+class Adventure(db.Model):
     __tablename__ = 'adventures'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    role_id = db.Column(db.Integer)
-    dms = db.Column(ARRAY(db.Integer))
-    tier = db.Column(db.Integer)
-    ep = db.Column(db.Integer)
-    end_ts = db.Column(db.DateTime)
-    guild_id = db.Column(db.Integer)
+    id: Mapped[int] = mapped_column(primary_key = True)
+    name: Mapped[str]
+    role_id: Mapped[int]
+    dms: Mapped[list[int]] = mapped_column(ARRAY(Integer))
+    tier: Mapped[int]
+    ep: Mapped[int]
+    end_ts: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
+    guild_id: Mapped[int]
 
 class BPLog(db.Model):
     __tablename__ = 'log'

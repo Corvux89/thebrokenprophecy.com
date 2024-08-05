@@ -1,5 +1,4 @@
 {% extends "template.html" %} {% block body %}
-
 <div class="container-xxl p-2">
     <h1 class="m-2">Active Adventures</h1>
 
@@ -12,17 +11,10 @@
                 <th scope="col">Players</th>
             </tr>
         </thead>
-        <tbody class="table-group-divider">
-            {% for adventure in adventures['adventures'] %}
-            <tr>
-                <td>{{adventure.name}}</td>
-                <td class="text-center">{{adventure.tier}}</td>
-                <td>{{adventure.dm_string}}</td>
-                <td>{{adventure.player_string}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody class="table-group-divider" id="adventure-table-body"></tbody> 
     </table>
 </div>
+
+<script nonce="{{ csp_nonce() }}" src="{{ url_for('static', filename='src/adventures/main.js') }}" type="module"></script>
 
 {% endblock %}

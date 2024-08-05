@@ -92,12 +92,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="http://chromatic-chronicle.com/">Chromatic Chronicle</a>
+                    <a class="nav-link" href="{{ url_for('chronicle.display_issue') }}">Chromatic Chronicle</a>
                 </li>
-
-                <!--                <li class="nav-item">-->
-                <!--                    <a class="nav-link" href="{{ url_for('chronicle.display_issue') }}">Chromatic Chronicle</a>-->
-                <!--                </li>-->
 
                 {% if config.DISCORD_SESSION and config.DISCORD_SESSION.authorized %}
                 <li class="nav-item">

@@ -13,6 +13,7 @@ from blueprints.commands import commands_blueprint
 from blueprints.factions import factions_blueprint
 from blueprints.characters import characters_blueprint
 from blueprints.stats import stats_blueprint
+from blueprints.api import api_blueprint
 
 from constants import *
 from helpers import get_csp
@@ -88,6 +89,7 @@ app.register_blueprint(factions_blueprint, url_prefix="/factions")
 app.register_blueprint(adventures_blueprint, url_prefix="/adventures")
 app.register_blueprint(chronicle_blueprint, url_prefix="/chromatic_chronicle")
 app.register_blueprint(characters_blueprint, url_prefix='/characters')
+app.register_blueprint(api_blueprint, url_prefix='/api')
 
 if __name__ == "__main__":
     app.run()
