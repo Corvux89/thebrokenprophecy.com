@@ -5,76 +5,6 @@
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
-<script nonce="{{ csp_nonce() }}">
-   $(document).ready( function () {
-    $('#item-table thead tr')
-        .clone(true)
-        .addClass('filters')
-        .appendTo('#item-table thead');
-
-    $('#item-table').DataTable({
-        orderCellsTop: true,
-        fixedHeader: true,
-        initComplete: function(){
-            var api = this.api();
-
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" placeholder="' + title + '" />');
-
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('change', function (e) {
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
-
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
-                        })
-                        .on('keyup', function (e) {
-                            e.stopPropagation();
-
-                            $(this).trigger('change');
-                            $(this)
-                                .focus()[0]
-
-                        }); // .on
-                }); // .on
-        }, // .each
-    }); // initComplete
-}); // DataTable
-</script>
-
-<script nonce="{{ csp_nonce() }}">
-    $(document).on('click', '.item-row', function(e) {
-        var url = $(this).data('href');
-        window.location = url;
-    });
-</script>
-
 <div class="container-fluid m-2">
      <div class="row mb-3">
         <div class="col-auto">
@@ -82,7 +12,7 @@
         </div>
 
          <div class="col-auto">
-             <a href="{{ url_for('admin.item_admin.item_new')}}" class="btn btn-primary">Add Item</a>
+             <a href="{{ url_for('admin.item_admin.item_new')}}" class="btn btn-primary disabled">Add Item</a>
          </div>
     </div>
 
@@ -96,17 +26,128 @@
             <th data-field="rarity" data-filter-control="select">Rarity</th>
         </tr>
         </thead>
-        <tbody>
-            {% for item in items %}
-            <tr class="item-row" data-href="{{ url_for('admin.item_admin.item_modify', table=item.table, id=item.id)}}">
-                <td>{{item.name}}</td>
-                <td>{{item.table}}</td>
-                <td>{{item.type}}</td>
-                <td>{{item.cost}}</td>
-                <td>{{item.rarity}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody id="item-table-body"></tbody>
     </table>
 </div>
+
+<!-- Item Edit Modal -->
+<div class="modal fade" id="item-edit-form" tabindex="-1" role="dialog" aria-labelledby="item-edit-form"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold text-black" id="item-edit-title"></h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="container" id="item-edit-body">
+                    <div class="row mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control item-edit" id="item-edit-name" name="name" required>
+                            <label for="item-edit-name">Name</label>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm" id="type-column">
+                            <div class="form-floating">
+                                <select class="form-select item-edit" aria-label="Subtype Select" id="item-edit-subtype"
+                                    name="type"></select>
+                                <label for="item-edit-subtype">Subtype</label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="form-floating">
+                                <select class="form-select item-edit" aria-label="Rarity Select" id="item-edit-rarity"
+                                    name="rarity"></select>
+                                <label for="item-edit-rarity">Rarity</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm">
+                            <div class="input-group">
+                                <span class="input-group-text">gp</span>
+                                <div class="form-floating">
+                                    <input type="number" id="item-edit-cost" name="cost"
+                                        class="form-control form-icon-trailing item-edit" required min="0">
+                                    <label for="item-edit-cost">Cost</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="form-check form-check-inline form-switch" id="item-mod-form">
+                                <input class="form-check-input item-edit" type="checkbox" id="item-edit-item-modifier"
+                                    name="item_modifier">
+                                <label class="form-check-label" for="item-edit-item_modifier">Item Modifier</label>
+                            </div>
+
+                            <div class="form-check form-check-inline form-switch" id="item-attunement-form">
+                                <input class="form-check-input item-edit" type="checkbox" id="item-edit-attunement" name="attunement">
+                                <label class="form-check-label" for="item-edit-attunement">Attunement Required</label>
+                            </div>
+
+                            <div class="form-check form-check-inline form-switch" id="item-seek-form">
+                                <input class="form-check-input item-edit" type="checkbox" id="item-edit-seeking"
+                                    name="seeking_only">
+                                <label class="form-check-label" for="item-edit-seeking">Seeking Only</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm">
+                            <div class="form-floating">
+                                <input type="text" class="form-control item-edit" id="item-edit-source" name="source">
+                                <label for="item-edit-source">Source</label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm" id="class-column">
+                            <div class="form-floating">
+                                <select class="form-select item-edit" aria-label="School Select" id="item-edit-school"
+                                    name="school"></select>
+                                <label for="item-edit-school">School</label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm" id="level-column">
+                            <div class="form-floating">
+                                <input type="number" id="item-edit-level" class="form-control item-edit" placeholder="Level"
+                                    name="level" min="0" max="9">
+                                <label for="item-edit-level">Level</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" id="class-row"></div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm">
+                            <div class="col-sm">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control item-edit" id="item-edit-notes" placeholder="Notes"
+                                        name="notes">
+                                    <label for="item-edit-notes">Notes</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary disabled" data-bs-dismiss="modal" id="item-submit">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}" src="{{ url_for('static', filename='src/admin/items.js') }}" type="module"></script>
 {% endblock %}

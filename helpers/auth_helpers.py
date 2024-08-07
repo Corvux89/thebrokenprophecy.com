@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import redirect, url_for, current_app, request
+from flask import abort, redirect, url_for, current_app, request
 from flask_discord import DiscordOAuth2Session
 from constants import ADMIN_ROLE, GUILD_ID, CHRON_ROLE
 
@@ -17,6 +17,23 @@ def is_admin(f):
         if not has_role(member, ADMIN_ROLE):
             print(f'{user.name} tried to get access to admin menus')
             return redirect(url_for('homepage'))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        discord_session: DiscordOAuth2Session = current_app.config.get('DISCORD_SESSION')
+        if not discord_session.authorized:
+            abort(401)
+
+        user = discord_session.fetch_user()
+        member = discord_session.bot_request(f'/guilds/{GUILD_ID}/members/{user.id}')
+
+        if not has_role(member, ADMIN_ROLE):
+            print(f'{user.name} tried to get access to admin menus')
+            abort(401)
         return f(*args, **kwargs)
 
     return decorated_function

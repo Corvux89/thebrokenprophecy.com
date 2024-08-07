@@ -16,11 +16,7 @@
         <p class="text-white">* - Denotes an expandable/collapsible subrace table</p>
          <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Goto Race</button>
-            <ul class="dropdown-menu">
-                {% for race in race_data['races'] %}
-                <a class="dropdown-item" href="#{{race.name}}">{{race.name}}</a>
-                {% endfor %}
-            </ul>
+            <ul class="dropdown-menu" id="race-dropdown"></ul>
 
              <button class="btn btn-light mb-2" id="subraceCollapse">Expand/Collapse all</button>
         </div>
@@ -28,52 +24,14 @@
             <thead>
                 <tr class="table-active">
                     <th class="total-row" scope="col">Total Players</th>
-                    <th class="total-amount" scope="col">{{race_data['total']}}</th>
+                    <th class="total-amount" id="total-players" scope="col"></th>
                 </tr>
                 <tr>
                     <th scope="col" class="columnLabel">Race</th>
                     <th scope="col" class="columnCount">#</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
-                {% for race in race_data['races'] %}
-                    {% if race['subraces'][0] != blank %}
-                    <tr data-bs-toggle="collapse" data-bs-target="#{{race.name}}collapse" class="accordion-toggle" id="{{race.name}}">
-                        <td class="label"><button class="btn btn-xs"><span class="race-name text-white">{{race.name}}*</span></button></td>
-                        <td class="count">{{race.count}}</td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td class="label ps-4">{{race.name}}</td>
-                        <td class="count">{{race.count}}</td>
-                    </tr>
-                    {% endif %}
-                    {% if race['subraces'][0] != null %}
-                        <tr>
-                            <td colspan="1" class="hiddenRow p-0">
-                                <div class="accordion-body collapse show subrace-collapse" id="{{race.name}}collapse">
-                                    <table class="table table-secondary table-sm mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" class="columnLabel">Subrace</th>
-                                            <th scope="col" class="columnCount">#</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for subrace in race['subraces'] %}
-                                        <tr>
-                                            <td class="label">{{subrace.name}}</td>
-                                            <td class="count">{{subrace.count}}</td>
-                                        </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
+            <tbody class="table-group-divider" id="race-table-body"></tbody>
         </table>
     </div>
 
@@ -82,11 +40,7 @@
         <p class="text-white">* - Denotes an expandable/collapsible subclass table</p>
          <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Goto Class</button>
-            <ul class="dropdown-menu">
-                {% for class in class_data['classes'] %}
-                <a class="dropdown-item" href="#{{class.name}}">{{class.name}}</a>
-                {% endfor %}
-            </ul>
+            <ul class="dropdown-menu" id="class-dropdown"></ul>
 
              <button class="btn btn-light mb-2" id="subclassCollapse">Expand/Collapse all</button>
         </div>
@@ -97,45 +51,7 @@
                     <th scope="col" class="columnCount">#</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
-                {% for class in class_data['classes'] %}
-                    {% if class['subclasses'][0] != blank %}
-                    <tr data-bs-toggle="collapse" data-bs-target="#{{class.name}}collapse" class="accordion-toggle" id="{{class.name}}">
-                        <td><button class="btn btn-xs"><span class="class-name text-white">{{class.name}}*</span></button></td>
-                        <td>{{class.count}}</td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td class="label ps-4">{{class.name}}</td>
-                        <td clas="count">{{class.count}}</td>
-                    </tr>
-                    {% endif %}
-                    {% if class['subclasses'][0] != null %}
-                        <tr>
-                            <td colspan="1" class="hiddenRow p-0">
-                                <div class="accordion-body collapse show subclass-collapse" id="{{class.name}}collapse">
-                                    <table class="table table-secondary table-sm mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" class="columnLabel">Subclass</th>
-                                            <th scope="col" class="columnCount">#</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for subclass in class['subclasses'] %}
-                                        <tr>
-                                            <td>{{subclass.name}}</td>
-                                            <td>{{subclass.count}}</td>
-                                        </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
+            <tbody class="table-group-divider" id="class-table-body"></tbody>
         </table>
     </div>
 

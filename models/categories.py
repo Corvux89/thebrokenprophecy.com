@@ -1,60 +1,49 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import mapped_column, Mapped
 
 db = SQLAlchemy()
 
 class CharacterRace(db.Model):
     __tablename__ = 'c_character_race'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
-    pass
-
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
+    
 class CharacterSubrace(db.Model):
     __tablename__ = 'c_character_subrace'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
-    parent = db.Column(db.Integer)
-    pass
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
+    parent: Mapped[int]
 
 class CharacterClass(db.Model):
     __tablename__ = 'c_character_class'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
-    pass
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
 
 class CharacterSubclass(db.Model):
     __tablename__ = 'c_character_subclass'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
-    parent = db.Column(db.Integer)
-    pass
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
+    parent: Mapped[int]
 
 class Rarity(db.Model):
     __tablename__ = 'c_rarity'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
 
 class BlackSmithType(db.Model):
     __tablename__ = 'c_blacksmith_type'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
 
 class ConsumableType(db.Model):
     __tablename__ = 'c_consumable_type'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
 
 class MagicSchool(db.Model):
     __tablename__ = 'c_magic_school'
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
 
 class ChromaticCategory(db.Model):
     __tablename__ = "c_chromatic_categories"
@@ -63,9 +52,8 @@ class ChromaticCategory(db.Model):
 
 class Faction(db.Model):
     __tablename__ = "c_faction"
-
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    value: Mapped[str]
 
 class Activity(db.Model):
     __tablename__ = "c_activity"

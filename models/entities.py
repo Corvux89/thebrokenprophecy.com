@@ -8,39 +8,37 @@ db = SQLAlchemy()
 
 class Character(db.Model):
     __tablename__ = 'characters'
-
-    id = db.Column(db.Integer, primary_key=True)
-    player_id = db.Column(db.Integer)
-    name = db.Column(db.String)
-    race = db.Column(db.Integer)
-    subrace = db.Column(db.Integer)
-    active = db.Column(db.Boolean)
-    guild_id = db.Column(db.Integer)
-    xp = db.Column(db.Integer)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    player_id: Mapped[int]
+    name: Mapped[str]
+    race: Mapped[int]
+    subrace: Mapped[int]
+    active: Mapped[bool]
+    guild_id: Mapped[int]
+    xp: Mapped[int]
+    
 
 class PlayerCharacterClass(db.Model):
     __tablename__ = 'character_class'
-
-    id = db.Column(db.Integer, primary_key=True)
-    character_id = db.Column(db.Integer)
-    primary_class = db.Column(db.Integer)
-    subclass = db.Column(db.Integer)
-    active = db.Column(db.Boolean)
-
+    id: Mapped[int] = mapped_column(primary_key=True)
+    character_id: Mapped[int]
+    primary_class: Mapped[int]
+    subclass: Mapped[int]
+    active: Mapped[bool]
 
 class BlackSmithItem(db.Model):
     __tablename__ = 'item_blacksmith'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    sub_type: Mapped[int]
+    rarity: Mapped[int]
+    cost: Mapped[int]
+    item_modifier: Mapped[bool]
+    attunement: Mapped[bool]
+    seeking_only: Mapped[bool]
+    source: Mapped[str]
+    notes: Mapped[str]
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    sub_type = db.Column(db.Integer)
-    rarity = db.Column(db.Integer)
-    cost = db.Column(db.Integer)
-    item_modifier = db.Column(db.Boolean)
-    attunement = db.Column(db.Boolean)
-    seeking_only = db.Column(db.Boolean)
-    source = db.Column(db.String)
-    notes = db.Column(db.String)
 
 class ConsumableItem(db.Model):
     __tablename__ = 'item_consumable'
